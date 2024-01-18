@@ -27,13 +27,8 @@ function HomeMain({navigation}: any) {
           <View style={styles.viewText}>
             <Text style={styles.styleTieuDe}>THỦ TỤC HÀNH CHÍNH</Text>
             <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Tiếp nhận các đề nghị: Lịch học; Lịch
-            </Text>
-            <Text style={styles.styleText}>
-              thi; Kết quả học tập; Đăng ký học tập
-            </Text>
-            <Text style={styles.styleText}>
-              Đăng ký cấp/xác nhận giấy tờ...)
+              (Tiếp nhận các đề nghị: Lịch học; Lịch thi; Kết quả học tập; Đăng
+              ký học tập Đăng ký cấp/xác nhận giấy tờ...)
             </Text>
           </View>
         </TouchableOpacity>
@@ -43,9 +38,9 @@ function HomeMain({navigation}: any) {
           <View style={styles.viewText}>
             <Text style={styles.styleTieuDe}>TRA CỨU</Text>
             <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Tra cứu thông tin: Lịch học; Điểm danh;
+              (Tra cứu thông tin: Lịch học; Điểm danh; Rèn luyện; Lịch thi; Công
+              nợ)
             </Text>
-            <Text style={styles.styleText}>Rèn luyện; Lịch thi; Công nợ)</Text>
           </View>
         </TouchableOpacity>
 
@@ -54,9 +49,8 @@ function HomeMain({navigation}: any) {
           <View style={styles.viewText}>
             <Text style={styles.styleTieuDe}>HỌC TẬP</Text>
             <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Kết quả học tập, Chương trình đào tạo;
+              (Kết quả học tập, Chương trình đào tạo; Ôn luyện, Dự kiến KQHT)
             </Text>
-            <Text style={styles.styleText}>Ôn luyện, Dự kiến KQHT)</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -102,8 +96,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
-    marginRight: 10,
-    marginLeft: 10,
+    marginRight: 25,
+    marginLeft: 25,
   },
   styleTieuDe: {
     fontSize: 19,
@@ -113,5 +107,6 @@ const styles = StyleSheet.create({
   styleText: {
     color: 'black',
     fontStyle: 'italic',
+    textAlign: 'center',
   },
 });

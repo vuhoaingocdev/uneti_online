@@ -19,78 +19,66 @@ function ThuTucHanhChinh({navigation}: any) {
       <Header title="THỦ TỤC HÀNH CHÍNH" />
 
       <View style={styles.viewBody}>
-        <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-          <View style={styles.viewImage}></View>
-          <View style={styles.viewText}>
-            <Text style={styles.styleTieuDe}>HƯỚNG DẪN</Text>
-            <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Biểu mẫu tham khảo; Quy trình, thủ
-            </Text>
-            <Text style={styles.styleText}>tục)</Text>
-          </View>
-        </TouchableOpacity>
+        <ScrollView style={styles.scrollViewContent}>
+          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
+            <View style={styles.viewImage}></View>
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>HƯỚNG DẪN</Text>
+              <Text style={[styles.styleText, {marginTop: 5}]}>
+                (Biểu mẫu tham khảo; Quy trình, thủ tục)
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.viewThuTuc}
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate('MotCuaKhaoThi')}>
-          <View style={styles.viewImage}></View>
-          <View style={styles.viewText}>
-            <Text style={styles.styleTieuDe}>MỘT CỬA - KHẢO THÍ</Text>
-            <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Tiếp nhận: Miễn học thi Tiếng Anh;
-            </Text>
-            <Text style={styles.styleText}>
-              Phúc khảo; Lịch thi; Đăng kí thi lại;
-            </Text>
-            <Text style={styles.styleText}>
-              Hoãn thi; Hủy đăng kí thi lại; Kết quả
-            </Text>
-            <Text style={styles.styleText}>học tập)</Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('MotCuaKhaoThi')}>
+            <View style={styles.viewImage}></View>
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>MỘT CỬA - KHẢO THÍ</Text>
+              <Text style={[styles.styleText, {marginTop: 5}]}>
+                (Tiếp nhận: Miễn học thi Tiếng Anh; Phúc khảo; Lịch thi; Đăng kí
+                thi lại; Hoãn thi; Hủy đăng kí thi lại; Kết quả học tập)
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-          <View style={styles.viewImage}></View>
-          <View style={styles.viewText}>
-            <Text style={styles.styleTieuDe}>MỘT CỬA - ĐÀO TẠO</Text>
-            <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Tiếp nhận: Bảng Điểm; Xác nhận; Đăng
-            </Text>
-            <Text style={styles.styleText}>
-              ký tốt nghiệp (xét, thi, hoãn); Cấp bản
-            </Text>
-            <Text style={styles.styleText}>
-              sao; Sửa thông tin (văn bằng, chứng
-            </Text>
-            <Text style={styles.styleText}>
-              chỉ); Miễn chứng chỉ; Chuyển điểm)
-            </Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
+            <View style={styles.viewImage}></View>
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>MỘT CỬA - ĐÀO TẠO</Text>
+              <Text style={[styles.styleText, {marginTop: 5}]}>
+                (Tiếp nhận: Bảng Điểm; Xác nhận; Đăng ký tốt nghiệp (xét, thi,
+                hoãn); Cấp bản sao; Sửa thông tin (văn bằng, chứng chỉ); Miễn
+                chứng chỉ; Chuyển điểm)
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-          <View style={styles.viewImage}></View>
-          <View style={styles.viewText}>
-            <Text style={styles.styleTieuDe}>MỘT CỬA - CT&CTSV</Text>
-            <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Tiếp nhận: Xác nhận; Quá trình học
-            </Text>
-            <Text style={styles.styleText}>
-              tập; Nghỉ học tạm thời; Xin chuyển)
-            </Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
+            <View style={styles.viewImage}></View>
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>MỘT CỬA - CT&CTSV</Text>
+              <Text style={[styles.styleText, {marginTop: 5}]}>
+                (Tiếp nhận: Xác nhận; Quá trình học tập; Nghỉ học tạm thời; Xin
+                chuyển)
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-          <View style={styles.viewImage}></View>
-          <View style={styles.viewText}>
-            <Text style={styles.styleTieuDe}>MỘT CỬA - HÀNH CHÍNH</Text>
-            <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Tiếp nhận: Giấy giới thiệu)
-            </Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.viewThuTuc, {marginBottom: 70}]}
+            activeOpacity={0.8}>
+            <View style={styles.viewImage}></View>
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>MỘT CỬA - HÀNH CHÍNH</Text>
+              <Text style={[styles.styleText, {marginTop: 5}]}>
+                (Tiếp nhận: Giấy giới thiệu)
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -109,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scrollViewContent: {
-    flexGrow: 1,
+    width: '100%',
   },
   viewHeader: {
     alignItems: 'center',
@@ -134,11 +122,13 @@ const styles = StyleSheet.create({
     width: 70,
   },
   viewBody: {
-    flex: 1,
+    height: 550,
+    width: '100%',
     backgroundColor: '#fff',
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     alignItems: 'center',
+    overflow: 'hidden',
   },
   viewThuTuc: {
     backgroundColor: '#F5F5F5',
@@ -160,8 +150,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
-    marginRight: 10,
-    marginLeft: 10,
+    marginRight: 25,
+    marginLeft: 25,
   },
   styleTieuDe: {
     fontSize: 19,
@@ -171,5 +161,6 @@ const styles = StyleSheet.create({
   styleText: {
     color: 'black',
     fontStyle: 'italic',
+    textAlign: 'center',
   },
 });

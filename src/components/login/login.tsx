@@ -8,12 +8,16 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
   Alert,
 } from 'react-native';
 
 import CheckBox from '@react-native-community/checkbox';
 import {user_login} from '../../api/user_api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+export var token: any;
+export var maSinhVien: any;
 
 function Login({navigation}: any) {
   const [username, setUsername] = useState('');
@@ -24,6 +28,7 @@ function Login({navigation}: any) {
   const onChecked = () => {
     setChecked(!isChecked);
   };
+
   //navigation.navigate('HomeMain');
   function xuLiDangNhap() {
     user_login({
@@ -31,10 +36,14 @@ function Login({navigation}: any) {
       TC_SV_MaSinhVien_Pass: password,
     })
       .then(result => {
-        console.log(result);
+        //console.log(result);
         if (result.status == 200) {
-          AsyncStorage.setItem('token', result.data.token);
+          token = result.data.token;
+          maSinhVien = username;
+
           navigation.navigate('HomeMain');
+        } else {
+          Alert.alert('Đăng nhập thất bại! Vui lòng kiểm tra lại!');
         }
       })
       .catch(err => {

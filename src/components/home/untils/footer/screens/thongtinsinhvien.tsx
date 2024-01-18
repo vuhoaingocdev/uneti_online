@@ -47,16 +47,12 @@ function ThongTinSinhVien({navigation}: any) {
               </View>
               <View style={styles.viewTextImage}>
                 <View style={styles.viewContainerText}>
-                  <Text style={{color: 'black', fontSize: 17}}>
-                    Họ và tên:{' '}
-                  </Text>
+                  <Text style={{color: 'black', fontSize: 17}}>Họ và tên:</Text>
                   <Text style={styles.styleTextBold}> Vũ Hoài Ngọc</Text>
                 </View>
 
                 <View style={styles.viewContainerText}>
-                  <Text style={{color: 'black', fontSize: 17}}>
-                    Giới tính:{' '}
-                  </Text>
+                  <Text style={{color: 'black', fontSize: 17}}>Giới tính:</Text>
                   <Text style={styles.styleTextBold}> Nam</Text>
                 </View>
 
@@ -199,12 +195,11 @@ export default ThongTinSinhVien;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#528B8B',
-    width: '100%',
-    height: '100%',
+    backgroundColor: '#245d7c',
+    flex: 1,
   },
   ContainerHeader: {
-    height: '13%',
+    height: '10%',
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -244,7 +239,7 @@ const styles = StyleSheet.create({
 
   viewThongTinCoBan: {
     width: '100%',
-    height: '25%',
+    height: '20%',
     flexDirection: 'row',
   },
   viewImage: {

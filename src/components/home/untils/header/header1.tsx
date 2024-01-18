@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#528B8B',
+    backgroundColor: '#245d7c',
   },
   viewHeader: {
     alignItems: 'center',
