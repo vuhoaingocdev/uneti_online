@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  Alert,
 } from 'react-native';
 
 import Header1 from '../../../../untils/header/header1';
@@ -15,8 +16,11 @@ import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
-
 import {Table, Row, Rows, TableWrapper} from 'react-native-table-component';
+import {
+  getThongTinhSinhVien,
+  ThongTinSinhVien,
+} from '../../../../../../api/GetThongTinSinhVien';
 
 function LichThi({navigation}: any) {
   const [tableHead, setTableHead] = useState([
@@ -66,6 +70,18 @@ function LichThi({navigation}: any) {
 
   const [tableDataXemLichThi, setTableDataXemLichThi] = useState([]);
   const [tableDataXemLichThi1, setTableDataXemLichThi1] = useState([]);
+
+  const [mangDuLieuTable, setMangDuLieuTable] = useState([]);
+  const [maLopHocPhan, setMaLopHocPhan] = useState('');
+  const [tenHocPhan, setTenHocPhan] = useState('');
+  const [hinhThucThi, setHinhThucThi] = useState('');
+  const [ngayThi, setNgayThi] = useState('');
+  const [thu, setThu] = useState('');
+  const [nhom, setNhom] = useState('');
+  const [tiet, setTiet] = useState('');
+  const [phongThi, setPhongThi] = useState('');
+  const [ngayThiChuaDinhDang, setNgayThiChuaDinhDang] = useState('');
+
   //Load tên đợt
   var getAPI_TenDot = 'https://apiv2.uneti.edu.vn/api/SP_EDU/Load_TenDot';
   const fetchDataTenDot = async () => {
@@ -118,6 +134,11 @@ function LichThi({navigation}: any) {
         lt.TuTiet,
         lt.TenPhong,
       ]);
+
+      response.data.body.map(nt => {
+        setNgayThiChuaDinhDang(nt.NgayThi);
+      });
+
       setTableDataXemLichThi(newTableData);
       setTableDataXemLichThi1(newTableData1);
     } catch (error) {
@@ -125,15 +146,111 @@ function LichThi({navigation}: any) {
     }
   };
 
-  useEffect(() => {
-    fetchDataTenDot();
-  }, []);
-
   const handleCheckboxChange = rowIndex => {
+    // const newData = [...tableDataXemLichThi1];
+    // newData[rowIndex][0] = !newData[rowIndex][0];
+    // setTableDataXemLichThi1(newData);
     const newData = [...tableDataXemLichThi1];
     newData[rowIndex][0] = !newData[rowIndex][0];
     setTableDataXemLichThi1(newData);
+
+    if (newData[rowIndex][0]) {
+      const selectedRowData = newData[rowIndex].slice(1);
+      setMangDuLieuTable(selectedRowData);
+      setMaLopHocPhan(selectedRowData[0]);
+      setTenHocPhan(selectedRowData[1]);
+      setHinhThucThi(selectedRowData[2]);
+      setNgayThi(selectedRowData[3]);
+      setThu(selectedRowData[4]);
+      setNhom(selectedRowData[5]);
+      setTiet(selectedRowData[6]);
+      setPhongThi(selectedRowData[7]);
+    }
   };
+
+  //Post
+  var apiTiepNhan =
+    'https://apiv2.uneti.edu.vn/api/SP_MC_KT_LichThi_TiepNhan/Add_Para';
+  const PostYeuCau = async () => {
+    var data = {
+      MC_KT_LichThi_TenDot: dotThi ? dotThi : 'null',
+      MC_KT_LichThi_LoaiThi: loaiThi ? loaiThi : 'null',
+      MC_KT_LichThi_TenCoSo: ThongTinSinhVien.CoSo
+        ? ThongTinSinhVien.CoSo
+        : 'null',
+      MC_KT_LichThi_MaSinhVien: '15107100413',
+      MC_KT_LichThi_HoDem: ThongTinSinhVien.Hodem
+        ? ThongTinSinhVien.Hodem
+        : 'null',
+      MC_KT_LichThi_Ten: ThongTinSinhVien.Ten ? ThongTinSinhVien.Ten : 'null',
+      MC_KT_LichThi_GioiTinh: false,
+      MC_KT_LichThi_TenHeDaoTao: 'Đại học',
+      MC_KT_LichThi_TenLoaiHinhDT: 'Chính quy đợt 1',
+      MC_KT_LichThi_TenKhoaHoc: ThongTinSinhVien.KhoaHoc
+        ? ThongTinSinhVien.KhoaHoc
+        : 'null',
+      MC_KT_LichThi_TenNganh: ThongTinSinhVien.ChuyenNganh
+        ? ThongTinSinhVien.ChuyenNganh
+        : 'null',
+      MC_KT_LichThi_TenNghe: ThongTinSinhVien.ChuyenNganh
+        ? ThongTinSinhVien.ChuyenNganh
+        : 'null',
+      MC_KT_LichThi_TenLop: ThongTinSinhVien.LopHoc
+        ? ThongTinSinhVien.LopHoc
+        : 'null',
+      MC_KT_LichThi_DienThoai: ThongTinSinhVien.SoDienThoai
+        ? ThongTinSinhVien.SoDienThoai
+        : 'null',
+      MC_KT_LichThi_Email: ThongTinSinhVien.Email_TruongCap
+        ? ThongTinSinhVien.Email_TruongCap
+        : 'null',
+      MC_KT_LichThi_YeuCau: valueLiDo.toString()
+        ? valueLiDo.toString()
+        : 'null',
+      MC_KT_LichThi_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
+        ? ThongTinSinhVien.IdSinhVien.toString()
+        : 'null',
+      MC_KT_LichThi_NgaySinh2: '2002-09-07T00:00:00.000Z',
+      MC_KT_LichThi_MaLopHocPhan: maLopHocPhan.toString()
+        ? maLopHocPhan.toString()
+        : 'null',
+      MC_KT_LichThi_MaMonHoc: '010100074045',
+      MC_KT_LichThi_TenMonHoc: 'Giáo dục thể chất 4',
+      MC_KT_LichThi_KhoaChuQuanMon: 'Khoa Giáo dục thể chất HN',
+      MC_KT_LichThi_TenHinhThucThi: hinhThucThi ? hinhThucThi : 'null',
+      MC_KT_LichThi_NgayThi: '2022-11-02T00:00:00.000Z',
+      MC_KT_LichThi_Thu: thu.toString() ? thu.toString() : 'null',
+      MC_KT_LichThi_Nhom: 'null',
+      MC_KT_LichThi_TuTiet: '8',
+      MC_KT_LichThi_DenTiet: '12',
+      MC_KT_LichThi_TenPhong: 'Sân thể chất Lĩnh Nam 10',
+      MC_KT_LichThi_YeuCau_KhongCoLich_MaLopHP: 'null',
+      MC_KT_LichThi_YeuCau_KhongCoLich_TenLopHP: 'null',
+      MC_KT_LichThi_YeuCau_KhongCoLich_TenPhong: 'null',
+    };
+    console.log('220', data);
+    try {
+      const response = await axios.post(apiTiepNhan, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status == 200) {
+        Alert.alert('Gửi yêu cầu thành công!');
+      } else {
+        Alert.alert('Gửi yêu cầu thất bại!');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataTenDot();
+    getThongTinhSinhVien();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -295,15 +412,61 @@ function LichThi({navigation}: any) {
           </View>
         </View>
 
-        <View style={styles.viewFooter}>
-          <View style={styles.buttonHuy}>
-            <TouchableOpacity
-              style={styles.touchableOpacity}
-              onPress={fetchDataXemLichThi}>
-              <Text style={{color: 'black', fontSize: 21}}>Hủy</Text>
-            </TouchableOpacity>
+        {lido === 'Xem lịch thi' ? (
+          <View style={styles.viewFooter1}>
+            <View style={styles.buttonHuy}>
+              <TouchableOpacity
+                style={styles.touchableOpacity}
+                onPress={() => {
+                  fetchDataXemLichThi();
+                }}>
+                <Text style={{color: 'black', fontSize: 21}}>Xem</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        ) : (
+          <View style={styles.viewFooter}>
+            <View style={[styles.buttonHuy, {marginLeft: 20}]}>
+              <TouchableOpacity
+                style={styles.touchableOpacity}
+                onPress={() => {
+                  Alert.alert('Data Huy: ' + dotThi, valueLiDo);
+                }}>
+                <Text style={{color: 'black', fontSize: 21}}>Hủy</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.buttonHuy}>
+              <TouchableOpacity
+                style={styles.touchableOpacity}
+                onPress={() => {
+                  fetchDataXemLichThi();
+                }}>
+                <Text style={{color: 'black', fontSize: 21}}>Xem</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={[styles.buttonHuy, {marginRight: 20}]}>
+              <TouchableOpacity
+                style={styles.touchableOpacity}
+                onPress={() => {
+                  fetchDataXemLichThi();
+                  // console.log('Mang du lieu nhan duoc la: ' + mangDuLieuTable);
+                  // console.log('Ma lop hoc phan: ', maLopHocPhan);
+                  // console.log('Ten hoc phan: ', tenHocPhan);
+                  // console.log('Hinh thuc thi: ', hinhThucThi);
+                  // console.log('Ngay thi: ', ngayThi);
+                  // console.log('Thu: ', thu);
+                  // console.log('Nhom: ', nhom);
+                  // console.log('Tiet: ', tiet);
+                  //console.log('Phong thi: ',dotThi);
+                  PostYeuCau();
+                }}>
+                <Text style={{color: 'black', fontSize: 21}}>Lưu</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -373,12 +536,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#BEBEBE',
+    justifyContent: 'space-between',
+  },
+  viewFooter1: {
+    height: '10%',
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#BEBEBE',
     justifyContent: 'center',
   },
   buttonHuy: {
-    width: '35%',
+    width: '25%',
     height: 45,
-    marginLeft: 30,
     borderRadius: 40,
     backgroundColor: '#F8F8FF',
   },
