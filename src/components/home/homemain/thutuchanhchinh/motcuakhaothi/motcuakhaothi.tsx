@@ -60,7 +60,12 @@ function MotCuaKhaoThi({navigation}: any) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('DangKiThiLai');
+            }}>
             <View style={styles.viewImage}></View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>ĐĂNG KÝ THI LẠI</Text>

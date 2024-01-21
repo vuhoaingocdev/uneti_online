@@ -128,13 +128,6 @@ function PhucKhao({navigation}: any) {
     console.log('Điểm tổng kết:', bienToanCuc.diemTongKet);
   }
 
-  //Call api
-  useEffect(() => {
-    fetchData();
-    fetchDataSinhVien();
-    LayDuLieuCheckBox();
-  }, []);
-
   const getAPISinhVien =
     'https://apiv2.uneti.edu.vn/api/SP_MC_MaSinhVien/Load_Web_App_Para';
 
@@ -355,6 +348,20 @@ function PhucKhao({navigation}: any) {
       console.error(error);
     }
   };
+
+  const ClearDataTable = () => {
+    setTableData([]);
+    setValueDotThi('-1');
+    setValueLoaiThi('-1');
+  };
+
+  //Call api
+  useEffect(() => {
+    fetchData();
+    fetchDataSinhVien();
+    LayDuLieuCheckBox();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header1
@@ -505,7 +512,9 @@ function PhucKhao({navigation}: any) {
           <View style={styles.buttonHuy}>
             <TouchableOpacity
               style={styles.touchableOpacity}
-              onPress={() => {}}>
+              onPress={() => {
+                ClearDataTable();
+              }}>
               <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
             </TouchableOpacity>
           </View>
@@ -522,7 +531,7 @@ function PhucKhao({navigation}: any) {
                   fetchDataMonHoc();
                 }
               }}>
-              <Text style={{color: 'white', fontSize: 17}}>Xác nhận</Text>
+              <Text style={{color: 'black', fontSize: 17}}>Xác nhận</Text>
             </TouchableOpacity>
           </View>
 
@@ -537,7 +546,7 @@ function PhucKhao({navigation}: any) {
                   fetchDataMonHoc();
                 }
               }}>
-              <Text style={{color: 'white', fontSize: 17}}>Hiển thị</Text>
+              <Text style={{color: 'black', fontSize: 17}}>Hiển thị</Text>
             </TouchableOpacity>
           </View>
 
@@ -554,8 +563,8 @@ function PhucKhao({navigation}: any) {
                   Alert.alert('Mời bạn xác nhận trước khi lưu!');
                 }
               }}
-              style={[styles.touchableOpacity, {backgroundColor: '#245d7c'}]}>
-              <Text style={{color: 'white', fontSize: 17}}>Lưu</Text>
+              style={styles.touchableOpacity}>
+              <Text style={{color: 'black', fontSize: 17}}>Lưu</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -657,19 +666,20 @@ const styles = StyleSheet.create({
     width: '20%',
     height: 45,
     borderRadius: 40,
-    backgroundColor: 'blue',
+    backgroundColor: '#F8F8FF',
   },
   buttonHienThi: {
     width: '20%',
     height: 45,
     borderRadius: 40,
-    backgroundColor: 'orange',
+    backgroundColor: '#F8F8FF',
   },
   buttonLuu: {
     width: '20%',
     height: 45,
     marginRight: 30,
     borderRadius: 40,
+    backgroundColor: '#F8F8FF',
   },
   touchableOpacity: {
     width: '100%',
@@ -677,15 +687,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 40,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
   },
 
-  touchableOpacity1: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 40,
-  },
   scrollContainer: {
     flexDirection: 'row',
   },
@@ -707,7 +718,7 @@ const styles = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: 16,
-    color: 'blue',
+    color: 'gray',
   },
 
   inputSearchStyle: {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   SafeAreaView,
@@ -15,7 +15,6 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import {user_login} from '../../api/user_api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 export var token: any;
 export var maSinhVien: any;
 
@@ -24,22 +23,50 @@ function Login({navigation}: any) {
   const [password, setPassword] = useState('');
   const [isChecked, setChecked] = useState(false);
   const [isShowPass, setShowPass] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const onChecked = () => {
-    setChecked(!isChecked);
+  const LuuTaiKhoanVaMatKhau = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'LuuTaiKhoan',
+        JSON.stringify({username, password}),
+      );
+    } catch (error) {
+      console.error('Lỗi khi lưu tài khoản và mật khẩu:', error);
+    }
   };
 
-  //navigation.navigate('HomeMain');
+  const loadSavedData = async () => {
+    try {
+      const savedData = await AsyncStorage.getItem('LuuTaiKhoan');
+      if (savedData) {
+        const {username: savedUsername, password: savedPassword} =
+          JSON.parse(savedData);
+        setUsername(savedUsername);
+        setPassword(savedPassword);
+      }
+    } catch (error) {
+      console.error('Lỗi khi tải tài khoản và mật khẩu:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadSavedData();
+  }, []);
+
   function xuLiDangNhap() {
     user_login({
       TC_SV_MaSinhVien: username.toLocaleLowerCase(),
       TC_SV_MaSinhVien_Pass: password,
     })
       .then(result => {
-        //console.log(result);
         if (result.status == 200) {
           token = result.data.token;
           maSinhVien = username;
+
+          if (isChecked && username !== '' && password !== '') {
+            LuuTaiKhoanVaMatKhau();
+          }
 
           navigation.navigate('HomeMain');
         } else {
@@ -48,8 +75,19 @@ function Login({navigation}: any) {
       })
       .catch(err => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
+
+  const xuLiVuiLongCho = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      xuLiDangNhap();
+    }, 5000);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -124,9 +162,22 @@ function Login({navigation}: any) {
           </Text>
         </View>
 
+        <View style={styles.viewModalCotainer}>
+          {loading && (
+            <View style={styles.viewModel}>
+              <View style={styles.loaderContainer}>
+                <ActivityIndicator color="gray" />
+                <Text style={{color: 'gray', fontSize: 20}}>
+                  Vui lòng đợi...
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
+
         <View style={styles.viewButtonLogin}>
           <TouchableOpacity
-            onPress={xuLiDangNhap}
+            onPress={xuLiVuiLongCho}
             style={styles.touchableOpacity}>
             <Text style={{color: '#fff', fontSize: 19}}>Đăng Nhập</Text>
           </TouchableOpacity>
@@ -261,6 +312,24 @@ const styles = StyleSheet.create({
   iconeye: {
     height: 25,
     width: 25,
+  },
+  loaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  viewModel: {
+    height: 60,
+    width: 160,
+    backgroundColor: '#EEEEEE',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  viewModalCotainer: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
