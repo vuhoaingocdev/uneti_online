@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  StatusBar,
+  Alert,
 } from 'react-native';
 
 import Header1 from '../../../untils/header/header1';
@@ -24,8 +24,22 @@ function MotCuaKhaoThi({navigation}: any) {
 
       <View style={styles.viewBody}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-            <View style={styles.viewImage}></View>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              Alert.alert(
+                'Thông báo',
+                'Miễn học, thi tiếng anh chưa hoàn thành!',
+              );
+            }}>
+            <View style={[styles.viewImage, {backgroundColor: '#483d8b'}]}>
+              <Image
+                source={require('../../../../../images/hoanThi.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>MIỄN HỌC, THI TIẾNG ANH</Text>
               <Text style={[styles.styleText, {marginTop: 5, color: 'red'}]}>
@@ -38,7 +52,13 @@ function MotCuaKhaoThi({navigation}: any) {
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('PhucKhao')}>
-            <View style={styles.viewImage}></View>
+            <View style={[styles.viewImage, {backgroundColor: '#000080'}]}>
+              <Image
+                source={require('../../../../../images/phucKhao.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>PHÚC KHẢO</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -51,7 +71,13 @@ function MotCuaKhaoThi({navigation}: any) {
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('LichThi')}>
-            <View style={styles.viewImage}></View>
+            <View style={[styles.viewImage, {backgroundColor: '#ffa500'}]}>
+              <Image
+                source={require('../../../../../images/lichThi.png')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>LỊCH THI</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -66,7 +92,13 @@ function MotCuaKhaoThi({navigation}: any) {
             onPress={() => {
               navigation.navigate('DangKiThiLai');
             }}>
-            <View style={styles.viewImage}></View>
+            <View style={[styles.viewImage, {backgroundColor: '#afeeee'}]}>
+              <Image
+                source={require('../../../../../images/dangKyThiLai.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>ĐĂNG KÝ THI LẠI</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -76,8 +108,19 @@ function MotCuaKhaoThi({navigation}: any) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-            <View style={styles.viewImage}></View>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('Hoanthi');
+            }}>
+            <View style={[styles.viewImage, {backgroundColor: '#b0c4de'}]}>
+              <Image
+                source={require('../../../../../images/hoanThi.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>HOÃN THI</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -87,8 +130,19 @@ function MotCuaKhaoThi({navigation}: any) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-            <View style={styles.viewImage}></View>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('HuyDangKiThiLai');
+            }}>
+            <View style={[styles.viewImage, {backgroundColor: '#f0e68c'}]}>
+              <Image
+                source={require('../../../../../images/huyDangKyThiLai.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>HỦY ĐĂNG KÝ THI LẠI</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -100,8 +154,17 @@ function MotCuaKhaoThi({navigation}: any) {
 
           <TouchableOpacity
             style={[styles.viewThuTuc, {marginBottom: 70}]}
-            activeOpacity={0.8}>
-            <View style={styles.viewImage}></View>
+            activeOpacity={0.8}
+            onPress={() => {
+              Alert.alert('Thông báo', 'Kết quả học tập chưa hoàn thành!');
+            }}>
+            <View style={[styles.viewImage, {backgroundColor: '#006400'}]}>
+              <Image
+                source={require('../../../../../images/ketQuaHocTap.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>KẾT QUẢ HỌC TẬP</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -125,8 +188,7 @@ const styles = StyleSheet.create({
   },
 
   viewBody: {
-    height: 600,
-    width: '100%',
+    flex: 1,
     backgroundColor: '#E8E8E8',
     alignItems: 'center',
     overflow: 'hidden',
@@ -151,6 +213,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'red',
     borderTopRightRadius: 80,
+    justifyContent: 'center',
   },
   viewText: {
     justifyContent: 'center',
@@ -168,5 +231,11 @@ const styles = StyleSheet.create({
     color: 'black',
     fontStyle: 'italic',
     textAlign: 'center',
+  },
+  styleImage: {
+    width: 60,
+    height: 60,
+    marginLeft: 10,
+    borderRadius: 10,
   },
 });

@@ -7,12 +7,12 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  StatusBar,
+  Alert,
+  Dimensions,
 } from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Header from '../../untils/header/header';
-const Tab = createBottomTabNavigator();
 
+const screenWidth = Dimensions.get('window').width;
 function ThuTucHanhChinh({navigation}: any) {
   return (
     <SafeAreaView style={styles.container}>
@@ -20,8 +20,19 @@ function ThuTucHanhChinh({navigation}: any) {
 
       <View style={styles.viewBody}>
         <ScrollView style={styles.scrollViewContent}>
-          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-            <View style={styles.viewImage}></View>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              Alert.alert('Thông báo', 'Hướng dẫn chưa hoàn thành!');
+            }}>
+            <View style={[styles.viewImage, {backgroundColor: '#b0c4de'}]}>
+              <Image
+                source={require('../../../../images/huongDan.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>HƯỚNG DẪN</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -34,7 +45,13 @@ function ThuTucHanhChinh({navigation}: any) {
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('MotCuaKhaoThi')}>
-            <View style={styles.viewImage}></View>
+            <View style={[styles.viewImage, {backgroundColor: '#ffa500'}]}>
+              <Image
+                source={require('../../../../images/motCuaKhaoThi.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>MỘT CỬA - KHẢO THÍ</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -44,8 +61,19 @@ function ThuTucHanhChinh({navigation}: any) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-            <View style={styles.viewImage}></View>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              Alert.alert('Thông báo', 'Một cửa đào tạo chưa hoàn thành!');
+            }}>
+            <View style={[styles.viewImage, {backgroundColor: '#000080'}]}>
+              <Image
+                source={require('../../../../images/motCuaDaoTao.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>MỘT CỬA - ĐÀO TẠO</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -56,8 +84,22 @@ function ThuTucHanhChinh({navigation}: any) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-            <View style={styles.viewImage}></View>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              Alert.alert(
+                'Thông báo',
+                'Một cửa công tác sinh viên chưa hoàn thành!',
+              );
+            }}>
+            <View style={[styles.viewImage, {backgroundColor: '#32cd32'}]}>
+              <Image
+                source={require('../../../../images/motCuaCongTacSinhVien.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>MỘT CỬA - CT&CTSV</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -69,8 +111,17 @@ function ThuTucHanhChinh({navigation}: any) {
 
           <TouchableOpacity
             style={[styles.viewThuTuc, {marginBottom: 70}]}
-            activeOpacity={0.8}>
-            <View style={styles.viewImage}></View>
+            activeOpacity={0.8}
+            onPress={() => {
+              Alert.alert('Thông báo', 'Một cửa hành chính chưa hoàn thành!');
+            }}>
+            <View style={[styles.viewImage, {backgroundColor: '#48d1cc'}]}>
+              <Image
+                source={require('../../../../images/motCuaHanhChinh.jpg')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>MỘT CỬA - HÀNH CHÍNH</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
@@ -88,8 +139,8 @@ export default ThuTucHanhChinh;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#245d7c',
     flex: 1,
+    backgroundColor: '#245d7c',
   },
   ContainerHeader: {
     height: '16%',
@@ -122,8 +173,7 @@ const styles = StyleSheet.create({
     width: 70,
   },
   viewBody: {
-    height: 550,
-    width: '100%',
+    flex: 1,
     backgroundColor: '#fff',
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
@@ -143,8 +193,8 @@ const styles = StyleSheet.create({
   viewImage: {
     width: 110,
     height: '100%',
-    backgroundColor: 'red',
     borderTopRightRadius: 80,
+    justifyContent: 'center',
   },
   viewText: {
     justifyContent: 'center',
@@ -162,5 +212,11 @@ const styles = StyleSheet.create({
     color: 'black',
     fontStyle: 'italic',
     textAlign: 'center',
+  },
+  styleImage: {
+    width: 60,
+    height: 60,
+    marginLeft: 10,
+    borderRadius: 10,
   },
 });

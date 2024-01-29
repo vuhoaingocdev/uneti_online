@@ -21,15 +21,14 @@ import {
   ThongTinSinhVien,
 } from '../../../../../../api/GetThongTinSinhVien';
 
-const DangKiThiLai = ({navigation}: any) => {
+const HuyDangKiThiLai = ({navigation}: any) => {
   const dataLoaiThi = [{labelLoaiThi: 'Thi lại', valueLoaiThi: '3'}];
 
   const dataLiDo = [
-    {labelLiDo: 'Trùng lịch thi', valueLiDo: '0'},
-    {labelLiDo: 'Lỗi website sinhvien.uneti.edu.vn', valueLiDo: '1'},
-    {labelLiDo: 'Khác hệ, loại hình đào tạo', valueLiDo: '2'},
-    {labelLiDo: 'Thi không theo kế hoạch', valueLiDo: '3'},
-    {labelLiDo: 'Lí do khác', valueLiDo: '4'},
+    {labelLiDo: 'Đạt điểm HP sau khi phúc khảo', valueLiDo: '0'},
+    {labelLiDo: 'Điều chỉnh điểm thường kỳ (quá trình)', valueLiDo: '1'},
+    {labelLiDo: 'Hủy đăng kí thi để học lại', valueLiDo: '2'},
+    {labelLiDo: 'Lí do khác', valueLiDo: '3'},
   ];
 
   const [tendot, setTenDot] = useState([]);
@@ -47,14 +46,15 @@ const DangKiThiLai = ({navigation}: any) => {
 
   const [dataTable, setDataTable] = useState([]);
 
-  const [liDoKhac, setLiDoKhac] = useState('');
-
   const [diemTongKet1, setDiemTongKet1] = useState('');
   const [diemTongKet2, setDiemTongKet2] = useState('');
   const [diemThi1, setDiemThi1] = useState('');
   const [diemThi2, setDiemThi2] = useState('');
-
-  var apiDataTable = `https://apiv2.uneti.edu.vn/api/SP_MC_KT_DangKyThi_TiepNhan/EDU_Load_R_Para_MaSinhVien_DangKyThi?MaSinhVien=${maSinhVien}&MC_KT_DangKyThi_TenDot=${dotThi}&MC_KT_DangKyThi_LoaiThi=3&MC_KT_DangKyThi_YeuCau=${valueLiDo}`;
+  const [diemTinChi, setTinChi] = useState('');
+  const [diemChu, setDiemChu] = useState('');
+  const [isDat, setIsDat] = useState('');
+  const [khoaChuQuanMon, setKhoaChuQuanMon] = useState('');
+  const [liDoKhac, setLiDoKhac] = useState('');
 
   //Load tên đợt
   var getAPI_TenDot = 'https://apiv2.uneti.edu.vn/api/SP_EDU/Load_TenDot';
@@ -69,12 +69,15 @@ const DangKiThiLai = ({navigation}: any) => {
 
       const arraytendot = response.data.body.map(td => td.TenDot);
       setTenDot(arraytendot);
+
+      console.log('Ten dot', tendot);
     } catch (error) {
       console.error(error);
     }
   };
 
   //Data Table
+  var apiDataTable = `https://apiv2.uneti.edu.vn/api/SP_MC_KT_HDKThiLai_TiepNhan/EDU_Load_Para_MaSinhVien_DKThi?MaSinhVien=${maSinhVien}&MC_KT_HDKThiLai_TenDot=${dotThi}&MC_KT_HDKThiLai_LoaiThi=${valueLoaiThi}&MC_KT_HDKThiLai_YeuCau=${valueLiDo}`;
   const getDataTable = async () => {
     try {
       const response = await axios.get(apiDataTable, {
@@ -85,17 +88,18 @@ const DangKiThiLai = ({navigation}: any) => {
       });
 
       var id = 0;
-      const newDataTabe = response.data.body.map(dk => [
+      const newDataTabe = response.data.body.map(hdk => [
         id++,
-        dk.MaLopHocPhan,
-        dk.TenMonHoc,
-        dk.TenHinhThucThi,
-        dk.DiemThi,
-        dk.DiemTongKet,
-        dk.GhiChu,
+        hdk.MaLopHocPhan,
+        hdk.TenMonHoc,
+        hdk.TenHinhThucThi,
+        hdk.DiemTBThuongKy,
+        hdk.DiemThi,
+        hdk.DiemTongKet,
       ]);
 
       setDataTable(newDataTabe);
+      console.log('DataTable: ', newDataTabe);
     } catch (error) {
       console.error(error);
     }
@@ -133,75 +137,84 @@ const DangKiThiLai = ({navigation}: any) => {
 
   //Post yêu cầu
   var apiTiepNhan =
-    'https://apiv2.uneti.edu.vn/api/SP_MC_KT_DangKyThi_TiepNhan/Add_Para';
+    'https://apiv2.uneti.edu.vn/api/SP_MC_KT_HDKThiLai_TiepNhan/Add_Para';
   const PostYeuCau = async () => {
     var data = {
-      MC_KT_DangKyThi_TenDot: dotThi ? dotThi : 'null',
-      MC_KT_DangKyThi_LoaiThi: loaiThi ? loaiThi : 'null',
-      MC_KT_DangKyThi_TenCoSo: ThongTinSinhVien.CoSo
-        ? ThongTinSinhVien.CoSo
+      MC_KT_HuyDangKyThiLai_TenDot: dotThi ? dotThi : 'null',
+      MC_KT_HuyDangKyThiLai_LoaiThi: valueLoaiThi.toString()
+        ? valueLoaiThi.toString()
         : 'null',
-      MC_KT_DangKyThi_MaSinhVien: maSinhVien ? maSinhVien : 'null',
-      MC_KT_DangKyThi_HoDem: ThongTinSinhVien.Hodem
-        ? ThongTinSinhVien.Hodem
-        : 'null',
-      MC_KT_DangKyThi_Ten: ThongTinSinhVien.Ten ? ThongTinSinhVien.Ten : 'null',
-      MC_KT_DangKyThi_GioiTinh: ThongTinSinhVien.GioiTinh,
-      MC_KT_DangKyThi_TenHeDaoTao: ThongTinSinhVien.BacDaoTao
-        ? ThongTinSinhVien.BacDaoTao
-        : 'null',
-      MC_KT_DangKyThi_TenLoaiHinhDT: ThongTinSinhVien.LoaiHinhDaoTao
-        ? ThongTinSinhVien.LoaiHinhDaoTao
-        : 'null',
-      MC_KT_DangKyThi_TenKhoaHoc: ThongTinSinhVien.KhoaHoc
-        ? ThongTinSinhVien.KhoaHoc
-        : 'null',
-      MC_KT_DangKyThi_TenNganh: ThongTinSinhVien.ChuyenNganh
-        ? ThongTinSinhVien.ChuyenNganh
-        : 'null',
-      MC_KT_DangKyThi_TenNghe: ThongTinSinhVien.ChuyenNganh
-        ? ThongTinSinhVien.ChuyenNganh
-        : 'null',
-      MC_KT_DangKyThi_TenLop: ThongTinSinhVien.LopHoc
-        ? ThongTinSinhVien.LopHoc
-        : 'null',
-      MC_KT_DangKyThi_DienThoai: ThongTinSinhVien.SoDienThoai
-        ? ThongTinSinhVien.SoDienThoai
-        : 'null',
-      MC_KT_DangKyThi_YeuCau: valueLiDo.toString()
+      MC_KT_HuyDangKyThiLai_YeuCau_XemLich_LyDo: valueLiDo.toString()
         ? valueLiDo.toString()
         : 'null',
-      MC_KT_DangKyThi_Email: ThongTinSinhVien.Email_TruongCap
+      MC_KT_HDKThiLai_TenCoSo: ThongTinSinhVien.CoSo
+        ? ThongTinSinhVien.CoSo
+        : 'null',
+      MC_KT_HDKThiLai_TenDot: dotThi ? dotThi : 'null',
+      MC_KT_HDKThiLai_MaSinhVien: maSinhVien ? maSinhVien : 'null',
+      MC_KT_HDKThiLai_HoDem: ThongTinSinhVien.Hodem
+        ? ThongTinSinhVien.Hodem
+        : 'null',
+      MC_KT_HDKThiLai_Ten: ThongTinSinhVien.Ten ? ThongTinSinhVien.Ten : 'null',
+      MC_KT_HDKThiLai_GioiTinh: ThongTinSinhVien.GioiTinh,
+      MC_KT_HDKThiLai_TenHeDaoTao: ThongTinSinhVien.BacDaoTao
+        ? ThongTinSinhVien.BacDaoTao
+        : 'null',
+      MC_KT_HDKThiLai_TenLoaiHinhDT: ThongTinSinhVien.LoaiHinhDaoTao
+        ? ThongTinSinhVien.LoaiHinhDaoTao
+        : 'null',
+      MC_KT_HDKThiLai_TenKhoaHoc: ThongTinSinhVien.KhoaHoc
+        ? ThongTinSinhVien.KhoaHoc
+        : 'null',
+      MC_KT_HDKThiLai_TenNganh: ThongTinSinhVien.ChuyenNganh
+        ? ThongTinSinhVien.ChuyenNganh
+        : 'null',
+      MC_KT_HDKThiLai_TenLop: ThongTinSinhVien.LopHoc
+        ? ThongTinSinhVien.LopHoc
+        : 'null',
+      MC_KT_HDKThiLai_DienThoai: ThongTinSinhVien.SoDienThoai
+        ? ThongTinSinhVien.SoDienThoai
+        : 'null',
+      MC_KT_HDKThiLai_Email: ThongTinSinhVien.Email_TruongCap
         ? ThongTinSinhVien.Email_TruongCap
         : 'null',
-      MC_KT_DangKyThi_NgaySinh2: '1999-10-18T00:00:00.000Z',
-      MC_KT_DangKyThi_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
+      MC_KT_HDKThiLai_YeuCau: valueLiDo ? valueLiDo : 'null',
+      MC_KT_HDKThiLai_NgaySinh2: '1999-10-18T00:00:00.000Z',
+      MC_KT_HDKThiLai_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
         ? ThongTinSinhVien.IdSinhVien.toString()
         : 'null',
-      MC_KT_DangKyThi_MaLopHocPhan: mangmonhoc[1].toString()
-        ? mangmonhoc[1].toString()
-        : 'null',
-      MC_KT_DangKyThi_TenMonHoc: mangmonhoc[2] ? mangmonhoc[2] : 'null',
-      MC_KT_DangKyThi_TenHinhThucThi: mangmonhoc[3] ? mangmonhoc[3] : 'null',
-      MC_KT_DangKyThi_DiemThi: mangmonhoc[4].toString()
+      MC_KT_HDKThiLai_LoaiThi: loaiThi ? loaiThi : 'null',
+      MC_KT_HDKThiLai_TenHinhThucThi: mangmonhoc[3] ? mangmonhoc[3] : 'null',
+      MC_KT_HDKThiLai_MaLopHocPhan: mangmonhoc[1] ? mangmonhoc[1] : 'null',
+      MC_KT_HDKThiLai_TenMonHoc: mangmonhoc[2] ? mangmonhoc[2] : 'null',
+      MC_KT_HDKThiLai_DiemThuongKy1: mangmonhoc[4].toString()
         ? mangmonhoc[4].toString()
         : 'null',
-      MC_KT_DangKyThi_DiemThi1: diemThi1.toString()
-        ? diemThi1.toString()
-        : 'null',
-      MC_KT_DangKyThi_DiemThi2: diemThi2.toString()
-        ? diemThi2.toString()
-        : 'null',
-      MC_KT_DangKyThi_DiemTongKet: mangmonhoc[5].toString()
+      MC_KT_HDKThiLai_DiemThi: mangmonhoc[5].toString()
         ? mangmonhoc[5].toString()
         : 'null',
-      MC_KT_DangKyThi_DiemTongKet1: diemTongKet1.toString()
+      MC_KT_HDKThiLai_DiemThi1: diemThi1.toString()
+        ? diemThi1.toString()
+        : 'null',
+      MC_KT_HDKThiLai_DiemThi2: diemThi2.toString()
+        ? diemThi2.toString()
+        : 'null',
+      MC_KT_HDKThiLai_DiemTongKet: mangmonhoc[6].toString()
+        ? mangmonhoc[6].toString()
+        : 'null',
+      MC_KT_HDKThiLai_DiemTongKet1: diemTongKet1.toString()
         ? diemTongKet1.toString()
         : 'null',
-      MC_KT_DangKyThi_DiemTongKet2: diemTongKet2.toString()
+      MC_KT_HDKThiLai_DiemTongKet2: diemTongKet2.toString()
         ? diemTongKet2.toString()
         : 'null',
-      MC_KT_DangKyThi_YeuCau_LyDoKhacChiTiet: liDoKhac ? liDoKhac : 'null',
+      MC_KT_HDKThiLai_DiemTinChi: diemTinChi.toString()
+        ? diemTinChi.toString()
+        : 'null',
+      MC_KT_HDKThiLai_DiemChu: diemChu ? diemChu : 'null',
+      MC_KT_HDKThiLai_IsDat: 'true',
+      MC_KT_HDKThiLai_KhoaChuQuanMon: khoaChuQuanMon ? khoaChuQuanMon : 'null',
+      MC_KT_HDKThiLai_YeuCau_LyDoKhac_LyDoChiTiet: liDoKhac ? liDoKhac : 'null',
     };
     console.log('220', data);
     try {
@@ -211,19 +224,15 @@ const DangKiThiLai = ({navigation}: any) => {
           'Content-Type': 'application/json',
         },
       });
-      var kiemTraQuaHan = false;
-      if (kiemTraQuaHan == false) {
-        Alert.alert('Thông báo', 'Môn học này đã hết hạn đăng kí thi lại!');
+
+      if (response.data.message === 'Bản ghi bị trùng.') {
+        Alert.alert(
+          'Thông báo',
+          `Yêu cầu cho môn: ${mangmonhoc[2]} đã được gửi!!`,
+        );
       } else {
-        if (response.data.message === 'Bản ghi bị trùng.') {
-          Alert.alert(
-            'Thông báo',
-            `Yêu cầu cho môn: ${mangmonhoc[2]} đã được gửi!!`,
-          );
-        } else {
-          if (response.status == 200) {
-            Alert.alert('Thông báo', 'Gửi yêu cầu thành công!');
-          }
+        if (response.status == 200) {
+          Alert.alert('Thông báo', 'Gửi yêu cầu thành công!');
         }
       }
     } catch (error) {
@@ -255,7 +264,7 @@ const DangKiThiLai = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header1
-        title="Đăng kí thi lại"
+        title="Huỷ đăng kí thi lại"
         onPress={() => {
           navigation.goBack();
         }}
@@ -269,14 +278,8 @@ const DangKiThiLai = ({navigation}: any) => {
                 1.Lưu ý
               </Text>
               <Text style={styles.styleText}>
-                - Lệ phí thi sẽ nộp cùng học phi kì tiếp theo
-              </Text>
-
-              <Text style={styles.styleText}>
-                - Người học chỉ nên đăng kí thi lại tại đây, nếu gặp phải một số
-                trường học như: Trùng lịch thi; Khác hệ loại hình đào tạo; Thi
-                không theo kế hoạch; Lí do khác hoặc không đăng kí được trên
-                website sinhvien.uneti.edu.vn
+                Thời điểm người học xin hủy đăng kí thi lại trước ngày thi 5
+                ngày và người học chưa nộp lệ phí thi lại
               </Text>
 
               <Text
@@ -395,11 +398,11 @@ const DangKiThiLai = ({navigation}: any) => {
               <ScrollView>
                 <View style={styles.container1}>
                   <ScrollView horizontal>
-                    <DataTable style={{width: 1200, height: 600}}>
+                    <DataTable style={{width: 1150, height: 500}}>
                       <DataTable.Header>
                         <DataTable.Title
                           style={{
-                            flex: 0.35,
+                            flex: 0.55,
                             backgroundColor: '#245d7c',
                             justifyContent: 'center',
                           }}>
@@ -409,7 +412,7 @@ const DangKiThiLai = ({navigation}: any) => {
                         </DataTable.Title>
                         <DataTable.Title
                           style={{
-                            flex: 0.6,
+                            flex: 0.9,
                             backgroundColor: '#245d7c',
                             justifyContent: 'center',
                             marginLeft: 10,
@@ -420,7 +423,7 @@ const DangKiThiLai = ({navigation}: any) => {
                         </DataTable.Title>
                         <DataTable.Title
                           style={{
-                            flex: 0.8,
+                            flex: 1.2,
                             backgroundColor: '#245d7c',
                             justifyContent: 'center',
                             marginLeft: 10,
@@ -431,7 +434,7 @@ const DangKiThiLai = ({navigation}: any) => {
                         </DataTable.Title>
                         <DataTable.Title
                           style={{
-                            flex: 0.6,
+                            flex: 1,
                             backgroundColor: '#245d7c',
                             justifyContent: 'center',
                             marginLeft: 10,
@@ -442,7 +445,18 @@ const DangKiThiLai = ({navigation}: any) => {
                         </DataTable.Title>
                         <DataTable.Title
                           style={{
-                            flex: 0.35,
+                            flex: 0.75,
+                            backgroundColor: '#245d7c',
+                            justifyContent: 'center',
+                            marginLeft: 10,
+                          }}>
+                          <Text style={{fontSize: 16, color: 'white'}}>
+                            Điểm thường kì
+                          </Text>
+                        </DataTable.Title>
+                        <DataTable.Title
+                          style={{
+                            flex: 0.5,
                             backgroundColor: '#245d7c',
                             justifyContent: 'center',
                             marginLeft: 10,
@@ -453,7 +467,7 @@ const DangKiThiLai = ({navigation}: any) => {
                         </DataTable.Title>
                         <DataTable.Title
                           style={{
-                            flex: 0.5,
+                            flex: 0.75,
                             backgroundColor: '#245d7c',
                             justifyContent: 'center',
                             marginLeft: 10,
@@ -462,24 +476,13 @@ const DangKiThiLai = ({navigation}: any) => {
                             Điểm tổng kết
                           </Text>
                         </DataTable.Title>
-                        <DataTable.Title
-                          style={{
-                            flex: 0.5,
-                            backgroundColor: '#245d7c',
-                            justifyContent: 'center',
-                            marginLeft: 10,
-                          }}>
-                          <Text style={{fontSize: 16, color: 'white'}}>
-                            Ghi chú
-                          </Text>
-                        </DataTable.Title>
                       </DataTable.Header>
 
                       {dataTable.map(item => (
                         <DataTable.Row key={item[0]}>
                           <DataTable.Cell
                             style={{
-                              flex: 0.35,
+                              flex: 0.55,
                               justifyContent: 'center',
                               backgroundColor: '#d3d3d3',
                             }}>
@@ -491,7 +494,7 @@ const DangKiThiLai = ({navigation}: any) => {
                           </DataTable.Cell>
                           <DataTable.Cell
                             style={{
-                              flex: 0.6,
+                              flex: 0.9,
                               alignItems: 'center',
                               justifyContent: 'center',
                               backgroundColor: '#d3d3d3',
@@ -503,7 +506,7 @@ const DangKiThiLai = ({navigation}: any) => {
                           </DataTable.Cell>
                           <DataTable.Cell
                             style={{
-                              flex: 0.8,
+                              flex: 1.2,
                               backgroundColor: '#d3d3d3',
                               marginLeft: 10,
                             }}>
@@ -518,7 +521,7 @@ const DangKiThiLai = ({navigation}: any) => {
                           </DataTable.Cell>
                           <DataTable.Cell
                             style={{
-                              flex: 0.6,
+                              flex: 1,
                               backgroundColor: '#d3d3d3',
                               marginLeft: 10,
                             }}>
@@ -533,7 +536,7 @@ const DangKiThiLai = ({navigation}: any) => {
                           </DataTable.Cell>
                           <DataTable.Cell
                             style={{
-                              flex: 0.35,
+                              flex: 0.75,
                               justifyContent: 'center',
                               backgroundColor: '#d3d3d3',
                               marginLeft: 10,
@@ -555,7 +558,7 @@ const DangKiThiLai = ({navigation}: any) => {
                           </DataTable.Title>
                           <DataTable.Title
                             style={{
-                              flex: 0.5,
+                              flex: 0.75,
                               justifyContent: 'center',
                               backgroundColor: '#d3d3d3',
                               marginLeft: 10,
@@ -631,7 +634,7 @@ const DangKiThiLai = ({navigation}: any) => {
   );
 };
 
-export default DangKiThiLai;
+export default HuyDangKiThiLai;
 
 const styles = StyleSheet.create({
   container: {
@@ -782,7 +785,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   container1: {
     marginTop: 20,
   },

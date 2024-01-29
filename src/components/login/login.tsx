@@ -25,6 +25,9 @@ function Login({navigation}: any) {
   const [isShowPass, setShowPass] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const [checkboxColor, setCheckboxColor] = useState('#245d7c');
+  const [checkboxUncheckedColor, setCheckboxUncheckedColor] = useState('gray');
+
   const LuuTaiKhoanVaMatKhau = async () => {
     try {
       await AsyncStorage.setItem(
@@ -69,8 +72,16 @@ function Login({navigation}: any) {
           }
 
           navigation.navigate('HomeMain');
+        } else if (username == '' || password == '') {
+          Alert.alert(
+            'Thông báo',
+            'Vui lòng nhập đầy đủ thông tin tài khoản và mật khẩu!',
+          );
         } else {
-          Alert.alert('Đăng nhập thất bại! Vui lòng kiểm tra lại!');
+          Alert.alert(
+            'Thông báo',
+            'Đăng nhập nhất bại! Vui lòng kiểm tra lại thông tin tài khoản và mật khẩu!',
+          );
         }
       })
       .catch(err => {
@@ -152,7 +163,11 @@ function Login({navigation}: any) {
             flexDirection: 'row',
             width: '100%',
           }}>
-          <CheckBox value={isChecked} onValueChange={setChecked} />
+          <CheckBox
+            value={isChecked}
+            onValueChange={setChecked}
+            tintColors={{true: checkboxColor, false: checkboxUncheckedColor}}
+          />
           <Text
             style={{
               marginTop: 5,
@@ -166,8 +181,12 @@ function Login({navigation}: any) {
           {loading && (
             <View style={styles.viewModel}>
               <View style={styles.loaderContainer}>
-                <ActivityIndicator color="gray" />
-                <Text style={{color: 'gray', fontSize: 20}}>
+                <ActivityIndicator
+                  color="gray"
+                  size="large"
+                  style={{borderRadius: 10, overflow: 'hidden'}}
+                />
+                <Text style={{color: 'gray', fontSize: 20, marginLeft: 15}}>
                   Vui lòng đợi...
                 </Text>
               </View>
@@ -245,7 +264,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   viewButtonLogin: {
-    marginTop: 60,
+    marginTop: 40,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',

@@ -11,6 +11,8 @@ import PhucKhao from './home/homemain/thutuchanhchinh/motcuakhaothi/phuckhao/phu
 import LichThi from './home/homemain/thutuchanhchinh/motcuakhaothi/lichthi/lichthi.tsx';
 import MyTabsHome from './home/untils/footer/screens/home.tsx';
 import DangKiThiLai from './home/homemain/thutuchanhchinh/motcuakhaothi/dangkithilai/dangkithilai.tsx';
+import HuyDangKiThiLai from './home/homemain/thutuchanhchinh/motcuakhaothi/huydangkithilai/huydangkithilai.tsx';
+import Hoanthi from './home/homemain/thutuchanhchinh/motcuakhaothi/hoanthi/hoanthi.tsx';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,6 +31,8 @@ const Index = () => {
         <Stack.Screen name="LichThi" component={LichThi} />
         <Stack.Screen name="DangKiThiLai" component={DangKiThiLai} />
         <Stack.Screen name="MyTabsHome" component={MyTabsHome} />
+        <Stack.Screen name="HuyDangKiThiLai" component={HuyDangKiThiLai} />
+        <Stack.Screen name="Hoanthi" component={Hoanthi} />
       </Stack.Navigator>
     </NavigationContainer>
   );

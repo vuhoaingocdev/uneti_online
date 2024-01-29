@@ -7,6 +7,7 @@ const Tab = createBottomTabNavigator();
 function MyTabsHome() {
   return (
     <Tab.Navigator
+      initialRouteName="HomeBottom"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,

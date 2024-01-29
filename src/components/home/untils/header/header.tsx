@@ -1,12 +1,22 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Alert,
+} from 'react-native';
 
 function Header(props) {
   const {title} = props;
   return (
     <View style={styles.ContainerHeader}>
       <View style={styles.viewHeader}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert('Thông báo', 'Menu chưa hoàn thành!');
+          }}>
           <Image
             source={require('../../../../images/menu.png')}
             style={styles.iconMenu}

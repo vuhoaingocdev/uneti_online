@@ -5,9 +5,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ScrollView,
-  StatusBar,
   Alert,
   Modal,
 } from 'react-native';
@@ -17,34 +15,14 @@ import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
-import {Table, Row, Rows, TableWrapper} from 'react-native-table-component';
+import {DataTable} from 'react-native-paper';
+import CheckBox from 'react-native-check-box';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
 } from '../../../../../../api/GetThongTinSinhVien';
 
 function LichThi({navigation}: any) {
-  const [tableHead, setTableHead] = useState([
-    'Mã lớp học phần',
-    'Tên học phần',
-    'Hình thức thi',
-    'Ngày thi',
-    'Thứ',
-    'Nhóm',
-    'Tiết',
-    'Phòng thi',
-  ]);
-  const [tableHead2, setTableHead2] = useState([
-    'Chọn',
-    'Mã lớp học phần',
-    'Tên học phần',
-    'Hình thức thi',
-    'Ngày thi',
-    'Thứ',
-    'Nhóm',
-    'Tiết',
-    'Phòng thi',
-  ]);
   const dataLoaiThi = [
     {labelLoaiThi: 'Thi lần 1', valueLoaiThi: '2'},
     {labelLoaiThi: 'Thi lại', valueLoaiThi: '1'},
@@ -73,20 +51,6 @@ function LichThi({navigation}: any) {
   const [tableTrungLichThi, setTableTrungLichThi] = useState([]);
   const [tableDataKhongCoLichThi, setTableDataKhongCoLichThi] = useState([]);
 
-  const [mangDuLieuTable, setMangDuLieuTable] = useState([]);
-  const [maLopHocPhan, setMaLopHocPhan] = useState('');
-  const [tenHocPhan, setTenHocPhan] = useState('');
-  const [hinhThucThi, setHinhThucThi] = useState('');
-  const [ngayThi, setNgayThi] = useState('');
-  const [thu, setThu] = useState('');
-  const [nhom, setNhom] = useState('');
-  const [tiet, setTiet] = useState('');
-  const [phongThi, setPhongThi] = useState('');
-  const [ngayThiChuaDinhDang, setNgayThiChuaDinhDang] = useState('');
-  const [khoaChuQuanMon, setKhoaChuQuanMon] = useState('');
-  const [tuTiet, setTuTiet] = useState('');
-  const [denTiet, setDenTiet] = useState('');
-
   //Load tên đợt
   var getAPI_TenDot = 'https://apiv2.uneti.edu.vn/api/SP_EDU/Load_TenDot';
   const fetchDataTenDot = async () => {
@@ -100,7 +64,7 @@ function LichThi({navigation}: any) {
 
       const arraytendot = response.data.body.map(td => td.TenDot);
       setTenDot(arraytendot);
-      console.log('Ten dot', tendot);
+      //console.log('Ten dot', tendot);
     } catch (error) {
       console.error(error);
     }
@@ -125,11 +89,12 @@ function LichThi({navigation}: any) {
         lt.Thu,
         lt.Nhom,
         lt.TuTiet,
+        lt.DenTiet,
         lt.TenPhong,
       ]);
-
+      var id = 0;
       const newTableDataTrungLichThi = response.data.body.map(lt => [
-        false,
+        id++,
         lt.MaLopHocPhan,
         lt.TenMonHoc,
         lt.TenHinhThucThi,
@@ -137,11 +102,13 @@ function LichThi({navigation}: any) {
         lt.Thu,
         lt.Nhom,
         lt.TuTiet,
+        lt.DenTiet,
         lt.TenPhong,
       ]);
 
+      var id1 = 0;
       const newTableDataKhongCoLichThi = response.data.body.map(lt => [
-        false,
+        id1++,
         lt.KhongCoLich_MaHocPhan,
         lt.KhongCoLich_TenMonHoc,
         lt.TenHinhThucThi,
@@ -149,15 +116,9 @@ function LichThi({navigation}: any) {
         lt.Thu,
         lt.Nhom,
         lt.TuTiet,
+        lt.DenTiet,
         lt.TenPhong,
       ]);
-
-      response.data.body.map(nt => {
-        setNgayThiChuaDinhDang(nt.NgayThi);
-        setKhoaChuQuanMon(nt.KhoaChuQuanMon);
-        setTuTiet(nt.TuTiet);
-        setDenTiet(nt.DenTiet);
-      });
 
       setTableDataXemLichThi(newTableDataXemLichThi);
       setTableTrungLichThi(newTableDataTrungLichThi);
@@ -167,26 +128,106 @@ function LichThi({navigation}: any) {
     }
   };
 
-  const handleCheckboxChange = rowIndex => {
-    // const newData = [...tableTrungLichThi];
-    // newData[rowIndex][0] = !newData[rowIndex][0];
-    // setTableTrungLichThi(newData);
-    const newData = [...tableTrungLichThi];
-    newData[rowIndex][0] = !newData[rowIndex][0];
-    setTableTrungLichThi(newData);
+  //Xử lí check box table trùng lịch thi
+  const [checkedItems, setCheckedItems] = useState([]);
+  const [mangmonhoc, setmangmonhoc] = useState([]);
+  const handleCheckboxToggle = rowIndex => {
+    const newCheckedItems = [...checkedItems];
+    const index = newCheckedItems.indexOf(rowIndex);
 
-    if (newData[rowIndex][0]) {
-      const selectedRowData = newData[rowIndex].slice(1);
-      setMangDuLieuTable(selectedRowData);
-      setMaLopHocPhan(selectedRowData[0]);
-      setTenHocPhan(selectedRowData[1]);
-      setHinhThucThi(selectedRowData[2]);
-      setNgayThi(selectedRowData[3]);
-      setThu(selectedRowData[4]);
-      setNhom(selectedRowData[5]);
-      setTiet(selectedRowData[6]);
-      setPhongThi(selectedRowData[7]);
+    //Check box đã tồn tại rồi
+    if (index !== -1) {
+      newCheckedItems.splice(index, 1);
+      if (newCheckedItems.length === 0) {
+        setmangmonhoc([]);
+      } else {
+        tableTrungLichThi.map(function (tk) {
+          if (tk[0] === newCheckedItems[0]) {
+            setmangmonhoc([
+              tk[0],
+              tk[1],
+              tk[2],
+              tk[3],
+              tk[4],
+              tk[5],
+              tk[6],
+              tk[7],
+              tk[8],
+              tk[9],
+            ]);
+          }
+        });
+      }
+    } else {
+      newCheckedItems.push(rowIndex);
+      tableTrungLichThi.map(function (tk) {
+        if (tk[0] === rowIndex) {
+          setmangmonhoc([
+            tk[0],
+            tk[1],
+            tk[2],
+            tk[3],
+            tk[4],
+            tk[5],
+            tk[6],
+            tk[7],
+            tk[8],
+            tk[9],
+          ]);
+        }
+      });
     }
+    setCheckedItems(newCheckedItems);
+  };
+
+  //Xử lí check box
+  const handleCheckboxToggle1 = rowIndex => {
+    const newCheckedItems = [...checkedItems];
+    const index = newCheckedItems.indexOf(rowIndex);
+
+    //Check box đã tồn tại rồi
+    if (index !== -1) {
+      newCheckedItems.splice(index, 1);
+      if (newCheckedItems.length === 0) {
+        setmangmonhoc([]);
+      } else {
+        tableDataKhongCoLichThi.map(function (tk) {
+          if (tk[0] === newCheckedItems[0]) {
+            setmangmonhoc([
+              tk[0],
+              tk[1],
+              tk[2],
+              tk[3],
+              tk[4],
+              tk[5],
+              tk[6],
+              tk[7],
+              tk[8],
+              tk[9],
+            ]);
+          }
+        });
+      }
+    } else {
+      newCheckedItems.push(rowIndex);
+      tableDataKhongCoLichThi.map(function (tk) {
+        if (tk[0] === rowIndex) {
+          setmangmonhoc([
+            tk[0],
+            tk[1],
+            tk[2],
+            tk[3],
+            tk[4],
+            tk[5],
+            tk[6],
+            tk[7],
+            tk[8],
+            tk[9],
+          ]);
+        }
+      });
+    }
+    setCheckedItems(newCheckedItems);
   };
 
   //Post
@@ -199,14 +240,12 @@ function LichThi({navigation}: any) {
       MC_KT_LichThi_TenCoSo: ThongTinSinhVien.CoSo
         ? ThongTinSinhVien.CoSo
         : 'null',
-      MC_KT_LichThi_MaSinhVien: maSinhVien.toString()
-        ? maSinhVien.toString()
-        : 'null',
+      MC_KT_LichThi_MaSinhVien: maSinhVien ? maSinhVien : 'null',
       MC_KT_LichThi_HoDem: ThongTinSinhVien.Hodem
         ? ThongTinSinhVien.Hodem
         : 'null',
       MC_KT_LichThi_Ten: ThongTinSinhVien.Ten ? ThongTinSinhVien.Ten : 'null',
-      MC_KT_LichThi_GioiTinh: false,
+      MC_KT_LichThi_GioiTinh: ThongTinSinhVien.GioiTinh,
       MC_KT_LichThi_TenHeDaoTao: ThongTinSinhVien.BacDaoTao
         ? ThongTinSinhVien.BacDaoTao
         : 'null',
@@ -238,23 +277,44 @@ function LichThi({navigation}: any) {
         ? ThongTinSinhVien.IdSinhVien.toString()
         : 'null',
       MC_KT_LichThi_NgaySinh2: '2002-09-07T00:00:00.000Z',
-      MC_KT_LichThi_MaLopHocPhan: maLopHocPhan.toString()
-        ? maLopHocPhan.toString()
+      MC_KT_LichThi_MaLopHocPhan: mangmonhoc[1].toString()
+        ? mangmonhoc[1].toString()
         : 'null',
-      MC_KT_LichThi_MaMonHoc: 'null',
-      MC_KT_LichThi_TenMonHoc: tenHocPhan ? tenHocPhan : 'null',
-      MC_KT_LichThi_KhoaChuQuanMon: khoaChuQuanMon ? khoaChuQuanMon : 'null',
-      MC_KT_LichThi_TenHinhThucThi: hinhThucThi ? hinhThucThi : 'null',
-      MC_KT_LichThi_NgayThi: ngayThiChuaDinhDang,
-      MC_KT_LichThi_Thu: thu.toString() ? thu.toString() : 'null',
-      MC_KT_LichThi_Nhom: nhom ? nhom : 'null',
-      MC_KT_LichThi_TuTiet: tuTiet.toString() ? tuTiet.toString() : 'null',
-      MC_KT_LichThi_DenTiet: denTiet.toString() ? denTiet.toString() : 'null',
-      MC_KT_LichThi_TenPhong: phongThi ? phongThi : 'null',
+      MC_KT_LichThi_MaMonHoc: '010100074045',
+      MC_KT_LichThi_TenMonHoc: mangmonhoc[2].toString()
+        ? mangmonhoc[2].toString()
+        : 'null',
+      MC_KT_LichThi_KhoaChuQuanMon: 'Khoa Giáo dục thể chất HN',
+      MC_KT_LichThi_TenHinhThucThi: mangmonhoc[3].toString()
+        ? mangmonhoc[3].toString()
+        : 'null',
+      MC_KT_LichThi_NgayThi: '2022-11-02T00:00:00.000Z',
+      MC_KT_LichThi_Thu: '4',
+      MC_KT_LichThi_Nhom: mangmonhoc[6] ? mangmonhoc[6].toString() : 'null',
+      MC_KT_LichThi_TuTiet: '8',
+      MC_KT_LichThi_DenTiet: '12',
+      MC_KT_LichThi_TenPhong: mangmonhoc[8].toString()
+        ? mangmonhoc[8].toString()
+        : 'null',
       MC_KT_LichThi_YeuCau_KhongCoLich_MaLopHP: 'null',
       MC_KT_LichThi_YeuCau_KhongCoLich_TenLopHP: 'null',
       MC_KT_LichThi_YeuCau_KhongCoLich_TenPhong: 'null',
       images: [],
+
+      // MC_KT_LichThi_MaMonHoc: '010100074045',
+      // MC_KT_LichThi_TenMonHoc: 'Giáo dục thể chất 4',
+      // MC_KT_LichThi_KhoaChuQuanMon: 'Khoa Giáo dục thể chất HN',
+      // MC_KT_LichThi_TenHinhThucThi: 'Tự luận',
+      // MC_KT_LichThi_NgayThi: '2022-11-02T00:00:00.000Z',
+      // MC_KT_LichThi_Thu: '4',
+      // MC_KT_LichThi_Nhom: 'null',
+      // MC_KT_LichThi_TuTiet: '8',
+      // MC_KT_LichThi_DenTiet: '12',
+      // MC_KT_LichThi_TenPhong: 'Sân thể chất Lĩnh Nam 10',
+      // MC_KT_LichThi_YeuCau_KhongCoLich_MaLopHP: 'null',
+      // MC_KT_LichThi_YeuCau_KhongCoLich_TenLopHP: 'null',
+      // MC_KT_LichThi_YeuCau_KhongCoLich_TenPhong: 'null',
+      // images: [],
     };
     console.log('220', data);
     try {
@@ -268,7 +328,7 @@ function LichThi({navigation}: any) {
       if (response.data.message === 'Bản ghi bị trùng.') {
         Alert.alert(
           'Thông báo',
-          `Yêu cầu cho môn: ${tenHocPhan} đã được gửi!!`,
+          `Yêu cầu cho môn: ${mangmonhoc[2]} đã được gửi!!`,
         );
       } else {
         if (response.status == 200) {
@@ -294,7 +354,17 @@ function LichThi({navigation}: any) {
   useEffect(() => {
     fetchDataTenDot();
     getThongTinhSinhVien();
-  }, []);
+    if (
+      dotThi !== '' &&
+      loaiThi !== '' &&
+      lido !== '' &&
+      valueDotThi !== '-1' &&
+      valueLoaiThi !== '-1' &&
+      valueLiDo !== '-1'
+    ) {
+      fetchDataXemLichThi();
+    }
+  }, [valueDotThi, valueLoaiThi, valueLiDo]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -306,184 +376,763 @@ function LichThi({navigation}: any) {
       />
 
       <View style={styles.viewBody}>
-        <View style={styles.viewText}>
-          <View style={styles.viewTextChild}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 20,
-                fontWeight: 'bold',
-                marginTop: 20,
-              }}>
-              1.Nội dung đề nghị
-            </Text>
+        <ScrollView>
+          <View style={styles.viewText}>
+            <View style={styles.viewTextChild}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  marginTop: 20,
+                }}>
+                1.Nội dung đề nghị
+              </Text>
 
-            <View style={styles.viewTenDot}>
-              <Text style={styles.styleText}>Tên đợt: (*)</Text>
-              <Dropdown
-                style={[
-                  styles.dropdown,
-                  isFocusDotThi && {borderColor: 'blue'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                data={tendot.map((item, index) => ({
-                  labelDotThi: item,
-                  valueDotThi: index.toString(),
-                }))}
-                maxHeight={300}
-                labelField="labelDotThi"
-                valueField="valueDotThi"
-                placeholder={!isFocusDotThi ? 'Chọn đợt thi' : '...'}
-                value={valueDotThi}
-                onFocus={() => setIsFocusDotThi(true)}
-                onBlur={() => setIsFocusDotThi(false)}
-                onChange={item => {
-                  setValueDotThi(item.valueDotThi);
-                  setDotThi(item.labelDotThi);
-                  setIsFocusDotThi(false);
-                }}
-              />
-            </View>
+              <View style={styles.viewTenDot}>
+                <Text style={styles.styleText}>Tên đợt: (*)</Text>
+                <Dropdown
+                  style={[
+                    styles.dropdown,
+                    isFocusDotThi && {borderColor: 'blue'},
+                  ]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  data={tendot.map((item, index) => ({
+                    labelDotThi: item,
+                    valueDotThi: index.toString(),
+                  }))}
+                  maxHeight={300}
+                  labelField="labelDotThi"
+                  valueField="valueDotThi"
+                  placeholder={!isFocusDotThi ? 'Chọn đợt thi' : '...'}
+                  value={valueDotThi}
+                  onFocus={() => setIsFocusDotThi(true)}
+                  onBlur={() => setIsFocusDotThi(false)}
+                  onChange={item => {
+                    setValueDotThi(item.valueDotThi);
+                    setDotThi(item.labelDotThi);
+                    setIsFocusDotThi(false);
+                  }}
+                />
+              </View>
 
-            <View style={styles.viewTenDot}>
-              <Text style={styles.styleText}>Loại thi: (*)</Text>
-              <Dropdown
-                style={[
-                  styles.dropdown,
-                  isFocusLoaiThi && {borderColor: 'blue'},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                data={dataLoaiThi}
-                maxHeight={300}
-                labelField="labelLoaiThi"
-                valueField="valueLoaiThi"
-                placeholder={!isFocusLoaiThi ? 'Chọn loại thi' : '...'}
-                value={valueLoaiThi}
-                onFocus={() => setIsFocusLoaiThi(true)}
-                onBlur={() => setIsFocusLoaiThi(false)}
-                onChange={item => {
-                  setValueLoaiThi(item.valueLoaiThi);
-                  setLoaiThi(item.labelLoaiThi);
-                  setIsFocusLoaiThi(false);
-                }}
-              />
-            </View>
+              <View style={styles.viewTenDot}>
+                <Text style={styles.styleText}>Loại thi: (*)</Text>
+                <Dropdown
+                  style={[
+                    styles.dropdown1,
+                    isFocusLoaiThi && {borderColor: 'blue'},
+                  ]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  data={dataLoaiThi}
+                  maxHeight={300}
+                  labelField="labelLoaiThi"
+                  valueField="valueLoaiThi"
+                  placeholder={!isFocusLoaiThi ? 'Chọn loại thi' : '...'}
+                  value={valueLoaiThi}
+                  onFocus={() => setIsFocusLoaiThi(true)}
+                  onBlur={() => setIsFocusLoaiThi(false)}
+                  onChange={item => {
+                    setValueLoaiThi(item.valueLoaiThi);
+                    setLoaiThi(item.labelLoaiThi);
+                    setIsFocusLoaiThi(false);
+                  }}
+                />
+              </View>
 
-            <View style={styles.viewTenDot}>
-              <Text style={styles.styleText}>Lí do: (*)</Text>
-              <Dropdown
-                style={[
-                  styles.dropdown,
-                  isFocusLiDo && {borderColor: 'blue'},
-                  {marginLeft: 34},
-                ]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                data={dataLiDo}
-                maxHeight={300}
-                labelField="labelLiDo"
-                valueField="valueLiDo"
-                placeholder={!isFocusLiDo ? 'Chọn lí do' : '...'}
-                value={valueLiDo}
-                onFocus={() => setIsFocusLiDo(true)}
-                onBlur={() => setIsFocusLiDo(false)}
-                onChange={item => {
-                  setValueLiDo(item.valueLiDo);
-                  setLiDo(item.labelLiDo);
-                  setIsFocusLiDo(false);
-                }}
-              />
-            </View>
+              <View style={styles.viewTenDot}>
+                <Text style={styles.styleText}>Lí do: (*)</Text>
+                <Dropdown
+                  style={[
+                    styles.dropdown,
+                    isFocusLiDo && {borderColor: 'blue'},
+                    {marginLeft: 36},
+                  ]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  data={dataLiDo}
+                  maxHeight={300}
+                  labelField="labelLiDo"
+                  valueField="valueLiDo"
+                  placeholder={!isFocusLiDo ? 'Chọn lí do' : '...'}
+                  value={valueLiDo}
+                  onFocus={() => setIsFocusLiDo(true)}
+                  onBlur={() => setIsFocusLiDo(false)}
+                  onChange={item => {
+                    setValueLiDo(item.valueLiDo);
+                    setLiDo(item.labelLiDo);
+                    setIsFocusLiDo(false);
+                  }}
+                />
+              </View>
 
-            <View style={styles.containerTable}>
-              <ScrollView>
-                {lido == 'Xem lịch thi' ? (
-                  <Table borderStyle={styles.table}>
-                    <Row
-                      data={tableHead}
-                      flexArr={[1, 2, 1, 1]}
-                      style={styles.head}
-                      textStyle={styles.text}
-                    />
-                    <TableWrapper style={styles.wrapper}>
-                      <Rows
-                        data={tableDataXemLichThi}
-                        flexArr={[1, 2, 1, 1]}
-                        textStyle={StyleSheet.flatten([
-                          styles.text,
-                          styles.row,
-                        ])}
-                      />
-                    </TableWrapper>
-                  </Table>
-                ) : lido == 'Trùng lịch thi' ? (
-                  <Table borderStyle={styles.table}>
-                    <Row
-                      data={tableHead2}
-                      flexArr={[1, 2, 1, 1]}
-                      style={styles.head}
-                      textStyle={styles.text}
-                    />
-                    <TableWrapper style={styles.wrapper}>
-                      <Rows
-                        data={tableTrungLichThi.map((rowData, index) => [
-                          <TouchableOpacity
-                            key={index}
-                            onPress={() => handleCheckboxChange(index)}>
-                            <View style={styles.checkboxContainer}>
-                              <View style={styles.checkbox}>
-                                {rowData[0] && (
-                                  <View style={styles.innerCheckbox} />
-                                )}
-                              </View>
-                            </View>
-                          </TouchableOpacity>,
-                          ...rowData.slice(1),
-                        ])}
-                        flexArr={[1, 2, 1, 1]}
-                        textStyle={[styles.text, styles.row]}
-                      />
-                    </TableWrapper>
-                  </Table>
-                ) : (
-                  <Table borderStyle={styles.table}>
-                    <Row
-                      data={tableHead2}
-                      flexArr={[1, 2, 1, 1]}
-                      style={styles.head}
-                      textStyle={styles.text}
-                    />
-                    <TableWrapper style={styles.wrapper}>
-                      <Rows
-                        data={tableDataKhongCoLichThi.map((rowData, index) => [
-                          <TouchableOpacity
-                            key={index}
-                            onPress={() => handleCheckboxChange(index)}>
-                            <View style={styles.checkboxContainer}>
-                              <View style={styles.checkbox}>
-                                {rowData[0] && (
-                                  <View style={styles.innerCheckbox} />
-                                )}
-                              </View>
-                            </View>
-                          </TouchableOpacity>,
-                          ...rowData.slice(1),
-                        ])}
-                        flexArr={[1, 2, 1, 1]}
-                        textStyle={[styles.text, styles.row]}
-                      />
-                    </TableWrapper>
-                  </Table>
-                )}
-              </ScrollView>
+              {lido === 'Xem lịch thi' ? (
+                <ScrollView>
+                  <View style={styles.container1}>
+                    <ScrollView horizontal>
+                      <DataTable style={{width: 1350, height: 600}}>
+                        <DataTable.Header>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.9,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Mã lớp học phần
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 1.1,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tên học phần
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 1.1,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Hình thức thi
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.9,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Ngày thi
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Thứ
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Nhóm
+                            </Text>
+                          </DataTable.Title>
+
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tiết
+                            </Text>
+                          </DataTable.Title>
+
+                          <DataTable.Title
+                            style={{
+                              flex: 1.2,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tên phòng
+                            </Text>
+                          </DataTable.Title>
+                        </DataTable.Header>
+
+                        {tableDataXemLichThi.map(item => (
+                          <DataTable.Row key={item[0]}>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.9,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[0]}
+                              </Text>
+                            </DataTable.Cell>
+
+                            <DataTable.Cell
+                              style={{
+                                flex: 1.1,
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  color: 'black',
+                                  marginLeft: 10,
+                                }}>
+                                {item[1]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 1.1,
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  color: 'black',
+                                  marginLeft: 10,
+                                }}>
+                                {item[2]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.9,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[3]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[4]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Title
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[5]}
+                              </Text>
+                            </DataTable.Title>
+                            <DataTable.Title
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {`${item[6]} - ${item[7]}`}
+                              </Text>
+                            </DataTable.Title>
+
+                            <DataTable.Title
+                              style={{
+                                flex: 1.2,
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                                justifyContent: 'center',
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  color: 'black',
+                                }}>
+                                {item[8]}
+                              </Text>
+                            </DataTable.Title>
+                          </DataTable.Row>
+                        ))}
+                      </DataTable>
+                    </ScrollView>
+                  </View>
+                </ScrollView>
+              ) : lido === 'Trùng lịch thi' ? (
+                <ScrollView>
+                  <View style={styles.container1}>
+                    <ScrollView horizontal>
+                      <DataTable style={{width: 1500, height: 600}}>
+                        <DataTable.Header>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.6,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Chọn
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.9,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Mã lớp học phần
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 1.3,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tên học phần
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 1.1,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Hình thức thi
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.9,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Ngày thi
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Thứ
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Nhóm
+                            </Text>
+                          </DataTable.Title>
+
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tiết
+                            </Text>
+                          </DataTable.Title>
+
+                          <DataTable.Title
+                            style={{
+                              flex: 1.2,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tên phòng
+                            </Text>
+                          </DataTable.Title>
+                        </DataTable.Header>
+
+                        {tableTrungLichThi.map(item => (
+                          <DataTable.Row key={item[0]}>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.6,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                              }}>
+                              <CheckBox
+                                isChecked={checkedItems.includes(item[0])}
+                                onClick={() => handleCheckboxToggle(item[0])}
+                                checkBoxColor="#245d7c"
+                              />
+                            </DataTable.Cell>
+
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.9,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[1]}
+                              </Text>
+                            </DataTable.Cell>
+
+                            <DataTable.Cell
+                              style={{
+                                flex: 1.3,
+                                alignItems: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  color: 'black',
+                                  marginLeft: 10,
+                                }}>
+                                {item[2]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 1.1,
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  color: 'black',
+                                  marginLeft: 10,
+                                }}>
+                                {item[3]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.9,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[4]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[5]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Title
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[6]}
+                              </Text>
+                            </DataTable.Title>
+                            <DataTable.Title
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {`${item[7]} - ${item[8]}`}
+                              </Text>
+                            </DataTable.Title>
+
+                            <DataTable.Title
+                              style={{
+                                flex: 1.2,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[9]}
+                              </Text>
+                            </DataTable.Title>
+                          </DataTable.Row>
+                        ))}
+                      </DataTable>
+                    </ScrollView>
+                  </View>
+                </ScrollView>
+              ) : (
+                <ScrollView>
+                  <View style={styles.container1}>
+                    <ScrollView horizontal>
+                      <DataTable style={{width: 1500, height: 600}}>
+                        <DataTable.Header>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.6,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Chọn
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.9,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Mã lớp học phần
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 1.3,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tên học phần
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 1.1,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Hình thức thi
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.9,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Ngày thi
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Thứ
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Nhóm
+                            </Text>
+                          </DataTable.Title>
+
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tiết
+                            </Text>
+                          </DataTable.Title>
+
+                          <DataTable.Title
+                            style={{
+                              flex: 1.2,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tên phòng
+                            </Text>
+                          </DataTable.Title>
+                        </DataTable.Header>
+
+                        {tableDataKhongCoLichThi.map(item => (
+                          <DataTable.Row key={item[0]}>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.6,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                              }}>
+                              <CheckBox
+                                isChecked={checkedItems.includes(item[0])}
+                                onClick={() => handleCheckboxToggle(item[0])}
+                                checkBoxColor="#245d7c"
+                              />
+                            </DataTable.Cell>
+
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.9,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[1]}
+                              </Text>
+                            </DataTable.Cell>
+
+                            <DataTable.Cell
+                              style={{
+                                flex: 1.3,
+                                alignItems: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  color: 'black',
+                                  marginLeft: 10,
+                                }}>
+                                {item[2]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 1.1,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[3]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.9,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[4]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[5]}
+                              </Text>
+                            </DataTable.Cell>
+                            <DataTable.Title
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[6]}
+                              </Text>
+                            </DataTable.Title>
+                            <DataTable.Title
+                              style={{
+                                flex: 0.5,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {`${item[7]} - ${item[8]}`}
+                              </Text>
+                            </DataTable.Title>
+
+                            <DataTable.Title
+                              style={{
+                                flex: 1.2,
+                                justifyContent: 'center',
+                                backgroundColor: '#d3d3d3',
+                                marginLeft: 10,
+                              }}>
+                              <Text style={{fontSize: 16, color: 'black'}}>
+                                {item[9]}
+                              </Text>
+                            </DataTable.Title>
+                          </DataTable.Row>
+                        ))}
+                      </DataTable>
+                    </ScrollView>
+                  </View>
+                </ScrollView>
+              )}
             </View>
           </View>
-        </View>
+        </ScrollView>
 
         {lido === 'Xem lịch thi' ? (
           <View style={styles.viewFooter1}>
@@ -492,72 +1141,90 @@ function LichThi({navigation}: any) {
                 style={styles.touchableOpacity}
                 onPress={() => {
                   if (
-                    dotThi === '' ||
-                    valueLoaiThi === '' ||
-                    valueLiDo === ''
+                    tableDataKhongCoLichThi.length != 0 ||
+                    tableTrungLichThi.length != 0
                   ) {
                     Alert.alert(
-                      'Thông báo',
-                      'Vui lòng chọn đầy đủ thông tin: Tên đợt, Loại thi, Lí do.',
+                      'Thông báo!',
+                      'Bạn có chắc chắn muốn hủy không?',
+                      [
+                        {
+                          text: 'Không',
+                          onPress: () => null,
+                          style: 'cancel',
+                        },
+                        {
+                          text: 'Có',
+                          onPress: () => {
+                            ClearData();
+                          },
+                        },
+                      ],
                     );
                   } else {
-                    fetchDataXemLichThi();
+                    Alert.alert('Thông báo', 'Không có dữ liệu!');
                   }
                 }}>
-                <Text style={{color: 'black', fontSize: 19}}>Xem</Text>
+                <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
               </TouchableOpacity>
             </View>
           </View>
         ) : (
           <View style={styles.viewFooter}>
-            <View style={[styles.buttonHuy, {marginLeft: 20}]}>
+            <View style={[styles.buttonHuy, {marginLeft: 30}]}>
               <TouchableOpacity
                 style={styles.touchableOpacity}
                 onPress={() => {
-                  ClearData();
+                  if (
+                    tableDataKhongCoLichThi.length != 0 ||
+                    tableTrungLichThi.length != 0
+                  ) {
+                    Alert.alert(
+                      'Thông báo!',
+                      'Bạn có chắc chắn muốn hủy không?',
+                      [
+                        {
+                          text: 'Không',
+                          onPress: () => null,
+                          style: 'cancel',
+                        },
+                        {
+                          text: 'Có',
+                          onPress: () => {
+                            ClearData();
+                          },
+                        },
+                      ],
+                    );
+                  } else {
+                    Alert.alert('Thông báo', 'Không có dữ liệu!');
+                  }
                 }}>
                 <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
               </TouchableOpacity>
             </View>
 
-            <View style={styles.buttonHuy}>
+            <View
+              style={[
+                styles.buttonHuy,
+                {marginRight: 30, backgroundColor: '#245d7c'},
+              ]}>
               <TouchableOpacity
                 style={styles.touchableOpacity}
                 onPress={() => {
                   if (
-                    dotThi === '' ||
-                    valueLoaiThi === '' ||
-                    valueLiDo === ''
+                    tableDataKhongCoLichThi.length == 0 ||
+                    tableTrungLichThi.length == 0
                   ) {
                     Alert.alert(
                       'Thông báo',
-                      'Vui lòng chọn đầy đủ thông tin: Tên đợt, Loại thi, Lí do.',
+                      'Vui lòng chọn môn học trước khi gửi yêu cầu!',
                     );
                   } else {
-                    fetchDataXemLichThi();
+                    PostYeuCau();
                   }
                 }}>
-                <Text style={{color: 'black', fontSize: 19}}>Xem</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={[styles.buttonHuy, {marginRight: 20}]}>
-              <TouchableOpacity
-                style={styles.touchableOpacity}
-                onPress={() => {
-                  fetchDataXemLichThi();
-                  // console.log('Mang du lieu nhan duoc la: ' + mangDuLieuTable);
-                  // console.log('Ma lop hoc phan: ', maLopHocPhan);
-                  //console.log('Ten hoc phan: ', tenHocPhan);
-                  // console.log('Hinh thuc thi: ', hinhThucThi);
-                  // console.log('Ngay thi: ', ngayThi);
-                  // console.log('Thu: ', thu);
-                  //console.log('Nhom: ', nhom);
-                  // console.log('Tiet: ', tiet);
-                  //console.log('Phong thi: ',dotThi);
-                  PostYeuCau();
-                }}>
-                <Text style={{color: 'black', fontSize: 19}}>Lưu</Text>
+                <Text style={{color: '#ffffff', fontSize: 19}}>Lưu</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -603,7 +1270,6 @@ const styles = StyleSheet.create({
   viewBody: {
     flex: 1,
     backgroundColor: '#E8E8E8',
-    alignItems: 'center',
   },
   styleText: {
     color: 'black',
@@ -644,8 +1310,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonHuy: {
-    width: '23%',
-    height: 45,
+    width: '35%',
+    height: 40,
     borderRadius: 40,
     backgroundColor: '#F8F8FF',
   },
@@ -682,39 +1348,21 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
-  //Table
-  containerTable: {
-    marginTop: 30,
-    height: 300,
-    width: '100%',
-    overflow: 'hidden',
-  },
-  table: {
-    borderColor: '#c8e1ff',
-    borderWidth: 1,
-  },
-  head: {
-    height: 70,
-    backgroundColor: '#245d7c',
-    borderColor: '#c8e1ff',
-  },
-  text: {
-    margin: 6,
-    color: 'black',
-  },
-  wrapper: {
-    flexDirection: 'row',
-  },
-  title: {
-    flex: 1,
-    backgroundColor: '#999999',
-  },
-  row: {height: 90},
-
   //dropdown
   dropdown: {
     flex: 1,
     marginLeft: 16,
+    marginTop: 10,
+    height: 30,
+    borderColor: 'gray',
+    borderWidth: 0.8,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+
+  dropdown1: {
+    flex: 1,
+    marginLeft: 18,
     marginTop: 10,
     height: 30,
     borderColor: 'gray',
@@ -729,7 +1377,7 @@ const styles = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: 16,
-    color: 'gray',
+    color: 'black',
   },
 
   inputSearchStyle: {
@@ -737,24 +1385,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  innerCheckbox: {
-    width: 10,
-    height: 10,
-    backgroundColor: 'black',
-    borderRadius: 2,
+  container1: {
+    marginTop: 20,
   },
 });

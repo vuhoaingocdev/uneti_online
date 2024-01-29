@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Image,
+  Alert,
 } from 'react-native';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -22,40 +24,62 @@ function HomeBottom({navigation}: any) {
           onPress={() => {
             navigation.navigate('ThuTucHanhChinh');
           }}>
-          <View style={styles.viewImage}></View>
+          <View style={[styles.viewImage, {backgroundColor: '#245d7c'}]}>
+            <Image
+              source={require('../../../../../images/thuTucHanhChinh.jpg')}
+              style={styles.styleImage}
+              resizeMode="stretch"
+            />
+          </View>
           <View style={styles.viewText}>
             <Text style={styles.styleTieuDe}>THỦ TỤC HÀNH CHÍNH</Text>
             <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Tiếp nhận các đề nghị: Lịch học; Lịch
-            </Text>
-            <Text style={styles.styleText}>
-              thi; Kết quả học tập; Đăng ký học tập
-            </Text>
-            <Text style={styles.styleText}>
-              Đăng ký cấp/xác nhận giấy tờ...)
+              (Tiếp nhận các đề nghị: Lịch học; Lịch thi; Kết quả học tập; Đăng
+              ký học tập Đăng ký cấp/xác nhận giấy tờ...)
             </Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-          <View style={styles.viewImage}></View>
+        <TouchableOpacity
+          style={styles.viewThuTuc}
+          activeOpacity={0.8}
+          onPress={() => {
+            Alert.alert('Thông báo', 'Mục tra cứu chưa hoàn thành!');
+          }}>
+          <View style={[styles.viewImage, {backgroundColor: '#f4a460'}]}>
+            <Image
+              source={require('../../../../../images/traCuu.png')}
+              style={styles.styleImage}
+              resizeMode="stretch"
+            />
+          </View>
           <View style={styles.viewText}>
             <Text style={styles.styleTieuDe}>TRA CỨU</Text>
             <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Tra cứu thông tin: Lịch học; Điểm danh;
+              (Tra cứu thông tin: Lịch học; Điểm danh; Rèn luyện; Lịch thi; Công
+              nợ)
             </Text>
-            <Text style={styles.styleText}>Rèn luyện; Lịch thi; Công nợ)</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-          <View style={styles.viewImage}></View>
+        <TouchableOpacity
+          style={styles.viewThuTuc}
+          activeOpacity={0.8}
+          onPress={() => {
+            Alert.alert('Thông báo', 'Mục học tập chưa hoàn thành!');
+          }}>
+          <View style={[styles.viewImage, {backgroundColor: '#191970'}]}>
+            <Image
+              source={require('../../../../../images/hocTap.png')}
+              style={styles.styleImage}
+              resizeMode="stretch"
+            />
+          </View>
           <View style={styles.viewText}>
             <Text style={styles.styleTieuDe}>HỌC TẬP</Text>
             <Text style={[styles.styleText, {marginTop: 5}]}>
-              (Kết quả học tập, Chương trình đào tạo;
+              (Kết quả học tập, Chương trình đào tạo; Ôn luyện, Dự kiến KQHT)
             </Text>
-            <Text style={styles.styleText}>Ôn luyện, Dự kiến KQHT)</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -91,9 +115,10 @@ const styles = StyleSheet.create({
   viewImage: {
     width: 110,
     height: '100%',
-    backgroundColor: 'red',
     borderTopRightRadius: 80,
+    justifyContent: 'center',
   },
+
   viewText: {
     justifyContent: 'center',
     flex: 1,
@@ -109,5 +134,12 @@ const styles = StyleSheet.create({
   styleText: {
     color: 'black',
     fontStyle: 'italic',
+    textAlign: 'center',
+  },
+  styleImage: {
+    width: 60,
+    height: 60,
+    marginLeft: 10,
+    borderRadius: 10,
   },
 });
