@@ -15,6 +15,7 @@ import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
+import moment from 'moment';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
@@ -35,6 +36,8 @@ const PhucKhao = ({navigation}: any) => {
   const [valueLoaiThi, setValueLoaiThi] = useState('');
   const [isFocusLoaiThi, setIsFocusLoaiThi] = useState(false);
   const [tableData, setTableData] = useState([]);
+
+  const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
 
   //get tên đợt
   const getapi = 'https://apiv2.uneti.edu.vn/api/SP_EDU/Load_TenDot';
@@ -110,6 +113,7 @@ const PhucKhao = ({navigation}: any) => {
       });
     }
     setCheckedItems(newCheckedItems);
+    setKiemTraChonMonHoc(newCheckedItems.length > 0);
   };
 
   //post phuc khảo
@@ -155,7 +159,9 @@ const PhucKhao = ({navigation}: any) => {
       MC_KT_PhucKhao_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
         ? ThongTinSinhVien.IdSinhVien.toString()
         : 'null',
-      MC_KT_PhucKhao_NgaySinh2: '2001-10-20T00:00:00.000Z',
+      MC_KT_PhucKhao_NgaySinh2: moment
+        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
+        .toISOString(),
       MC_KT_PhucKhao_MaLopHocPhan: '010100122742',
       MC_KT_PhucKhao_TenMonHoc: 'Tiếng Anh cơ bản 4',
       MC_KT_PhucKhao_KhoaChuQuanMon: ThongTinSinhVien.Khoa
@@ -472,6 +478,7 @@ const PhucKhao = ({navigation}: any) => {
                               {item[5]}
                             </Text>
                           </DataTable.Title>
+
                           <DataTable.Title
                             style={{
                               flex: 0.5,
@@ -530,10 +537,17 @@ const PhucKhao = ({navigation}: any) => {
                 if (tableData.length == 0) {
                   Alert.alert(
                     'Thông báo',
-                    'Vui lòng chọn môn học trước khi gửi yêu cầu!',
+                    'Không có dữ liệu môn học để gửi yêu cầu!',
                   );
                 } else {
-                  PostYeuCau();
+                  if (!kiemTraChonMonHoc) {
+                    Alert.alert(
+                      'Thông báo',
+                      'Vui lòng chọn môn học trước khi gửi yêu cầu!',
+                    );
+                  } else {
+                    PostYeuCau();
+                  }
                 }
               }}
               style={styles.touchableOpacity}>

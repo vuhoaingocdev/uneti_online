@@ -123,7 +123,7 @@ function ThongTinSinhVien({navigation}: any) {
               </View>
 
               <View style={styles.viewContainerText}>
-                <Text style={{color: 'black', fontSize: 17}}>Email:</Text>
+                <Text style={{color: 'black', fontSize: 17}}>Email: </Text>
                 <Text style={styles.styleTextBold}>
                   vhngoc.dhti14a10hn@sv.uneti.edu.vn
                 </Text>

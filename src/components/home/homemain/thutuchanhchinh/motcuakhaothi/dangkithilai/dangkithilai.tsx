@@ -16,6 +16,7 @@ import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
+import moment from 'moment';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
@@ -53,6 +54,8 @@ const DangKiThiLai = ({navigation}: any) => {
   const [diemTongKet2, setDiemTongKet2] = useState('');
   const [diemThi1, setDiemThi1] = useState('');
   const [diemThi2, setDiemThi2] = useState('');
+
+  const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
 
   var apiDataTable = `https://apiv2.uneti.edu.vn/api/SP_MC_KT_DangKyThi_TiepNhan/EDU_Load_R_Para_MaSinhVien_DangKyThi?MaSinhVien=${maSinhVien}&MC_KT_DangKyThi_TenDot=${dotThi}&MC_KT_DangKyThi_LoaiThi=3&MC_KT_DangKyThi_YeuCau=${valueLiDo}`;
 
@@ -129,6 +132,7 @@ const DangKiThiLai = ({navigation}: any) => {
       });
     }
     setCheckedItems(newCheckedItems);
+    setKiemTraChonMonHoc(newCheckedItems.length > 0);
   };
 
   //Post yêu cầu
@@ -174,7 +178,9 @@ const DangKiThiLai = ({navigation}: any) => {
       MC_KT_DangKyThi_Email: ThongTinSinhVien.Email_TruongCap
         ? ThongTinSinhVien.Email_TruongCap
         : 'null',
-      MC_KT_DangKyThi_NgaySinh2: '1999-10-18T00:00:00.000Z',
+      MC_KT_DangKyThi_NgaySinh2: moment
+        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
+        .toISOString(),
       MC_KT_DangKyThi_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
         ? ThongTinSinhVien.IdSinhVien.toString()
         : 'null',
@@ -616,10 +622,17 @@ const DangKiThiLai = ({navigation}: any) => {
                 if (dataTable.length == 0) {
                   Alert.alert(
                     'Thông báo',
-                    'Vui lòng chọn môn học trước khi gửi yêu cầu!',
+                    'Không có dữ liệu môn học để gửi yêu cầu!',
                   );
                 } else {
-                  PostYeuCau();
+                  if (!kiemTraChonMonHoc) {
+                    Alert.alert(
+                      'Thông báo',
+                      'Vui lòng chọn môn học trước khi gửi yêu cầu!',
+                    );
+                  } else {
+                    PostYeuCau();
+                  }
                 }
               }}>
               <Text style={{color: '#ffffff', fontSize: 19}}>Lưu</Text>

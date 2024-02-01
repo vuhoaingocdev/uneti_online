@@ -183,7 +183,7 @@ function Login({navigation}: any) {
               <View style={styles.loaderContainer}>
                 <ActivityIndicator
                   color="gray"
-                  size="large"
+                  size="small"
                   style={{borderRadius: 10, overflow: 'hidden'}}
                 />
                 <Text style={{color: 'gray', fontSize: 20, marginLeft: 15}}>
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   viewModalCotainer: {
-    width: '100%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

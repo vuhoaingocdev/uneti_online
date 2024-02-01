@@ -16,6 +16,7 @@ import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
+import moment from 'moment';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
@@ -55,6 +56,8 @@ const HuyDangKiThiLai = ({navigation}: any) => {
   const [isDat, setIsDat] = useState('');
   const [khoaChuQuanMon, setKhoaChuQuanMon] = useState('');
   const [liDoKhac, setLiDoKhac] = useState('');
+
+  const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
 
   //Load tên đợt
   var getAPI_TenDot = 'https://apiv2.uneti.edu.vn/api/SP_EDU/Load_TenDot';
@@ -133,6 +136,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
       });
     }
     setCheckedItems(newCheckedItems);
+    setKiemTraChonMonHoc(newCheckedItems.length > 0);
   };
 
   //Post yêu cầu
@@ -179,7 +183,9 @@ const HuyDangKiThiLai = ({navigation}: any) => {
         ? ThongTinSinhVien.Email_TruongCap
         : 'null',
       MC_KT_HDKThiLai_YeuCau: valueLiDo ? valueLiDo : 'null',
-      MC_KT_HDKThiLai_NgaySinh2: '1999-10-18T00:00:00.000Z',
+      MC_KT_HDKThiLai_NgaySinh2: moment
+        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
+        .toISOString(),
       MC_KT_HDKThiLai_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
         ? ThongTinSinhVien.IdSinhVien.toString()
         : 'null',
@@ -619,10 +625,17 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                 if (dataTable.length == 0) {
                   Alert.alert(
                     'Thông báo',
-                    'Vui lòng chọn môn học trước khi gửi yêu cầu!',
+                    'Không có dữ liệu môn học để gửi yêu cầu!',
                   );
                 } else {
-                  PostYeuCau();
+                  if (!kiemTraChonMonHoc) {
+                    Alert.alert(
+                      'Thông báo',
+                      'Vui lòng chọn môn học trước khi gửi yêu cầu!',
+                    );
+                  } else {
+                    PostYeuCau();
+                  }
                 }
               }}>
               <Text style={{color: '#ffffff', fontSize: 19}}>Lưu</Text>

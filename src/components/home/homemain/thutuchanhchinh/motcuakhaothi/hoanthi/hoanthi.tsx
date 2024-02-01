@@ -23,6 +23,7 @@ import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
+import moment from 'moment';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
@@ -37,6 +38,8 @@ const Hoanthi = props => {
   const [loaiThi, setLoaiThi] = useState('');
   const [valueLoaiThi, setValueLoaiThi] = useState('');
   const [isFocusLoaiThi, setIsFocusLoaiThi] = useState(false);
+
+  const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
   const dataLoaiThi = [
     {labelLoaiThi: 'Thi lần 1', valueLoaiThi: '2'},
     {labelLoaiThi: 'Thi lại', valueLoaiThi: '3'},
@@ -201,7 +204,9 @@ const Hoanthi = props => {
         ? ThongTinSinhVien.Email_TruongCap
         : 'null',
       MC_KT_HoanThi_YeuCau: valueLiDo ? valueLiDo : 'null',
-      MC_KT_HoanThi_NgaySinh2: '1999-10-18T00:00:00.000Z',
+      MC_KT_HoanThi_NgaySinh2: moment
+        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
+        .toISOString(),
       MC_KT_HoanThi_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
         ? ThongTinSinhVien.IdSinhVien.toString()
         : 'null',
@@ -322,6 +327,7 @@ const Hoanthi = props => {
     }
 
     setCheckedItems(newCheckedItems);
+    setKiemTraChonMonHoc(newCheckedItems.length > 0);
   };
 
   useEffect(() => {
@@ -821,10 +827,17 @@ const Hoanthi = props => {
                 if (dataTable.length == 0) {
                   Alert.alert(
                     'Thông báo',
-                    'Vui lòng chọn môn học trước khi gửi yêu cầu!',
+                    'Không có dữ liệu môn học để gửi yêu cầu!',
                   );
                 } else {
-                  PostYeuCau();
+                  if (!kiemTraChonMonHoc) {
+                    Alert.alert(
+                      'Thông báo',
+                      'Vui lòng chọn môn học trước khi gửi yêu cầu!',
+                    );
+                  } else {
+                    PostYeuCau();
+                  }
                 }
               }}>
               <Text style={{color: '#ffffff', fontSize: 19}}>Lưu</Text>
