@@ -156,7 +156,7 @@ function MotCuaKhaoThi({navigation}: any) {
             style={[styles.viewThuTuc, {marginBottom: 70}]}
             activeOpacity={0.8}
             onPress={() => {
-              Alert.alert('Thông báo', 'Kết quả học tập chưa hoàn thành!');
+              navigation.navigate('KetQuaHocTap');
             }}>
             <View style={styles.viewImage}>
               <Image

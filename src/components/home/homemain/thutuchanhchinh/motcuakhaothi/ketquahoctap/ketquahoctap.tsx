@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -20,6 +20,8 @@ import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import moment from 'moment';
+import {useSafeAreaFrame} from 'react-native-safe-area-context';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 
 const KetQuaHocTap = ({navigation}: any) => {
   const dataDeNghi = [
@@ -52,7 +54,7 @@ const KetQuaHocTap = ({navigation}: any) => {
     },
   ];
 
-  const [tenDot, setTenDot] = useState([]);
+  const [tenDot, setTenDot] = useState<string[]>([]);
 
   const [deNghi, setDeNghi] = useState('');
   const [valueDeNghi, setValueDeNghi] = useState('');
@@ -68,9 +70,13 @@ const KetQuaHocTap = ({navigation}: any) => {
 
   const [diemThuongKy, setDiemThuongKy] = useState('');
 
-  const [onClickText, setOnClickText] = useState(true);
+  const [onClickText, setOnClickText] = useState(false);
 
-  const [getDataKetQuaHocTap, setGetDataKetQuaHocTap] = useState([]);
+  const [selectedHocKy, setSelectedHocKy] = useState('');
+
+  const [tableDataXemKetQuaHocTap, setTableDataXemKetQuaHocTap] = useState([]);
+
+  const [monHocTheoKy, setMonHocTheoKy] = useState([]);
 
   //Lấy tên đợt
   var apiKetQuaHocTap = `https://apiv2.uneti.edu.vn/api/SP_MC_KT_KetQuaHT_TiepNhan/EDU_Load_Para_MaSinhVien_KetQuaHT?MaSinhVien=${maSinhVien}`;
@@ -83,14 +89,40 @@ const KetQuaHocTap = ({navigation}: any) => {
         },
       });
 
-      const getData = response.data.body.map(dt => [dt.TenMonHoc]);
-      setGetDataKetQuaHocTap(getData);
+      const data: string[] = response.data.body.map(
+        (dt: {TenDot: string}) => dt.TenDot,
+      );
 
-      console.log(getDataKetQuaHocTap);
+      const dataTableXemKetQuaHocTap = response.data.body.map(dt => [
+        dt.TenDot,
+        dt.MaMonHoc,
+        dt.TenMonHoc,
+        dt.DiemThuongKy1,
+        dt.DiemThi,
+        dt.DiemTongKet,
+      ]);
+
+      setTableDataXemKetQuaHocTap(dataTableXemKetQuaHocTap);
+
+      const filteredByHocKy = dataTableXemKetQuaHocTap.filter(
+        item => item[0] === selectedHocKy,
+      );
+
+      setMonHocTheoKy(filteredByHocKy);
+
+      // Loại bỏ các phần tử trùng nhau
+      const uniqueData = [...new Set(data)];
+
+      setTenDot(uniqueData.reverse());
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchDataKetQuaHocTap();
+  }, []);
+
   //return
   return (
     <SafeAreaView style={styles.container}>
@@ -135,7 +167,7 @@ const KetQuaHocTap = ({navigation}: any) => {
                   maxHeight={300}
                   labelField="labelDeNghi"
                   valueField="valueDeNghi"
-                  placeholder={!isFocusDeNghi ? 'Chọn đợt thi' : '...'}
+                  placeholder={!isFocusDeNghi ? 'Chọn đề nghị' : '...'}
                   value={valueDeNghi}
                   onFocus={() => setIsFocusDeNghi(true)}
                   onBlur={() => setIsFocusDeNghi(false)}
@@ -166,7 +198,7 @@ const KetQuaHocTap = ({navigation}: any) => {
                       maxHeight={300}
                       labelField="labelDeNghiDTK"
                       valueField="valueDeNghiDTK"
-                      placeholder={!isFocusDeNghiDTK ? 'Chọn đợt thi' : '...'}
+                      placeholder={!isFocusDeNghiDTK ? 'Chọn lí do' : '...'}
                       value={valueDeNghiDTK}
                       onFocus={() => setIsFocusDeNghiDTK(true)}
                       onBlur={() => setIsFocusDeNghiDTK(false)}
@@ -227,7 +259,7 @@ const KetQuaHocTap = ({navigation}: any) => {
                       maxHeight={300}
                       labelField="labelDeNghiDT"
                       valueField="valueDeNghiDT"
-                      placeholder={!isFocusDeNghiDTK ? 'Chọn đợt thi' : '...'}
+                      placeholder={!isFocusDeNghiDTK ? 'Chọn lí do' : '...'}
                       value={valueDeNghiDTK}
                       onFocus={() => setIsFocusDeNghiDT(true)}
                       onBlur={() => setIsFocusDeNghiDT(false)}
@@ -269,99 +301,185 @@ const KetQuaHocTap = ({navigation}: any) => {
                 </View>
               ) : null}
 
-              <ScrollView>
-                <View style={{marginTop: 20}}>
-                  <ScrollView horizontal>
-                    <DataTable style={{width: 1000, height: 400}}>
-                      <DataTable.Header>
-                        <DataTable.Title
-                          style={{
-                            flex: 0.5,
-                            backgroundColor: '#245d7c',
-                            justifyContent: 'center',
-                          }}>
-                          <Text style={{fontSize: 16, color: 'white'}}>
-                            Mã môn học
-                          </Text>
-                        </DataTable.Title>
-                        <DataTable.Title
-                          style={{
-                            flex: 1,
-                            backgroundColor: '#245d7c',
-                            justifyContent: 'center',
-                            marginLeft: 10,
-                          }}>
-                          <Text style={{fontSize: 16, color: 'white'}}>
-                            Tên học phần
-                          </Text>
-                        </DataTable.Title>
-                        <DataTable.Title
-                          style={{
-                            flex: 0.5,
-                            backgroundColor: '#245d7c',
-                            justifyContent: 'center',
-                            marginLeft: 10,
-                          }}>
-                          <Text style={{fontSize: 16, color: 'white'}}>
-                            Điểm thường kì
-                          </Text>
-                        </DataTable.Title>
-                        <DataTable.Title
-                          style={{
-                            flex: 0.3,
-                            backgroundColor: '#245d7c',
-                            justifyContent: 'center',
-                            marginLeft: 10,
-                          }}>
-                          <Text style={{fontSize: 16, color: 'white'}}>
-                            Điểm thi
-                          </Text>
-                        </DataTable.Title>
-                        <DataTable.Title
-                          style={{
-                            flex: 0.5,
-                            backgroundColor: '#245d7c',
-                            justifyContent: 'center',
-                            marginLeft: 10,
-                          }}>
-                          <Text style={{fontSize: 16, color: 'white'}}>
-                            Điểm tổng kết
-                          </Text>
-                        </DataTable.Title>
-                      </DataTable.Header>
-                    </DataTable>
-                  </ScrollView>
-                </View>
+              {deNghi === 'Xem kết quả học tập' ? (
+                <ScrollView>
+                  <View style={{marginTop: 20}}>
+                    <ScrollView horizontal>
+                      <DataTable style={{width: 1000, height: 2000}}>
+                        <DataTable.Header>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Mã môn học
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 1,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Tên học phần
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Điểm thường kì
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.3,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Điểm thi
+                            </Text>
+                          </DataTable.Title>
+                          <DataTable.Title
+                            style={{
+                              flex: 0.5,
+                              backgroundColor: '#245d7c',
+                              justifyContent: 'center',
+                              marginLeft: 10,
+                            }}>
+                            <Text style={{fontSize: 16, color: 'white'}}>
+                              Điểm tổng kết
+                            </Text>
+                          </DataTable.Title>
+                        </DataTable.Header>
 
-                <TouchableOpacity
-                  onPress={() => {
-                    setOnClickText(!onClickText);
-                  }}>
-                  {onClickText ? (
-                    <View style={styles.viewTenHocKy}>
-                      <Image
-                        source={require('../../../../../../images/plus.png')}
-                        style={styles.iconHocKy}
-                        resizeMode="stretch"
-                      />
-                      <Text style={styles.styleTextBold}>
-                        Học kỳ: 1 (2020 - 2021)
-                      </Text>
-                    </View>
-                  ) : (
-                    <View style={styles.viewTenHocKy}>
-                      <Image
-                        source={require('../../../../../../images/minus.png')}
-                        style={styles.iconHocKy}
-                        resizeMode="stretch"
-                      />
-                      <Text style={[styles.styleTextBold, {color: '#245d7c'}]}>
-                        Học kỳ: 1 (2020 - 2021)
-                      </Text>
-                    </View>
-                  )}
-                </TouchableOpacity>
-              </ScrollView>
+                        {tenDot.map((item, index) => (
+                          <View>
+                            <TouchableOpacity
+                              key={index}
+                              onPress={() => {
+                                setSelectedHocKy(item);
+                                setOnClickText(!onClickText);
+                                fetchDataKetQuaHocTap();
+                              }}>
+                              <View style={styles.viewTenHocKy}>
+                                {onClickText && selectedHocKy === item ? (
+                                  <Image
+                                    source={require('../../../../../../images/minus.png')}
+                                    style={styles.iconHocKy}
+                                    resizeMode="stretch"
+                                  />
+                                ) : (
+                                  <Image
+                                    source={require('../../../../../../images/plus.png')}
+                                    style={styles.iconHocKy}
+                                    resizeMode="stretch"
+                                  />
+                                )}
+                                {onClickText && selectedHocKy === item ? (
+                                  <Text
+                                    style={[
+                                      styles.styleTextBold,
+                                      {color: '#245d7c'},
+                                    ]}>
+                                    Học kỳ: {item}
+                                  </Text>
+                                ) : (
+                                  <Text style={[styles.styleTextBold]}>
+                                    Học kỳ: {item}
+                                  </Text>
+                                )}
+                              </View>
+                            </TouchableOpacity>
+
+                            {monHocTheoKy.map(item => (
+                              <DataTable.Row key={item[1]}>
+                                <DataTable.Cell
+                                  style={{
+                                    flex: 0.5,
+                                    justifyContent: 'center',
+                                    backgroundColor: '#d3d3d3',
+                                  }}>
+                                  <Text style={{fontSize: 16, color: 'black'}}>
+                                    {item[1]}
+                                  </Text>
+                                </DataTable.Cell>
+
+                                <DataTable.Cell
+                                  style={{
+                                    flex: 1,
+                                    backgroundColor: '#d3d3d3',
+                                    marginLeft: 10,
+                                  }}>
+                                  <Text
+                                    style={{
+                                      fontSize: 16,
+                                      color: 'black',
+                                      marginLeft: 10,
+                                    }}>
+                                    {item[2]}
+                                  </Text>
+                                </DataTable.Cell>
+
+                                <DataTable.Cell
+                                  style={{
+                                    flex: 0.5,
+                                    backgroundColor: '#d3d3d3',
+                                    marginLeft: 10,
+                                    justifyContent: 'center',
+                                  }}>
+                                  <Text
+                                    style={{
+                                      fontSize: 16,
+                                      color: 'black',
+                                      marginLeft: 10,
+                                    }}>
+                                    {item[3]}
+                                  </Text>
+                                </DataTable.Cell>
+
+                                <DataTable.Cell
+                                  style={{
+                                    flex: 0.3,
+                                    justifyContent: 'center',
+                                    backgroundColor: '#d3d3d3',
+                                    marginLeft: 10,
+                                  }}>
+                                  <Text style={{fontSize: 16, color: 'black'}}>
+                                    {item[4]}
+                                  </Text>
+                                </DataTable.Cell>
+
+                                <DataTable.Cell
+                                  style={{
+                                    flex: 0.5,
+                                    justifyContent: 'center',
+                                    backgroundColor: '#d3d3d3',
+                                    marginLeft: 10,
+                                  }}>
+                                  <Text style={{fontSize: 16, color: 'black'}}>
+                                    {item[5]}
+                                  </Text>
+                                </DataTable.Cell>
+                              </DataTable.Row>
+                            ))}
+                          </View>
+                        ))}
+                      </DataTable>
+                    </ScrollView>
+                  </View>
+                </ScrollView>
+              ) : null}
             </View>
           </View>
         </ScrollView>
@@ -369,7 +487,11 @@ const KetQuaHocTap = ({navigation}: any) => {
 
       <View style={styles.viewFooter}>
         <View style={[styles.buttonHuy, {marginLeft: 30}]}>
-          <TouchableOpacity style={styles.touchableOpacity} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.touchableOpacity}
+            onPress={() => {
+              console.log('Ten hoc ki: ', tenDot);
+            }}>
             <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
           </TouchableOpacity>
         </View>
@@ -552,7 +674,7 @@ const styles = StyleSheet.create({
   viewTenHocKy: {
     flexDirection: 'row',
     width: '100%',
-    marginVertical: 10,
+    marginVertical: 8,
     alignItems: 'center',
   },
 

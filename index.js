@@ -4,4 +4,4 @@ import {name as appName} from './app.json';
 import Index from './src/components/index.tsx';
 import KetQuaHocTap from './src/components/home/homemain/thutuchanhchinh/motcuakhaothi/ketquahoctap/ketquahoctap.tsx';
 
-AppRegistry.registerComponent(appName, () => KetQuaHocTap);
+AppRegistry.registerComponent(appName, () => Index);
