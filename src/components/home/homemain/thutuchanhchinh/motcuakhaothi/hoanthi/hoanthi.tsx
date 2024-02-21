@@ -29,7 +29,7 @@ import {
   ThongTinSinhVien,
 } from '../../../../../../api/GetThongTinSinhVien';
 
-const Hoanthi = props => {
+const Hoanthi = ({navigation}: any) => {
   const [tendot, setTenDot] = useState([]);
   const [valueDotThi, setValueDotThi] = useState('');
   const [isFocusDotThi, setIsFocusDotThi] = useState(false);
@@ -350,7 +350,7 @@ const Hoanthi = props => {
       <Header1
         title="Hoãn thi"
         onPress={() => {
-          props.navigation.goBack();
+          navigation.navigate('MotCuaKhaoThi');
         }}
       />
 
@@ -361,9 +361,9 @@ const Hoanthi = props => {
               <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
                 1.Lưu ý
               </Text>
-              <Text style={styles.styleText1}>
+              <Text style={styles.styleText}>
                 - Thời điểm người học xin hủy đăng ký thi lại trước ngày thi 5
-                ngày và người học chưa nộp lệ phí thi lại
+                ngày và người học chưa nộp lệ phí thi lại.
               </Text>
 
               <Text
@@ -845,6 +845,82 @@ const Hoanthi = props => {
           </View>
         </View>
       </View>
+      <View
+        style={{
+          height: '8%',
+          backgroundColor: '#dcdcdc',
+          width: '100%',
+        }}>
+        <View
+          style={{
+            height: '100%',
+            borderBlockColor: 'gray',
+            backgroundColor: 'white',
+            width: '100%',
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowColor: 'black',
+            shadowOpacity: 0.8,
+            shadowRadius: 4,
+            elevation: 8,
+          }}>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('TheoDoiDeNghi');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/notification.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('HomeMain');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/home.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('Thongtinsinhvien');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/person.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -889,14 +965,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 10,
     lineHeight: 36,
+    textAlign: 'justify',
   },
-  styleText1: {
-    color: 'black',
-    fontSize: 20,
-    marginTop: 10,
-    lineHeight: 36,
-    textAlign: 'center',
-  },
+
   viewText: {
     width: '100%',
     height: '100%',
@@ -904,20 +975,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   viewTextChild: {
-    width: '90%',
+    width: '95%',
     height: '100%',
     marginTop: 15,
   },
 
   viewFooter: {
-    height: '10%',
+    height: '12%',
     width: '100%',
-    position: 'absolute',
-    bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#BEBEBE',
     justifyContent: 'space-between',
+    backgroundColor: '#dcdcdc',
   },
 
   buttonHuy: {

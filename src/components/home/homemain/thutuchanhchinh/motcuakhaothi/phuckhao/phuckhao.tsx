@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
 import Header1 from '../../../../untils/header/header1';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -243,7 +244,7 @@ const PhucKhao = ({navigation}: any) => {
               </Text>
               <Text style={styles.styleText}>
                 - Người họ thực hiện phúc khảo kết quả bài thi theo kế hoạch tổ
-                chức thi (Ngày nộp đơn phúc khảo) tron từng học kỳ.
+                chức thi (Ngày nộp đơn phúc khảo) trong từng học kỳ.
               </Text>
 
               <Text style={styles.styleText}>
@@ -325,7 +326,7 @@ const PhucKhao = ({navigation}: any) => {
                         <DataTable.Title
                           style={{
                             flex: 0.3,
-                            backgroundColor: '#245d7c',
+                            backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                           }}>
                           <Text style={{fontSize: 16, color: 'white'}}>
@@ -335,7 +336,7 @@ const PhucKhao = ({navigation}: any) => {
                         <DataTable.Title
                           style={{
                             flex: 0.5,
-                            backgroundColor: '#245d7c',
+                            backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
                           }}>
@@ -346,7 +347,7 @@ const PhucKhao = ({navigation}: any) => {
                         <DataTable.Title
                           style={{
                             flex: 0.65,
-                            backgroundColor: '#245d7c',
+                            backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
                           }}>
@@ -357,7 +358,7 @@ const PhucKhao = ({navigation}: any) => {
                         <DataTable.Title
                           style={{
                             flex: 0.5,
-                            backgroundColor: '#245d7c',
+                            backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
                           }}>
@@ -368,7 +369,7 @@ const PhucKhao = ({navigation}: any) => {
                         <DataTable.Title
                           style={{
                             flex: 0.5,
-                            backgroundColor: '#245d7c',
+                            backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
                           }}>
@@ -379,7 +380,7 @@ const PhucKhao = ({navigation}: any) => {
                         <DataTable.Title
                           style={{
                             flex: 0.3,
-                            backgroundColor: '#245d7c',
+                            backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
                           }}>
@@ -390,7 +391,7 @@ const PhucKhao = ({navigation}: any) => {
                         <DataTable.Title
                           style={{
                             flex: 0.5,
-                            backgroundColor: '#245d7c',
+                            backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
                           }}>
@@ -411,7 +412,7 @@ const PhucKhao = ({navigation}: any) => {
                             <CheckBox
                               isChecked={checkedItems.includes(item[0])}
                               onClick={() => handleCheckboxToggle(item[0])}
-                              checkBoxColor="#245d7c"
+                              checkBoxColor="#2e6b8b"
                             />
                           </DataTable.Cell>
                           <DataTable.Cell
@@ -555,6 +556,75 @@ const PhucKhao = ({navigation}: any) => {
             </TouchableOpacity>
           </View>
         </View>
+
+        <View
+          style={{
+            height: '8%',
+            backgroundColor: '#dcdcdc',
+            width: '100%',
+          }}>
+          <View
+            style={{
+              height: '100%',
+              borderBlockColor: 'gray',
+              backgroundColor: 'white',
+              width: '100%',
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              style={{
+                width: '30%',
+                height: '90%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => {
+                navigation.navigate('TheoDoiDeNghi');
+              }}>
+              <Image
+                resizeMode="stretch"
+                source={require('../../../../../../images/notification.png')}
+                style={{width: 33, height: 33}}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: '30%',
+                height: '90%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => {
+                navigation.navigate('HomeMain');
+              }}>
+              <Image
+                resizeMode="stretch"
+                source={require('../../../../../../images/home.png')}
+                style={{width: 33, height: 33}}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: '30%',
+                height: '90%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => {
+                navigation.navigate('Thongtinsinhvien');
+              }}>
+              <Image
+                resizeMode="stretch"
+                source={require('../../../../../../images/person.png')}
+                style={{width: 33, height: 33}}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -564,7 +634,7 @@ export default PhucKhao;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#528B8B',
+    backgroundColor: '#E8E8E8',
     width: '100%',
     height: '100%',
   },
@@ -603,7 +673,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 10,
     lineHeight: 36,
-    textAlign: 'left',
+    textAlign: 'justify',
   },
 
   viewText: {
@@ -613,7 +683,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   viewTextChild: {
-    width: '90%',
+    width: '95%',
     height: '100%',
     marginTop: 15,
   },
@@ -627,12 +697,10 @@ const styles = StyleSheet.create({
   viewFooter: {
     height: '10%',
     width: '100%',
-    position: 'absolute',
-    bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#BEBEBE',
+    backgroundColor: '#dcdcdc',
   },
 
   buttonHuy: {
@@ -704,15 +772,5 @@ const styles = StyleSheet.create({
 
   container1: {
     marginTop: 20,
-  },
-
-  noDataContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noDataText: {
-    fontSize: 18,
-    color: 'red',
   },
 });

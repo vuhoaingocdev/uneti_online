@@ -33,9 +33,9 @@ function MotCuaKhaoThi({navigation}: any) {
                 'Miễn học, thi tiếng anh chưa hoàn thành!',
               );
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#483d8b'}]}>
+            <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/hoanThi.jpg')}
+                source={require('../../../../../images/tienganh.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -52,10 +52,10 @@ function MotCuaKhaoThi({navigation}: any) {
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('PhucKhao')}>
-            <View style={[styles.viewImage, {backgroundColor: '#000080'}]}>
+            <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/phucKhao.jpg')}
-                style={styles.styleImage}
+                source={require('../../../../../images/phuckhao.png')}
+                style={[styles.styleImage, {width: 80, height: 60}]}
                 resizeMode="stretch"
               />
             </View>
@@ -71,9 +71,9 @@ function MotCuaKhaoThi({navigation}: any) {
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('LichThi')}>
-            <View style={[styles.viewImage, {backgroundColor: '#ffa500'}]}>
+            <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/lichThi.png')}
+                source={require('../../../../../images/LichThi_KT.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -92,9 +92,9 @@ function MotCuaKhaoThi({navigation}: any) {
             onPress={() => {
               navigation.navigate('DangKiThiLai');
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#afeeee'}]}>
+            <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/dangKyThiLai.jpg')}
+                source={require('../../../../../images/dkthi.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -114,9 +114,9 @@ function MotCuaKhaoThi({navigation}: any) {
             onPress={() => {
               navigation.navigate('Hoanthi');
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#b0c4de'}]}>
+            <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/hoanThi.jpg')}
+                source={require('../../../../../images/hoanthi.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -136,9 +136,9 @@ function MotCuaKhaoThi({navigation}: any) {
             onPress={() => {
               navigation.navigate('HuyDangKiThiLai');
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#f0e68c'}]}>
+            <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/huyDangKyThiLai.jpg')}
+                source={require('../../../../../images/huydkthi.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -158,9 +158,9 @@ function MotCuaKhaoThi({navigation}: any) {
             onPress={() => {
               Alert.alert('Thông báo', 'Kết quả học tập chưa hoàn thành!');
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#006400'}]}>
+            <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/ketQuaHocTap.jpg')}
+                source={require('../../../../../images/tienganh.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -175,6 +175,76 @@ function MotCuaKhaoThi({navigation}: any) {
           </TouchableOpacity>
         </ScrollView>
       </View>
+
+      <View
+        style={{
+          height: '8%',
+          borderBlockColor: 'gray',
+          backgroundColor: 'white',
+          width: '100%',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowColor: 'black',
+          shadowOpacity: 0.8,
+          shadowRadius: 4,
+          elevation: 8,
+        }}>
+        <TouchableOpacity
+          style={{
+            width: '30%',
+            height: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            navigation.navigate('TheoDoiDeNghi');
+          }}>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/notification.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: '30%',
+            height: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            navigation.navigate('HomeMain');
+          }}>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/home.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: '30%',
+            height: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            navigation.navigate('Thongtinsinhvien');
+          }}>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/person.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -183,7 +253,6 @@ export default MotCuaKhaoThi;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#245d7c',
     flex: 1,
   },
 
@@ -192,8 +261,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8E8E8',
     alignItems: 'center',
     overflow: 'hidden',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
   },
   scrollViewContent: {
     width: '100%',
@@ -204,14 +271,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     height: 100,
-    width: '90%',
+    width: '94%',
     marginTop: 25,
     flexDirection: 'row',
   },
   viewImage: {
     width: 110,
     height: '100%',
-    backgroundColor: 'red',
+    backgroundColor: '#245d7c',
     borderTopRightRadius: 80,
     justifyContent: 'center',
   },
@@ -235,7 +302,7 @@ const styles = StyleSheet.create({
   styleImage: {
     width: 60,
     height: 60,
-    marginLeft: 10,
+    marginLeft: 17,
     borderRadius: 10,
   },
 });

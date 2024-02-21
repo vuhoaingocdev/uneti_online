@@ -26,7 +26,7 @@ function HomeBottom({navigation}: any) {
           }}>
           <View style={[styles.viewImage, {backgroundColor: '#245d7c'}]}>
             <Image
-              source={require('../../../../../images/thuTucHanhChinh.jpg')}
+              source={require('../../../../../images/hanhchinhsinhvien.png')}
               style={styles.styleImage}
               resizeMode="stretch"
             />
@@ -46,9 +46,9 @@ function HomeBottom({navigation}: any) {
           onPress={() => {
             Alert.alert('Thông báo', 'Mục tra cứu chưa hoàn thành!');
           }}>
-          <View style={[styles.viewImage, {backgroundColor: '#f4a460'}]}>
+          <View style={[styles.viewImage, {backgroundColor: '#191970'}]}>
             <Image
-              source={require('../../../../../images/traCuu.png')}
+              source={require('../../../../../images/Lichhoc_lichthi_Congno.png')}
               style={styles.styleImage}
               resizeMode="stretch"
             />
@@ -68,9 +68,9 @@ function HomeBottom({navigation}: any) {
           onPress={() => {
             Alert.alert('Thông báo', 'Mục học tập chưa hoàn thành!');
           }}>
-          <View style={[styles.viewImage, {backgroundColor: '#191970'}]}>
+          <View style={[styles.viewImage, {backgroundColor: 'orange'}]}>
             <Image
-              source={require('../../../../../images/hocTap.png')}
+              source={require('../../../../../images/KetQuaHocTap.png')}
               style={styles.styleImage}
               resizeMode="stretch"
             />
@@ -91,7 +91,6 @@ export default HomeBottom;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#245d7c',
     width: '100%',
     height: '100%',
   },
@@ -99,8 +98,8 @@ const styles = StyleSheet.create({
   viewBody: {
     flex: 1,
     backgroundColor: '#fff',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
+    // borderTopLeftRadius: 50,
+    // borderTopRightRadius: 50,
     alignItems: 'center',
   },
   viewThuTuc: {

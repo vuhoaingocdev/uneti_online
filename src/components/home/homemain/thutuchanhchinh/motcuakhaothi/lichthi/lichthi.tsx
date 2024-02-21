@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   Modal,
+  Image,
 } from 'react-native';
 
 import Header1 from '../../../../untils/header/header1';
@@ -486,7 +487,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.9,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                             }}>
                             <Text style={{fontSize: 16, color: 'white'}}>
@@ -496,7 +497,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 1.1,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -507,7 +508,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 1.1,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -518,7 +519,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.9,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -529,7 +530,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.5,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -540,7 +541,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.5,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -552,7 +553,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.5,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -564,7 +565,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 1.2,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -692,7 +693,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.6,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                             }}>
                             <Text style={{fontSize: 16, color: 'white'}}>
@@ -702,7 +703,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.9,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -713,7 +714,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 1.3,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -724,7 +725,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 1.1,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -735,7 +736,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.9,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -746,7 +747,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.5,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -757,7 +758,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.5,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -769,7 +770,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 0.5,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -781,7 +782,7 @@ function LichThi({navigation}: any) {
                           <DataTable.Title
                             style={{
                               flex: 1.2,
-                              backgroundColor: '#245d7c',
+                              backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
                             }}>
@@ -802,7 +803,7 @@ function LichThi({navigation}: any) {
                               <CheckBox
                                 isChecked={checkedItems.includes(item[0])}
                                 onClick={() => handleCheckboxToggle(item[0])}
-                                checkBoxColor="#245d7c"
+                                checkBoxColor="#2e6b8b"
                               />
                             </DataTable.Cell>
 
@@ -1243,6 +1244,74 @@ function LichThi({navigation}: any) {
           </View>
         )}
       </View>
+
+      <View
+        style={{
+          height: '8%',
+          backgroundColor: '#dcdcdc',
+          width: '100%',
+        }}>
+        <View
+          style={{
+            height: '100%',
+            backgroundColor: 'white',
+            width: '100%',
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('TheoDoiDeNghi');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/notification.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('HomeMain');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/home.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('Thongtinsinhvien');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/person.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -1297,30 +1366,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   viewTextChild: {
-    width: '90%',
+    width: '95%',
     height: '100%',
     marginTop: 15,
   },
 
   viewFooter: {
-    height: '10%',
+    height: '12%',
     width: '100%',
-    position: 'absolute',
-    bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#BEBEBE',
     justifyContent: 'space-between',
+    backgroundColor: '#dcdcdc',
   },
   viewFooter1: {
-    height: '10%',
+    height: '12%',
     width: '100%',
-    position: 'absolute',
-    bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#BEBEBE',
     justifyContent: 'center',
+    backgroundColor: '#dcdcdc',
   },
   buttonHuy: {
     width: '35%',

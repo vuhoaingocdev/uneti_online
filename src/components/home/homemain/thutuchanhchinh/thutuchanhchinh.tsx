@@ -26,9 +26,9 @@ function ThuTucHanhChinh({navigation}: any) {
             onPress={() => {
               Alert.alert('Thông báo', 'Hướng dẫn chưa hoàn thành!');
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#b0c4de'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#696969'}]}>
               <Image
-                source={require('../../../../images/huongDan.jpg')}
+                source={require('../../../../images/huongdan.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -45,9 +45,9 @@ function ThuTucHanhChinh({navigation}: any) {
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('MotCuaKhaoThi')}>
-            <View style={[styles.viewImage, {backgroundColor: '#ffa500'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#000080'}]}>
               <Image
-                source={require('../../../../images/motCuaKhaoThi.jpg')}
+                source={require('../../../../images/OBJECTS_1_.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -67,9 +67,9 @@ function ThuTucHanhChinh({navigation}: any) {
             onPress={() => {
               Alert.alert('Thông báo', 'Một cửa đào tạo chưa hoàn thành!');
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#000080'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#0000cd'}]}>
               <Image
-                source={require('../../../../images/motCuaDaoTao.jpg')}
+                source={require('../../../../images/daotao.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -93,9 +93,9 @@ function ThuTucHanhChinh({navigation}: any) {
                 'Một cửa công tác sinh viên chưa hoàn thành!',
               );
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#32cd32'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#48d1cc'}]}>
               <Image
-                source={require('../../../../images/motCuaCongTacSinhVien.jpg')}
+                source={require('../../../../images/ctsv.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -115,9 +115,9 @@ function ThuTucHanhChinh({navigation}: any) {
             onPress={() => {
               Alert.alert('Thông báo', 'Một cửa hành chính chưa hoàn thành!');
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#48d1cc'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#f08080'}]}>
               <Image
-                source={require('../../../../images/motCuaHanhChinh.jpg')}
+                source={require('../../../../images/chitietcongviec.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
@@ -131,6 +131,73 @@ function ThuTucHanhChinh({navigation}: any) {
           </TouchableOpacity>
         </ScrollView>
       </View>
+      <View
+        style={{
+          height: '8%',
+          backgroundColor: '#E8E8E8',
+          width: '100%',
+        }}>
+        <View
+          style={{
+            height: '100%',
+            backgroundColor: '#ffffff',
+            width: '100%',
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('TheoDoiDeNghi');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../images/notification.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('HomeMain');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../images/home.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('Thongtinsinhvien');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../images/person.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -140,7 +207,6 @@ export default ThuTucHanhChinh;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#245d7c',
   },
   ContainerHeader: {
     height: '16%',
@@ -174,9 +240,9 @@ const styles = StyleSheet.create({
   },
   viewBody: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
+    backgroundColor: '#E8E8E8',
+    // borderTopLeftRadius: 50,
+    // borderTopRightRadius: 50,
     alignItems: 'center',
     overflow: 'hidden',
   },
@@ -186,7 +252,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 12,
     height: 90,
     alignSelf: 'center',
-    width: '90%',
+    width: '94%',
     marginTop: 25,
     flexDirection: 'row',
   },
@@ -216,7 +282,7 @@ const styles = StyleSheet.create({
   styleImage: {
     width: 60,
     height: 60,
-    marginLeft: 10,
+    marginLeft: 17,
     borderRadius: 10,
   },
 });

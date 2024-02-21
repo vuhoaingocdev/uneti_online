@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -7,28 +7,29 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  StatusBar,
 } from 'react-native';
 
-function ThongTinSinhVien({navigation}: any) {
+import {
+  getThongTinhSinhVien,
+  ThongTinSinhVien,
+} from '../../../../../api/GetThongTinSinhVien';
+
+import {maSinhVien} from '../../../../login/login';
+import Header1 from '../../header/header1';
+
+function ThongTinSinhVien1({navigation}: any) {
+  useEffect(() => {
+    getThongTinhSinhVien();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.ContainerHeader}>
-        <View style={styles.viewHeader}>
-          <TouchableOpacity
-            onPress={() => {
-              //   navigation.navigate('Home');
-            }}>
-            <Image
-              source={require('../../../../../images/back.png')}
-              style={styles.iconMenu}
-            />
-          </TouchableOpacity>
-          <View style={{width: '100%', alignItems: 'center'}}>
-            <Text style={styles.textTieuDe}>Thông tin sinh viên</Text>
-          </View>
-        </View>
-      </View>
+      <Header1
+        title="Thông tin sinh viên"
+        onPress={() => {
+          navigation.navigate('HomeMain');
+        }}
+      />
 
       <ScrollView>
         <View style={styles.viewBody}>
@@ -47,8 +48,12 @@ function ThongTinSinhVien({navigation}: any) {
               </View>
               <View style={styles.viewTextImage}>
                 <View style={styles.viewContainerText}>
-                  <Text style={{color: 'black', fontSize: 17}}>Họ và tên:</Text>
-                  <Text style={styles.styleTextBold}> Vũ Hoài Ngọc</Text>
+                  <Text style={{color: 'black', fontSize: 17}}>
+                    Họ và tên:{' '}
+                  </Text>
+                  <Text style={styles.styleTextBold}>
+                    {ThongTinSinhVien.Hodem} {ThongTinSinhVien.Ten}
+                  </Text>
                 </View>
 
                 <View style={styles.viewContainerText}>
@@ -60,37 +65,48 @@ function ThongTinSinhVien({navigation}: any) {
                   <Text style={{color: 'black', fontSize: 17}}>
                     Mã sinh viên:
                   </Text>
-                  <Text style={styles.styleTextBold}> 20103100584</Text>
+                  <Text style={styles.styleTextBold}> {maSinhVien}</Text>
                 </View>
 
                 <View style={styles.viewContainerText}>
                   <Text style={{color: 'black', fontSize: 17}}>Lớp: </Text>
-                  <Text style={styles.styleTextBold}> DHTI14A10HN</Text>
+                  <Text style={styles.styleTextBold}>
+                    {ThongTinSinhVien.LopHoc}
+                  </Text>
                 </View>
               </View>
             </View>
             <View style={styles.viewUnderThongTinCoBan}>
               <View style={styles.viewContainerText}>
-                <Text style={{color: 'black', fontSize: 17}}>Cơ sở:</Text>
-                <Text style={styles.styleTextBold}> Hà nội</Text>
-              </View>
-
-              <View style={styles.viewContainerText}>
-                <Text style={{color: 'black', fontSize: 17}}>Bậc đào tạo:</Text>
-                <Text style={styles.styleTextBold}> Đại học</Text>
+                <Text style={{color: 'black', fontSize: 17}}>Cơ sở: </Text>
+                <Text style={styles.styleTextBold}>
+                  {ThongTinSinhVien.CoSo}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>
-                  Loại hình đào tạo:
+                  Bậc đào tạo:{' '}
                 </Text>
-                <Text style={styles.styleTextBold}> Chính quy đợt 1</Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.BacDaoTao}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
-                <Text style={{color: 'black', fontSize: 17}}>Khoa:</Text>
+                <Text style={{color: 'black', fontSize: 17}}>
+                  Loại hình đào tạo:{' '}
+                </Text>
                 <Text style={styles.styleTextBold}>
-                  Khoa Công nghệ thông tin HN
+                  {ThongTinSinhVien.LoaiHinhDaoTao}
+                </Text>
+              </View>
+
+              <View style={styles.viewContainerText}>
+                <Text style={{color: 'black', fontSize: 17}}>Khoa: </Text>
+                <Text style={styles.styleTextBold}>
+                  {ThongTinSinhVien.Khoa}
                 </Text>
               </View>
 
@@ -98,15 +114,24 @@ function ThongTinSinhVien({navigation}: any) {
                 <Text style={{color: 'black', fontSize: 17}}>
                   Chuyên ngành:
                 </Text>
-                <Text style={styles.styleTextBold}> Công nghệ thông tin</Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.ChuyenNganh}
+                </Text>
               </View>
 
               <View style={[styles.viewContainerText, {marginTop: 15}]}>
                 <Text style={{color: 'black', fontSize: 17}}>Trạng thái:</Text>
-                <Text style={styles.styleTextBold}> Đang học</Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.TrangThaiHocTap}
+                </Text>
                 <View style={styles.viewKhoaHoc}>
                   <Text style={{color: 'black', fontSize: 17}}>Khóa học:</Text>
-                  <Text style={styles.styleTextBold}> 2020</Text>
+                  <Text style={styles.styleTextBold}>
+                    {' '}
+                    {ThongTinSinhVien.KhoaHoc}
+                  </Text>
                 </View>
               </View>
 
@@ -119,83 +144,178 @@ function ThongTinSinhVien({navigation}: any) {
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>SĐT:</Text>
-                <Text style={styles.styleTextBold}> 0965457291</Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.SoDienThoai}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>Email: </Text>
                 <Text style={styles.styleTextBold}>
-                  vhngoc.dhti14a10hn@sv.uneti.edu.vn
+                  {ThongTinSinhVien.Email_TruongCap}
                 </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>Số CMT/CCCD:</Text>
-                <Text style={styles.styleTextBold}> 030202005652</Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.SoCMND}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>Ngày cấp:</Text>
-                <Text style={styles.styleTextBold}> 05/06/2021</Text>
+                <Text style={styles.styleTextBold}></Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>Nơi cấp:</Text>
-                <Text style={styles.styleTextBold}></Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.NoiCapCMND}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>
                   Địa chỉ hiện tại:
                 </Text>
-                <Text style={styles.styleTextBold}></Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.DiaChiThuongTru}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
-                <Text style={{color: 'black', fontSize: 17}}>Nơi sinh:</Text>
-                <Text style={styles.styleTextBold}></Text>
+                <Text style={{color: 'black', fontSize: 17}}>Nơi sinh: </Text>
+                <Text style={styles.styleTextBold}>
+                  {ThongTinSinhVien.NoiSinh}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>
                   Hộ khẩu thường trú:
                 </Text>
-                <Text style={styles.styleTextBold}></Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.DiaChiThuongTru}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>
                   Tên chi nhánh:
                 </Text>
-                <Text style={styles.styleTextBold}></Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.ChiNhanhNganHang}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>
                   Tên chủ tại khoản:
                 </Text>
-                <Text style={styles.styleTextBold}> VU HOAI NGOC</Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.TenTaiKhoan}
+                </Text>
               </View>
 
               <View style={styles.viewContainerText}>
                 <Text style={{color: 'black', fontSize: 17}}>
                   Số tài khoản:
                 </Text>
-                <Text style={styles.styleTextBold}> 2309205333031</Text>
+                <Text style={styles.styleTextBold}>
+                  {' '}
+                  {ThongTinSinhVien.SoTaiKhoan}
+                </Text>
               </View>
             </View>
           </View>
         </View>
       </ScrollView>
+
+      <View
+        style={{
+          height: '8%',
+          backgroundColor: 'white',
+          width: '100%',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowColor: 'black',
+          shadowOpacity: 0.8,
+          shadowRadius: 4,
+          elevation: 8,
+        }}>
+        <TouchableOpacity
+          style={{
+            width: '30%',
+            height: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            navigation.navigate('TheoDoiDeNghi');
+          }}>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/notification.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: '30%',
+            height: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            navigation.navigate('HomeMain');
+          }}>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/home.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: '30%',
+            height: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            navigation.navigate('Thongtinsinhvien');
+          }}>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/person.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
 
-export default ThongTinSinhVien;
+export default ThongTinSinhVien1;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#245d7c',
+    backgroundColor: '#E8E8E8',
     flex: 1,
   },
   ContainerHeader: {
