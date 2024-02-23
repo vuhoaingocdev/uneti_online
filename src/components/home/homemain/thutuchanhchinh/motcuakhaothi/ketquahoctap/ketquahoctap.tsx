@@ -674,7 +674,7 @@ const KetQuaHocTap = ({navigation}: any) => {
                   </View>
                 </ScrollView>
               ) : null}
-              {/* {deNghi === 'Xem kết quả học tập' ? (
+              {deNghi === 'Xem kết quả học tập' ? (
                 <ScrollView>
                   <View style={{marginTop: 20}}>
                     <ScrollView horizontal>
@@ -1317,7 +1317,7 @@ const KetQuaHocTap = ({navigation}: any) => {
                     </ScrollView>
                   </View>
                 </ScrollView>
-              ) : null} */}
+              ) : null}
             </View>
           </View>
         </ScrollView>
