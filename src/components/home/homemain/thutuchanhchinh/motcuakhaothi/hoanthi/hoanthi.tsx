@@ -381,7 +381,7 @@ const Hoanthi = ({navigation}: any) => {
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    isFocusDotThi && {borderColor: 'blue'},
+                    isFocusDotThi && {borderColor: 'black'},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
@@ -410,7 +410,7 @@ const Hoanthi = ({navigation}: any) => {
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    isFocusLoaiThi && {borderColor: 'blue'},
+                    isFocusLoaiThi && {borderColor: 'black'},
                     {marginLeft: 19},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
@@ -437,7 +437,7 @@ const Hoanthi = ({navigation}: any) => {
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    isFocusLiDo && {borderColor: 'blue'},
+                    isFocusLiDo && {borderColor: 'black'},
                     {marginLeft: 36},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
@@ -670,7 +670,7 @@ const Hoanthi = ({navigation}: any) => {
                             style={{
                               flex: 0.65,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                             }}>
                             <CheckBox
                               isChecked={checkedItems.includes(item[0])}
@@ -683,7 +683,7 @@ const Hoanthi = ({navigation}: any) => {
                               flex: 1,
                               alignItems: 'center',
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -693,7 +693,7 @@ const Hoanthi = ({navigation}: any) => {
                           <DataTable.Cell
                             style={{
                               flex: 1.5,
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text
@@ -708,7 +708,7 @@ const Hoanthi = ({navigation}: any) => {
                           <DataTable.Cell
                             style={{
                               flex: 1.2,
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text
@@ -724,7 +724,7 @@ const Hoanthi = ({navigation}: any) => {
                             style={{
                               flex: 1,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -735,7 +735,7 @@ const Hoanthi = ({navigation}: any) => {
                             style={{
                               flex: 0.5,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -746,7 +746,7 @@ const Hoanthi = ({navigation}: any) => {
                             style={{
                               flex: 0.5,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -757,7 +757,7 @@ const Hoanthi = ({navigation}: any) => {
                             style={{
                               flex: 0.5,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -768,7 +768,7 @@ const Hoanthi = ({navigation}: any) => {
                             style={{
                               flex: 1.3,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -848,7 +848,7 @@ const Hoanthi = ({navigation}: any) => {
       <View
         style={{
           height: '8%',
-          backgroundColor: '#dcdcdc',
+          backgroundColor: '#ffffff',
           width: '100%',
         }}>
         <View
@@ -857,8 +857,8 @@ const Hoanthi = ({navigation}: any) => {
             borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
+            borderTopLeftRadius: 60,
+            borderTopRightRadius: 60,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -958,7 +958,7 @@ const styles = StyleSheet.create({
 
   viewBody: {
     flex: 1,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
   },
   styleText: {
     color: 'black',
@@ -986,7 +986,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#dcdcdc',
+    backgroundColor: '#f7f9ff',
   },
 
   buttonHuy: {

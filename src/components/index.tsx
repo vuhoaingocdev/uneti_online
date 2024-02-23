@@ -17,6 +17,8 @@ import HomeBottom from './home/untils/footer/screens/home.tsx';
 import ThongTinSinhVien1 from './home/untils/footer/screens/thongtinsinhvien.tsx';
 import TheoDoiDeNghi from './home/untils/footer/screens/theodoidenghi.tsx';
 import KetQuaHocTap from './home/homemain/thutuchanhchinh/motcuakhaothi/ketquahoctap/ketquahoctap.tsx';
+import BangDiem from './home/homemain/thutuchanhchinh/motcuadaotao/capbangdiem/capbangdiem.tsx';
+import MotCuaDaoTao from './home/homemain/thutuchanhchinh/motcuadaotao/motcuadaotao.tsx';
 const Stack = createNativeStackNavigator();
 
 const Index = () => {
@@ -39,6 +41,9 @@ const Index = () => {
         <Stack.Screen name="Thongtinsinhvien" component={ThongTinSinhVien1} />
         <Stack.Screen name="TheoDoiDeNghi" component={TheoDoiDeNghi} />
         <Stack.Screen name="KetQuaHocTap" component={KetQuaHocTap} />
+        <Stack.Screen name="BangDiem" component={BangDiem} />
+        <Stack.Screen name="MotCuaDaoTao" component={MotCuaDaoTao} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

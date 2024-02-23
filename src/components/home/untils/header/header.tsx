@@ -10,16 +10,13 @@ import {
 } from 'react-native';
 
 function Header(props) {
-  const {title} = props;
+  const {title, onPress} = props;
   return (
     <View style={styles.ContainerHeader}>
       <ImageBackground
         source={require('../../../../images/backgroundHeader.png')}>
         <View style={styles.viewHeader}>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert('Thông báo', 'Menu chưa hoàn thành!');
-            }}>
+          <TouchableOpacity onPress={onPress}>
             <Image
               source={require('../../../../images/menu.png')}
               style={styles.iconMenu}
@@ -38,7 +35,7 @@ function Header(props) {
 
 const styles = StyleSheet.create({
   ContainerHeader: {
-    height: '22%',
+    height: '27%',
     width: '100%',
     alignItems: 'center',
   },
@@ -50,19 +47,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconMenu: {
-    height: 40,
-    width: 30,
+    height: 30,
+    width: 25,
     tintColor: '#fff',
     marginLeft: 20,
   },
   textTieuDe: {
-    fontSize: 26,
+    fontSize: 30,
     fontWeight: 'bold',
     color: '#ffffff',
   },
   imageLogo: {
-    height: 80,
-    width: 70,
+    height: 70,
+    width: 60,
     marginRight: 20,
   },
 });

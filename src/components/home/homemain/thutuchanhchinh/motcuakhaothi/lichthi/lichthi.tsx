@@ -401,7 +401,7 @@ function LichThi({navigation}: any) {
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    isFocusDotThi && {borderColor: 'blue'},
+                    isFocusDotThi && {borderColor: 'black'},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
@@ -430,7 +430,7 @@ function LichThi({navigation}: any) {
                 <Dropdown
                   style={[
                     styles.dropdown1,
-                    isFocusLoaiThi && {borderColor: 'blue'},
+                    isFocusLoaiThi && {borderColor: 'black'},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
@@ -581,7 +581,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.9,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
                                 {item[0]}
@@ -591,7 +591,7 @@ function LichThi({navigation}: any) {
                             <DataTable.Cell
                               style={{
                                 flex: 1.1,
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text
@@ -606,7 +606,7 @@ function LichThi({navigation}: any) {
                             <DataTable.Cell
                               style={{
                                 flex: 1.1,
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text
@@ -622,7 +622,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.9,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -633,7 +633,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -644,7 +644,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -655,7 +655,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -666,7 +666,7 @@ function LichThi({navigation}: any) {
                             <DataTable.Title
                               style={{
                                 flex: 1.2,
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                                 justifyContent: 'center',
                               }}>
@@ -798,7 +798,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.6,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                               }}>
                               <CheckBox
                                 isChecked={checkedItems.includes(item[0])}
@@ -811,7 +811,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.9,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -823,7 +823,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 1.3,
                                 alignItems: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text
@@ -838,7 +838,7 @@ function LichThi({navigation}: any) {
                             <DataTable.Cell
                               style={{
                                 flex: 1.1,
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text
@@ -854,7 +854,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.9,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -865,7 +865,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -876,7 +876,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -887,7 +887,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -899,7 +899,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 1.2,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -1026,7 +1026,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.6,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                               }}>
                               <CheckBox
                                 isChecked={checkedItems.includes(item[0])}
@@ -1039,7 +1039,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.9,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -1051,7 +1051,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 1.3,
                                 alignItems: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text
@@ -1067,7 +1067,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 1.1,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -1078,7 +1078,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.9,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -1089,7 +1089,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -1100,7 +1100,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -1111,7 +1111,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 0.5,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -1123,7 +1123,7 @@ function LichThi({navigation}: any) {
                               style={{
                                 flex: 1.2,
                                 justifyContent: 'center',
-                                backgroundColor: '#d3d3d3',
+                                backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
                               <Text style={{fontSize: 16, color: 'black'}}>
@@ -1248,19 +1248,28 @@ function LichThi({navigation}: any) {
       <View
         style={{
           height: '8%',
-          backgroundColor: '#dcdcdc',
+          backgroundColor: '#ffffff',
           width: '100%',
         }}>
         <View
           style={{
             height: '100%',
+            borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
+            borderTopLeftRadius: 60,
+            borderTopRightRadius: 60,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowColor: 'black',
+            shadowOpacity: 0.8,
+            shadowRadius: 4,
+            elevation: 8,
           }}>
           <TouchableOpacity
             style={{
@@ -1351,7 +1360,7 @@ const styles = StyleSheet.create({
 
   viewBody: {
     flex: 1,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
   },
   styleText: {
     color: 'black',
@@ -1377,7 +1386,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#dcdcdc',
+    backgroundColor: '#f7f9ff',
   },
   viewFooter1: {
     height: '12%',
@@ -1385,7 +1394,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#dcdcdc',
+    backgroundColor: '#f7f9ff',
   },
   buttonHuy: {
     width: '35%',

@@ -12,11 +12,11 @@ import {
 
 import Header1 from '../../../untils/header/header1';
 
-function MotCuaKhaoThi({navigation}: any) {
+function MotCuaDaoTao({navigation}: any) {
   return (
     <SafeAreaView style={styles.container}>
       <Header1
-        title="Một cửa - Khảo thí"
+        title="Một cửa - Đào tạo"
         onPress={() => {
           navigation.goBack();
         }}
@@ -25,13 +25,10 @@ function MotCuaKhaoThi({navigation}: any) {
       <View style={styles.viewBody}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <TouchableOpacity
-            style={styles.viewThuTuc}
+            style={[styles.viewThuTuc, {marginBottom: 70}]}
             activeOpacity={0.8}
             onPress={() => {
-              Alert.alert(
-                'Thông báo',
-                'Miễn học, thi tiếng anh chưa hoàn thành!',
-              );
+              navigation.navigate('BangDiem');
             }}>
             <View style={styles.viewImage}>
               <Image
@@ -41,14 +38,15 @@ function MotCuaKhaoThi({navigation}: any) {
               />
             </View>
             <View style={styles.viewText}>
-              <Text style={styles.styleTieuDe}>MIỄN HỌC, THI TIẾNG ANH</Text>
+              <Text style={styles.styleTieuDe}>BẢNG ĐIỂM</Text>
               <Text style={[styles.styleText, {marginTop: 5, color: 'red'}]}>
-                (Xin miễn học, miễn thi học phần đã đăng ký trong cùng học kỳ)
+                (Cấp bảng điểm tạm thời hệ 4, hệ 10; Cấp bảng điểm tốt nghiệp hệ
+                4, hệ 10)
               </Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('PhucKhao')}>
@@ -89,7 +87,7 @@ function MotCuaKhaoThi({navigation}: any) {
           <TouchableOpacity
             style={styles.viewThuTuc}
             activeOpacity={0.8}
-            onPress={() => {
+onPress={() => {
               navigation.navigate('DangKiThiLai');
             }}>
             <View style={styles.viewImage}>
@@ -156,7 +154,7 @@ function MotCuaKhaoThi({navigation}: any) {
             style={[styles.viewThuTuc, {marginBottom: 70}]}
             activeOpacity={0.8}
             onPress={() => {
-              navigation.navigate('KetQuaHocTap');
+              Alert.alert('Thông báo', 'Kết quả học tập chưa hoàn thành!');
             }}>
             <View style={styles.viewImage}>
               <Image
@@ -166,16 +164,15 @@ function MotCuaKhaoThi({navigation}: any) {
               />
             </View>
             <View style={styles.viewText}>
-              <Text style={styles.styleTieuDe}>KẾT QUẢ HỌC TẬP</Text>
+<Text style={styles.styleTieuDe}>KẾT QUẢ HỌC TẬP</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
                 (Xem kết quả học tập; Điều chỉnh, bổ sung điểm thường kỳ; Điều
                 chỉnh, bổ sung điểm thi)
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ScrollView>
       </View>
-
       <View
         style={{
           height: '8%',
@@ -256,7 +253,7 @@ function MotCuaKhaoThi({navigation}: any) {
   );
 }
 
-export default MotCuaKhaoThi;
+export default MotCuaDaoTao;
 
 const styles = StyleSheet.create({
   container: {

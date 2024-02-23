@@ -304,7 +304,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    isFocusDotThi && {borderColor: 'blue'},
+                    isFocusDotThi && {borderColor: 'black'},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
@@ -333,7 +333,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    isFocusLoaiThi && {borderColor: 'blue'},
+                    isFocusLoaiThi && {borderColor: 'black'},
                     {marginLeft: 19},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
@@ -360,7 +360,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    isFocusLiDo && {borderColor: 'blue'},
+                    isFocusLiDo && {borderColor: 'black'},
                     {marginLeft: 36},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
@@ -491,7 +491,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                             style={{
                               flex: 0.55,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                             }}>
                             <CheckBox
                               isChecked={checkedItems.includes(item[0])}
@@ -504,7 +504,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                               flex: 0.9,
                               alignItems: 'center',
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -514,7 +514,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                           <DataTable.Cell
                             style={{
                               flex: 1.2,
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text
@@ -529,7 +529,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                           <DataTable.Cell
                             style={{
                               flex: 1,
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text
@@ -545,7 +545,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                             style={{
                               flex: 0.75,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -556,7 +556,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                             style={{
                               flex: 0.5,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -567,7 +567,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
                             style={{
                               flex: 0.75,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -648,7 +648,7 @@ const HuyDangKiThiLai = ({navigation}: any) => {
       <View
         style={{
           height: '8%',
-          backgroundColor: '#dcdcdc',
+          backgroundColor: '#ffffff',
           width: '100%',
         }}>
         <View
@@ -657,8 +657,8 @@ const HuyDangKiThiLai = ({navigation}: any) => {
             borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
+            borderTopLeftRadius: 60,
+            borderTopRightRadius: 60,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -760,7 +760,7 @@ const styles = StyleSheet.create({
 
   viewBody: {
     flex: 1,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
   },
   styleText: {
     color: 'black',
@@ -786,7 +786,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#dcdcdc',
+    backgroundColor: '#f7f9ff',
   },
 
   buttonHuy: {

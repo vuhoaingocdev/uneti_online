@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconMenu: {
-    height: 40,
-    width: 35,
+    height: 30,
+    width: 24,
     tintColor: '#fff',
     marginLeft: 60,
   },

@@ -9,6 +9,10 @@ import {
   Button,
   Alert,
   Image,
+  ImageBackground,
+  Modal,
+  Dimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -16,11 +20,83 @@ import Header from '../untils/header/header';
 // import MyTabsHome from '../untils/footer/footer';
 const Tab = createBottomTabNavigator();
 
+const getHeight = Dimensions.get('window').height;
+const getWidth = Dimensions.get('window').width;
+
 function HomeMain({navigation}: any) {
+  const [showOverlay, setShowOverlay] = useState(false);
+  const handleHeaderPress = () => {
+    setShowOverlay(!showOverlay);
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="UNETI ONLINE" />
+      <Header title="UNETI ONLINE" onPress={handleHeaderPress} />
+      {showOverlay && (
+        <Modal transparent={true} animationType="slide">
+          <TouchableWithoutFeedback onPress={handleHeaderPress}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+              <View style={[styles.viewDrawer]}>
+                <View style={{marginTop: 90}}>
+                  <TouchableOpacity onPress={handleHeaderPress}>
+                    <Image
+                      source={require('../../../images/menu.png')}
+                      style={styles.iconMenu}
+                    />
+                  </TouchableOpacity>
 
+                  <View style={[styles.drawerText, {marginTop: 20}]}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('Thongtinsinhvien');
+                      }}>
+                      <View style={styles.viewTouchableOpacity}>
+                        <Image
+                          source={require('../../../images/bell.png')}
+                          style={styles.iconDrawer}
+                          tintColor={'#ffffff'}
+                        />
+                        <Text style={styles.textTouchableOpacity}>
+                          Trang cá nhân
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={styles.drawerText}>
+                    <TouchableOpacity>
+                      <View style={styles.viewTouchableOpacity}>
+                        <Image
+                          source={require('../../../images/youtube.png')}
+                          style={styles.iconDrawer}
+                          tintColor={'#ffffff'}
+                        />
+                        <Text style={styles.textTouchableOpacity}>
+                          Hướng dẫn sử dụng
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={styles.drawerText}>
+                    <TouchableOpacity>
+                      <View style={styles.viewTouchableOpacity}>
+                        <Image
+                          source={require('../../../images/logout.png')}
+                          style={styles.iconDrawer}
+                          tintColor={'#ffffff'}
+                        />
+                        <Text style={styles.textTouchableOpacity}>
+                          Đăng xuất
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      )}
       <View style={styles.viewBody}>
         <TouchableOpacity
           style={styles.viewThuTuc}
@@ -28,7 +104,7 @@ function HomeMain({navigation}: any) {
           onPress={() => {
             navigation.navigate('ThuTucHanhChinh');
           }}>
-          <View style={[styles.viewImage, {backgroundColor: '#245d7c'}]}>
+          <View style={[styles.viewImage, {backgroundColor: '#2e6b8b'}]}>
             <Image
               source={require('../../../images/hanhchinhsinhvien.png')}
               style={styles.styleImage}
@@ -45,7 +121,7 @@ function HomeMain({navigation}: any) {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-          <View style={[styles.viewImage, {backgroundColor: '#191970'}]}>
+          <View style={[styles.viewImage, {backgroundColor: '#134267'}]}>
             <Image
               source={require('../../../images/Lichhoc_lichthi_Congno.png')}
               style={styles.styleImage}
@@ -60,9 +136,8 @@ function HomeMain({navigation}: any) {
             </Text>
           </View>
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
-          <View style={[styles.viewImage, {backgroundColor: 'orange'}]}>
+          <View style={[styles.viewImage, {backgroundColor: '#eea889'}]}>
             <Image
               source={require('../../../images/KetQuaHocTap.png')}
               style={styles.styleImage}
@@ -81,19 +156,28 @@ function HomeMain({navigation}: any) {
       <View
         style={{
           height: '8%',
-          backgroundColor: '#E8E8E8',
+          backgroundColor: '#ffffff',
           width: '100%',
         }}>
         <View
           style={{
             height: '100%',
+            borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
+            borderTopLeftRadius: 60,
+            borderTopRightRadius: 60,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowColor: 'black',
+            shadowOpacity: 0.8,
+            shadowRadius: 4,
+            elevation: 8,
           }}>
           <TouchableOpacity
             style={{
@@ -163,10 +247,11 @@ const styles = StyleSheet.create({
 
   viewBody: {
     flex: 1,
-    backgroundColor: '#E8E8E8',
-    // borderTopLeftRadius: 50,
-    // borderTopRightRadius: 50,
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
     alignItems: 'center',
+    marginTop: -45,
   },
   viewThuTuc: {
     backgroundColor: '#F5F5F5',
@@ -176,6 +261,11 @@ const styles = StyleSheet.create({
     width: '94%',
     marginTop: 25,
     flexDirection: 'row',
+    shadowColor: 'black',
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 8,
   },
   viewImage: {
     width: 110,
@@ -204,7 +294,45 @@ const styles = StyleSheet.create({
   styleImage: {
     width: 60,
     height: 60,
-    marginLeft: 17,
+    marginLeft: 10,
     borderRadius: 10,
+  },
+
+  viewDrawer: {
+    width: (2 * getWidth) / 3,
+    height: getHeight,
+    backgroundColor: '#245d7c',
+  },
+
+  drawerText: {
+    marginLeft: 40,
+    marginTop: 20,
+  },
+
+  iconMenu: {
+    height: 30,
+    width: 25,
+    tintColor: '#fff',
+    marginLeft: 15,
+  },
+
+  viewTouchableOpacity: {
+    flexDirection: 'row',
+  },
+  icon: {
+    width: 20,
+    height: 20,
+  },
+
+  iconDrawer: {
+    width: 28,
+    height: 28,
+  },
+
+  textTouchableOpacity: {
+    color: '#ffffff',
+    fontSize: 23,
+    marginLeft: 15,
+    fontWeight: 'bold',
   },
 });
