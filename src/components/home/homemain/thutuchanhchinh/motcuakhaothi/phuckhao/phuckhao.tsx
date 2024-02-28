@@ -17,6 +17,8 @@ import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import moment from 'moment';
+import ModalThongBao from '../../../../untils/modalThongBao/modalThongBao';
+import ModalThongBao1 from '../../../../untils/modalThongBao/modalYesNo';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
@@ -39,6 +41,65 @@ const PhucKhao = ({navigation}: any) => {
   const [tableData, setTableData] = useState([]);
 
   const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+  const [showModal5, setShowModal5] = useState(false);
+
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleModalPress1 = () => {
+    setShowModal1(true);
+  };
+
+  const handleCloseModal1 = () => {
+    setShowModal1(false);
+  };
+
+  const handleModalPress2 = () => {
+    setShowModal2(true);
+  };
+
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+  };
+
+  const handleModalPress3 = () => {
+    setShowModal3(true);
+  };
+
+  const handleCloseModal3 = () => {
+    setShowModal3(false);
+  };
+
+  const handleModalPress4 = () => {
+    setShowModal4(true);
+  };
+
+  const handleCloseModal4 = () => {
+    setShowModal4(false);
+  };
+
+  const handleModalPress5 = () => {
+    setShowModal5(true);
+  };
+
+  const handleCloseModal5 = () => {
+    setShowModal5(false);
+  };
+
+  const xuLiPost = () => {
+    PostYeuCau();
+  };
 
   //get tên đợt
   const getapi = 'https://apiv2.uneti.edu.vn/api/SP_EDU/Load_TenDot';
@@ -88,40 +149,96 @@ const PhucKhao = ({navigation}: any) => {
 
   //Xử lí check box
   const [checkedItems, setCheckedItems] = useState([]);
-  const [mangmonhoc, setmangmonhoc] = useState([]);
-  const handleCheckboxToggle = rowIndex => {
+  // const [mangmonhoc, setmangmonhoc] = useState([]);
+
+  // const handleCheckboxToggle = rowIndex => {
+  //   const newCheckedItems = [...checkedItems];
+  //   const index = newCheckedItems.indexOf(rowIndex);
+
+  //   //Check box đã tồn tại rồi
+  //   if (index !== -1) {
+  //     newCheckedItems.splice(index, 1);
+  //     if (newCheckedItems.length === 0) {
+  //       setmangmonhoc([]);
+  //     } else {
+  //       tableData.map(function (tk) {
+  //         if (tk[0] === newCheckedItems[0]) {
+  //           setmangmonhoc([tk[0], tk[1], tk[2], tk[3], tk[4], tk[5], tk[6]]);
+  //         }
+  //       });
+  //     }
+  //   } else {
+  //     newCheckedItems.push(rowIndex);
+  //     tableData.map(function (tk) {
+  //       if (tk[0] === rowIndex) {
+  //         setmangmonhoc([tk[0], tk[1], tk[2], tk[3], tk[4], tk[5], tk[6]]);
+  //       }
+  //     });
+  //   }
+  //   setCheckedItems(newCheckedItems);
+  //   setKiemTraChonMonHoc(newCheckedItems.length > 0);
+  // };
+
+  //post phuc khảo
+  // Định nghĩa kiểu dữ liệu cho mảng môn học
+
+  type MonHoc = {
+    id: number;
+    maLopHocPhan: string;
+    tenMonHoc: string;
+    hinhThucThi: string;
+    ngayThi: string;
+    diemThi: number;
+    diemTongKet: number;
+  };
+
+  // Khởi tạo mảng môn học với kiểu dữ liệu đã định nghĩa
+  const [mangmonhoc, setmangmonhoc] = useState<MonHoc[]>([]);
+  // Xử lý khi checkbox được chọn hoặc bỏ chọn
+  const handleCheckboxToggle = (rowIndex: number) => {
     const newCheckedItems = [...checkedItems];
     const index = newCheckedItems.indexOf(rowIndex);
 
-    //Check box đã tồn tại rồi
+    // Nếu checkbox được chọn đã tồn tại trong mảng, loại bỏ nó
     if (index !== -1) {
       newCheckedItems.splice(index, 1);
-      if (newCheckedItems.length === 0) {
-        setmangmonhoc([]);
-      } else {
-        tableData.map(function (tk) {
-          if (tk[0] === newCheckedItems[0]) {
-            setmangmonhoc([tk[0], tk[1], tk[2], tk[3], tk[4], tk[5], tk[6]]);
-          }
+    } else {
+      // Nếu không, loại bỏ checkbox đầu tiên trong mảng
+      if (newCheckedItems.length > 0) {
+        newCheckedItems.splice(0, 1);
+      }
+      newCheckedItems.push(rowIndex);
+    }
+
+    // Cập nhật mảng checkedItems với chỉ một checkbox được chọn
+    setCheckedItems(newCheckedItems);
+
+    // Cập nhật mảng môn học tương ứng
+    const newMangMonHoc: MonHoc[] = [];
+    newCheckedItems.forEach(id => {
+      const monHoc = tableData.find(item => item[0] === id);
+      if (monHoc) {
+        newMangMonHoc.push({
+          id: monHoc[0],
+          maLopHocPhan: monHoc[1],
+          tenMonHoc: monHoc[2],
+          hinhThucThi: monHoc[3],
+          ngayThi: monHoc[4],
+          diemThi: monHoc[5],
+          diemTongKet: monHoc[6],
         });
       }
-    } else {
-      newCheckedItems.push(rowIndex);
-      tableData.map(function (tk) {
-        if (tk[0] === rowIndex) {
-          setmangmonhoc([tk[0], tk[1], tk[2], tk[3], tk[4], tk[5], tk[6]]);
-        }
-      });
-    }
-    setCheckedItems(newCheckedItems);
+    });
+    setmangmonhoc(newMangMonHoc);
+
+    // Cập nhật kiểm tra chọn môn học
     setKiemTraChonMonHoc(newCheckedItems.length > 0);
   };
 
-  //post phuc khảo
   var apiPhucKhao =
     'https://apiv2.uneti.edu.vn/api/SP_MC_KT_PhucKhao_TiepNhan/Add_Para';
   const PostYeuCau = async () => {
-    var data = {
+    var postdata = {
       MC_KT_PhucKhao_TenDot: dotThi ? dotThi : 'null',
       MC_KT_PhucKhao_LoaiThi: loaiThi ? loaiThi : 'null',
       MC_KT_PhucKhao_TenCoSo: ThongTinSinhVien.CoSo
@@ -163,43 +280,44 @@ const PhucKhao = ({navigation}: any) => {
       MC_KT_PhucKhao_NgaySinh2: moment
         .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
         .toISOString(),
-      MC_KT_PhucKhao_MaLopHocPhan: '010100122742',
-      MC_KT_PhucKhao_TenMonHoc: 'Tiếng Anh cơ bản 4',
+      // data from table
+      //MC_KT_PhucKhao_MaLopHocPhan: mangmonhoc[0].maLopHocPhan.toString(),
+      MC_KT_PhucKhao_MaLopHocPhan: mangmonhoc[0].maLopHocPhan.toString(),
+      MC_KT_PhucKhao_TenMonHoc: 'Tiếng anh 4',
       MC_KT_PhucKhao_KhoaChuQuanMon: ThongTinSinhVien.Khoa
         ? ThongTinSinhVien.Khoa
         : 'null',
-      MC_KT_PhucKhao_TenHinhThucThi: 'Trắc nghiệm máy vi tính',
-      MC_KT_PhucKhao_NgayThi: '2022-01-07T00:00:00.000Z',
-      MC_KT_PhucKhao_Thu: '6',
-      MC_KT_PhucKhao_Nhom: '11',
-      MC_KT_PhucKhao_TuTiet: '4',
-      MC_KT_PhucKhao_DenTiet: '6',
+      MC_KT_PhucKhao_TenHinhThucThi: 'Tự luận',
+      MC_KT_PhucKhao_NgayThi: moment
+        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
+        .toISOString(),
+      MC_KT_PhucKhao_Thu: '2',
+      MC_KT_PhucKhao_Nhom: '1',
+      MC_KT_PhucKhao_TuTiet: '2',
+      MC_KT_PhucKhao_DenTiet: '3',
       MC_KT_PhucKhao_TenPhong: 'https://meet.google.com/hdb-foua-sro',
       MC_KT_PhucKhao_SBD: 'null',
-      MC_KT_PhucKhao_DiemThi: '7.5',
-      MC_KT_PhucKhao_DiemThi1: '7.5',
+      MC_KT_PhucKhao_DiemThi: '7',
+      MC_KT_PhucKhao_DiemThi1: '7',
       MC_KT_PhucKhao_DiemThi2: 'null',
-      MC_KT_PhucKhao_DiemTongKet: '7.7',
-      MC_KT_PhucKhao_DiemTongKet1: '7.7',
+      MC_KT_PhucKhao_DiemTongKet: '8',
+      MC_KT_PhucKhao_DiemTongKet1: '8',
       MC_KT_PhucKhao_DiemTongKet2: 'null',
       MC_KT_PhucKhao_TuiBaiThi: 'null',
       MC_KT_PhucKhao_SoPhach: 'null',
     };
-    console.log('220', data);
+
     try {
-      const response = await axios.post(apiPhucKhao, data, {
+      const response = await axios.post(apiPhucKhao, postdata, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
       if (response.data.message === 'Bản ghi bị trùng.') {
-        Alert.alert(
-          'Thông báo',
-          'Môn học này đã được phúc khảo! Vui lòng kiểm tra lại.',
-        );
+        handleModalPress3();
       } else {
-        Alert.alert('Thông báo', 'Phúc khảo thành công!');
+        handleModalPress4();
       }
     } catch (error) {
       console.error(error);
@@ -233,6 +351,42 @@ const PhucKhao = ({navigation}: any) => {
         onPress={() => {
           navigation.goBack();
         }}
+      />
+
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Không có dữ liệu!"
+      />
+
+      <ModalThongBao
+        visible={showModal1}
+        onClose={handleCloseModal1}
+        message="Không có dữ liệu môn học để gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal2}
+        onClose={handleCloseModal2}
+        message="Mời chọn môn học trước khi gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal3}
+        onClose={handleCloseModal3}
+        message="Môn học này đã được phúc khảo! Vui lòng kiểm tra lại!"
+      />
+
+      <ModalThongBao
+        visible={showModal4}
+        onClose={handleCloseModal4}
+        message="Gửi phúc khảo thành công!"
+      />
+      <ModalThongBao1
+        visible={showModal5}
+        onClose={handleCloseModal5}
+        onOK={xuLiPost}
+        message="Gửi phúc khảo thành công!"
       />
 
       <View style={styles.viewBody}>
@@ -321,7 +475,7 @@ const PhucKhao = ({navigation}: any) => {
               <ScrollView>
                 <View style={styles.container1}>
                   <ScrollView horizontal>
-                    <DataTable style={{width: 1350, height: 600}}>
+                    <DataTable style={{width: 1150}}>
                       <DataTable.Header>
                         <DataTable.Title
                           style={{
@@ -368,7 +522,7 @@ const PhucKhao = ({navigation}: any) => {
                         </DataTable.Title>
                         <DataTable.Title
                           style={{
-                            flex: 0.5,
+                            flex: 0.4,
                             backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
@@ -390,7 +544,7 @@ const PhucKhao = ({navigation}: any) => {
                         </DataTable.Title>
                         <DataTable.Title
                           style={{
-                            flex: 0.5,
+                            flex: 0.4,
                             backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
@@ -459,7 +613,7 @@ const PhucKhao = ({navigation}: any) => {
                           </DataTable.Cell>
                           <DataTable.Cell
                             style={{
-                              flex: 0.5,
+                              flex: 0.4,
                               justifyContent: 'center',
                               backgroundColor: '#f7f9ff',
                               marginLeft: 10,
@@ -482,9 +636,9 @@ const PhucKhao = ({navigation}: any) => {
 
                           <DataTable.Title
                             style={{
-                              flex: 0.5,
+                              flex: 0.4,
                               justifyContent: 'center',
-                              backgroundColor: '#d3d3d3',
+                              backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
                             <Text style={{fontSize: 16, color: 'black'}}>
@@ -507,25 +661,9 @@ const PhucKhao = ({navigation}: any) => {
               style={styles.touchableOpacity}
               onPress={() => {
                 if (tableData.length != 0) {
-                  Alert.alert(
-                    'Thông báo!',
-                    'Bạn có chắc chắn muốn hủy không?',
-                    [
-                      {
-                        text: 'Không',
-                        onPress: () => null,
-                        style: 'cancel',
-                      },
-                      {
-                        text: 'Có',
-                        onPress: () => {
-                          ClearDataTable();
-                        },
-                      },
-                    ],
-                  );
+                  ClearDataTable();
                 } else {
-                  Alert.alert('Thông báo', 'Không có dữ liệu!');
+                  handleModalPress();
                 }
               }}>
               <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
@@ -536,16 +674,10 @@ const PhucKhao = ({navigation}: any) => {
             <TouchableOpacity
               onPress={() => {
                 if (tableData.length == 0) {
-                  Alert.alert(
-                    'Thông báo',
-                    'Không có dữ liệu môn học để gửi yêu cầu!',
-                  );
+                  handleModalPress1();
                 } else {
                   if (!kiemTraChonMonHoc) {
-                    Alert.alert(
-                      'Thông báo',
-                      'Vui lòng chọn môn học trước khi gửi yêu cầu!',
-                    );
+                    handleModalPress2();
                   } else {
                     PostYeuCau();
                   }
@@ -560,7 +692,7 @@ const PhucKhao = ({navigation}: any) => {
         <View
           style={{
             height: '8%',
-            backgroundColor: '#ffffff',
+            backgroundColor: '#f7f9ff',
             width: '100%',
           }}>
           <View
@@ -642,7 +774,6 @@ export default PhucKhao;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E8E8E8',
     width: '100%',
     height: '100%',
   },
@@ -716,7 +847,12 @@ const styles = StyleSheet.create({
     height: 40,
     marginLeft: 30,
     borderRadius: 40,
-    backgroundColor: '#F8F8FF',
+    backgroundColor: '#ffffff',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
 
   buttonLuu: {
@@ -725,6 +861,11 @@ const styles = StyleSheet.create({
     marginRight: 30,
     borderRadius: 40,
     backgroundColor: '#245d7c',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
   touchableOpacity: {
     width: '100%',
@@ -732,14 +873,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 40,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
   },
 
   dropdown: {
@@ -780,5 +913,6 @@ const styles = StyleSheet.create({
 
   container1: {
     marginTop: 20,
+    marginBottom: 20,
   },
 });

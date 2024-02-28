@@ -18,6 +18,7 @@ import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import moment from 'moment';
+import ModalThongBao from '../../../../untils/modalThongBao/modalThongBao';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
@@ -55,6 +56,61 @@ const DangKiThiLai = ({navigation}: any) => {
   const [diemTongKet2, setDiemTongKet2] = useState('');
   const [diemThi1, setDiemThi1] = useState('');
   const [diemThi2, setDiemThi2] = useState('');
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+  const [showModal5, setShowModal5] = useState(false);
+
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleModalPress1 = () => {
+    setShowModal1(true);
+  };
+
+  const handleCloseModal1 = () => {
+    setShowModal1(false);
+  };
+
+  const handleModalPress2 = () => {
+    setShowModal2(true);
+  };
+
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+  };
+
+  const handleModalPress3 = () => {
+    setShowModal3(true);
+  };
+
+  const handleCloseModal3 = () => {
+    setShowModal3(false);
+  };
+
+  const handleModalPress4 = () => {
+    setShowModal4(true);
+  };
+
+  const handleCloseModal4 = () => {
+    setShowModal4(false);
+  };
+
+  const handleModalPress5 = () => {
+    setShowModal5(true);
+  };
+
+  const handleCloseModal5 = () => {
+    setShowModal4(false);
+  };
 
   const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
 
@@ -220,16 +276,13 @@ const DangKiThiLai = ({navigation}: any) => {
       });
       var kiemTraQuaHan = false;
       if (kiemTraQuaHan == false) {
-        Alert.alert('Thông báo', 'Môn học này đã hết hạn đăng kí thi lại!');
+        handleModalPress5();
       } else {
         if (response.data.message === 'Bản ghi bị trùng.') {
-          Alert.alert(
-            'Thông báo',
-            `Yêu cầu cho môn: ${mangmonhoc[2]} đã được gửi!!`,
-          );
+          handleModalPress3();
         } else {
           if (response.status == 200) {
-            Alert.alert('Thông báo', 'Gửi yêu cầu thành công!');
+            handleModalPress4();
           }
         }
       }
@@ -266,6 +319,42 @@ const DangKiThiLai = ({navigation}: any) => {
         onPress={() => {
           navigation.goBack();
         }}
+      />
+
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Không có dữ liệu!"
+      />
+
+      <ModalThongBao
+        visible={showModal1}
+        onClose={handleCloseModal1}
+        message="Không có dữ liệu môn học để gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal2}
+        onClose={handleCloseModal2}
+        message="Mời chọn môn học trước khi gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal3}
+        onClose={handleCloseModal3}
+        message="Môn học này đã được gửi yêu cầu! Vui lòng kiểm tra lại!"
+      />
+
+      <ModalThongBao
+        visible={showModal4}
+        onClose={handleCloseModal4}
+        message="Gửi yêu cầu thành công!"
+      />
+
+      <ModalThongBao
+        visible={showModal5}
+        onClose={handleCloseModal5}
+        message="Môn học đã quá hạn đăng ký thi lại!"
       />
 
       <View style={styles.viewBody}>
@@ -402,11 +491,11 @@ const DangKiThiLai = ({navigation}: any) => {
               <ScrollView>
                 <View style={styles.container1}>
                   <ScrollView horizontal>
-                    <DataTable style={{width: 1200, height: 400}}>
+                    <DataTable style={{width: 1100}}>
                       <DataTable.Header>
                         <DataTable.Title
                           style={{
-                            flex: 0.35,
+                            flex: 0.3,
                             backgroundColor: '#245d7c',
                             justifyContent: 'center',
                           }}>
@@ -416,7 +505,7 @@ const DangKiThiLai = ({navigation}: any) => {
                         </DataTable.Title>
                         <DataTable.Title
                           style={{
-                            flex: 0.6,
+                            flex: 0.5,
                             backgroundColor: '#245d7c',
                             justifyContent: 'center',
                             marginLeft: 10,
@@ -486,7 +575,7 @@ const DangKiThiLai = ({navigation}: any) => {
                         <DataTable.Row key={item[0]}>
                           <DataTable.Cell
                             style={{
-                              flex: 0.35,
+                              flex: 0.3,
                               justifyContent: 'center',
                               backgroundColor: '#f7f9ff',
                             }}>
@@ -498,7 +587,7 @@ const DangKiThiLai = ({navigation}: any) => {
                           </DataTable.Cell>
                           <DataTable.Cell
                             style={{
-                              flex: 0.6,
+                              flex: 0.5,
                               alignItems: 'center',
                               justifyContent: 'center',
                               backgroundColor: '#f7f9ff',
@@ -587,25 +676,9 @@ const DangKiThiLai = ({navigation}: any) => {
               style={styles.touchableOpacity}
               onPress={() => {
                 if (dataTable.length != 0) {
-                  Alert.alert(
-                    'Thông báo!',
-                    'Bạn có chắc chắn muốn hủy không?',
-                    [
-                      {
-                        text: 'Không',
-                        onPress: () => null,
-                        style: 'cancel',
-                      },
-                      {
-                        text: 'Có',
-                        onPress: () => {
-                          ClearData();
-                        },
-                      },
-                    ],
-                  );
+                  ClearData();
                 } else {
-                  Alert.alert('Thông báo', 'Không có dữ liệu!');
+                  handleModalPress();
                 }
               }}>
               <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
@@ -621,16 +694,10 @@ const DangKiThiLai = ({navigation}: any) => {
               style={styles.touchableOpacity}
               onPress={() => {
                 if (dataTable.length == 0) {
-                  Alert.alert(
-                    'Thông báo',
-                    'Không có dữ liệu môn học để gửi yêu cầu!',
-                  );
+                  handleModalPress1();
                 } else {
                   if (!kiemTraChonMonHoc) {
-                    Alert.alert(
-                      'Thông báo',
-                      'Vui lòng chọn môn học trước khi gửi yêu cầu!',
-                    );
+                    handleModalPress3();
                   } else {
                     PostYeuCau();
                   }
@@ -645,7 +712,7 @@ const DangKiThiLai = ({navigation}: any) => {
       <View
         style={{
           height: '8%',
-          backgroundColor: '#ffffff',
+          backgroundColor: '#f7f9ff',
           width: '100%',
         }}>
         <View
@@ -791,7 +858,12 @@ const styles = StyleSheet.create({
     width: '35%',
     height: 40,
     borderRadius: 40,
-    backgroundColor: '#F8F8FF',
+    backgroundColor: '#ffffff',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
   touchableOpacity: {
     width: '100%',
@@ -799,14 +871,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 40,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
   },
   viewTenDot: {
     width: '100%',
@@ -875,5 +939,6 @@ const styles = StyleSheet.create({
 
   container1: {
     marginTop: 20,
+    marginBottom: 20,
   },
 });

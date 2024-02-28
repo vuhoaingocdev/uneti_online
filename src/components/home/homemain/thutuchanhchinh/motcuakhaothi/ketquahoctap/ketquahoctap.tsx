@@ -20,6 +20,7 @@ import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import moment from 'moment';
+import ModalThongBao from '../../../../untils/modalThongBao/modalThongBao';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
@@ -82,6 +83,70 @@ const KetQuaHocTap = ({navigation}: any) => {
 
   const [diemThuongKy, setDiemThuongKy] = useState('');
   const [diemThi, setDiemThi] = useState('');
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+  const [showModal5, setShowModal5] = useState(false);
+  const [showModal6, setShowModal6] = useState(false);
+
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleModalPress1 = () => {
+    setShowModal1(true);
+  };
+
+  const handleCloseModal1 = () => {
+    setShowModal1(false);
+  };
+
+  const handleModalPress2 = () => {
+    setShowModal2(true);
+  };
+
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+  };
+
+  const handleModalPress3 = () => {
+    setShowModal3(true);
+  };
+
+  const handleCloseModal3 = () => {
+    setShowModal3(false);
+  };
+
+  const handleModalPress4 = () => {
+    setShowModal4(true);
+  };
+
+  const handleCloseModal4 = () => {
+    setShowModal4(false);
+  };
+
+  const handleModalPress5 = () => {
+    setShowModal5(true);
+  };
+
+  const handleCloseModal5 = () => {
+    setShowModal5(false);
+  };
+
+  const handleModalPress6 = () => {
+    setShowModal6(true);
+  };
+
+  const handleCloseModal6 = () => {
+    setShowModal6(false);
+  };
 
   //Lấy tên đợt
   var apiKetQuaHocTap = `https://apiv2.uneti.edu.vn/api/SP_MC_KT_KetQuaHT_TiepNhan/EDU_Load_Para_MaSinhVien_KetQuaHT?MaSinhVien=${maSinhVien}`;
@@ -268,7 +333,6 @@ const KetQuaHocTap = ({navigation}: any) => {
       MC_KT_KetQuaHT_YeuCau_DiemThi_SVYeuCauLyDo:
         'Bị mất điểm thi trên trang cá nhân',
     };
-    console.log('220', data);
     try {
       const response = await axios.post(apiTiepNhan, data, {
         headers: {
@@ -278,20 +342,14 @@ const KetQuaHocTap = ({navigation}: any) => {
       });
 
       if (response.data.message === 'Bản ghi bị trùng.') {
-        Alert.alert(
-          'Thông báo',
-          `Yêu cầu cho môn: ${mangmonhoc[3]} đã được gửi!!`,
-        );
+        handleCloseModal3();
       } else {
-        if (response.status == 200) {
-          Alert.alert('Thông báo', 'Gửi yêu cầu thành công!');
-        } else {
-          Alert.alert('Thông báo', 'Gửi yêu cầu thất bại!');
-        }
+        handleModalPress4();
       }
     } catch (error) {
       console.error(error);
     }
+    handleModalPress3();
   };
 
   useEffect(() => {
@@ -305,6 +363,48 @@ const KetQuaHocTap = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header1 title="Kết quả học tập" onPress={() => navigation.goBack()} />
+
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Không có dữ liệu!"
+      />
+
+      <ModalThongBao
+        visible={showModal1}
+        onClose={handleCloseModal1}
+        message="Không có dữ liệu môn học để gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal2}
+        onClose={handleCloseModal2}
+        message="Mời chọn môn học trước khi gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal3}
+        onClose={handleCloseModal3}
+        message="Môn học này đã được gửi yêu cầu! Vui lòng kiểm tra lại!"
+      />
+
+      <ModalThongBao
+        visible={showModal4}
+        onClose={handleCloseModal4}
+        message="Gửi yêu cầu thành công!"
+      />
+
+      <ModalThongBao
+        visible={showModal5}
+        onClose={handleCloseModal5}
+        message="Với đề nghị xem kết quả học tập tính năng này không gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal6}
+        onClose={handleCloseModal6}
+        message="Vui lòng chọn đầy đủ dữ liệu!"
+      />
 
       <View style={styles.viewBody}>
         <ScrollView>
@@ -480,11 +580,12 @@ const KetQuaHocTap = ({navigation}: any) => {
                   </View>
                 </View>
               ) : null}
+
               {deNghi === '-1' ? (
                 <ScrollView>
                   <View style={{marginTop: 20}}>
                     <ScrollView horizontal>
-                      <DataTable style={{width: 1000}}>
+                      <DataTable style={{width: 700}}>
                         <DataTable.Header>
                           <DataTable.Title
                             style={{
@@ -674,11 +775,12 @@ const KetQuaHocTap = ({navigation}: any) => {
                   </View>
                 </ScrollView>
               ) : null}
+
               {deNghi === 'Xem kết quả học tập' ? (
                 <ScrollView>
                   <View style={{marginTop: 20}}>
                     <ScrollView horizontal>
-                      <DataTable style={{width: 1000}}>
+                      <DataTable style={{width: 700}}>
                         <DataTable.Header>
                           <DataTable.Title
                             style={{
@@ -873,11 +975,11 @@ const KetQuaHocTap = ({navigation}: any) => {
                 <ScrollView>
                   <View style={{marginTop: 20}}>
                     <ScrollView horizontal>
-                      <DataTable style={{width: 1100}}>
+                      <DataTable style={{width: 900}}>
                         <DataTable.Header>
                           <DataTable.Title
                             style={{
-                              flex: 0.3,
+                              flex: 0.35,
                               backgroundColor: '#245d7c',
                               justifyContent: 'center',
                             }}>
@@ -987,7 +1089,7 @@ const KetQuaHocTap = ({navigation}: any) => {
                                     <DataTable.Row key={item[0]}>
                                       <DataTable.Cell
                                         style={{
-                                          flex: 0.3,
+                                          flex: 0.35,
                                           justifyContent: 'center',
                                           backgroundColor: '#f7f9ff',
                                         }}>
@@ -1098,11 +1200,11 @@ const KetQuaHocTap = ({navigation}: any) => {
                 <ScrollView>
                   <View style={{marginTop: 20}}>
                     <ScrollView horizontal>
-                      <DataTable style={{width: 1100}}>
+                      <DataTable style={{width: 900}}>
                         <DataTable.Header>
                           <DataTable.Title
                             style={{
-                              flex: 0.3,
+                              flex: 0.35,
                               backgroundColor: '#245d7c',
                               justifyContent: 'center',
                             }}>
@@ -1212,7 +1314,7 @@ const KetQuaHocTap = ({navigation}: any) => {
                                     <DataTable.Row key={item[0]}>
                                       <DataTable.Cell
                                         style={{
-                                          flex: 0.3,
+                                          flex: 0.35,
                                           justifyContent: 'center',
                                           backgroundColor: '#f7f9ff',
                                         }}>
@@ -1333,21 +1435,9 @@ const KetQuaHocTap = ({navigation}: any) => {
                 monHocTheoKyDTK.length != 0 ||
                 monHocTheoKyDTK.length != 0
               ) {
-                Alert.alert('Thông báo!', 'Bạn có chắc chắn muốn hủy không?', [
-                  {
-                    text: 'Không',
-                    onPress: () => null,
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Có',
-                    onPress: () => {
-                      ClearData();
-                    },
-                  },
-                ]);
+                ClearData();
               } else {
-                Alert.alert('Thông báo', 'Không có dữ liệu!');
+                handleModalPress();
                 setDiemThi('');
                 setDiemThuongKy('');
               }
@@ -1365,33 +1455,26 @@ const KetQuaHocTap = ({navigation}: any) => {
             style={styles.touchableOpacity}
             onPress={() => {
               if (deNghi === 'Xem kết quả học tập') {
-                Alert.alert(
-                  'Thông báo!',
-                  'Với đề nghị xem kết quả học tập tính năng này không gửi yêu cầu!',
-                );
+                handleModalPress5();
               } else {
                 if (monHocTheoKyDT.length == 0 || monHocTheoKyDTK.length == 0) {
-                  Alert.alert(
-                    'Thông báo',
-                    'Không có dữ liệu môn học để gửi yêu cầu!',
-                  );
+                  handleModalPress1();
                 } else {
                   if (!kiemTraChonMonHoc) {
-                    Alert.alert(
-                      'Thông báo',
-                      'Vui lòng chọn môn học trước khi gửi yêu cầu!',
-                    );
+                    handleModalPress2();
                   } else {
-                    if (
-                      valueDeNghiDT != '-1' ||
-                      valueDeNghiDTK != '-1' ||
-                      diemThi != '' ||
-                      diemThuongKy != ''
-                    ) {
-                      PostYeuCau();
-                    } else {
-                      Alert.alert('Thông báo!', 'Vui lòng chọn đầy đủ dữ liệu');
-                    }
+                    // if (
+                    //   valueDeNghiDT != '-1' ||
+                    //   valueDeNghiDTK != '-1' ||
+                    //   diemThi != '' ||
+                    //   diemThuongKy != ''
+                    // ) {
+                    //   PostYeuCau();
+                    // } else {
+                    //   handleModalPress6();
+                    // }
+
+                    PostYeuCau();
                   }
                 }
               }
@@ -1404,7 +1487,7 @@ const KetQuaHocTap = ({navigation}: any) => {
       <View
         style={{
           height: '8%',
-          backgroundColor: '#ffffff',
+          backgroundColor: '#f7f9ff',
           width: '100%',
         }}>
         <View
@@ -1588,7 +1671,12 @@ const styles = StyleSheet.create({
     width: '35%',
     height: 40,
     borderRadius: 40,
-    backgroundColor: '#F8F8FF',
+    backgroundColor: '#ffffff',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
 
   touchableOpacity: {
@@ -1597,14 +1685,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 40,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
   },
 
   viewFooter: {

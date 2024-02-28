@@ -15,6 +15,7 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import {user_login} from '../../api/user_api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ModalThongBao from '../home/untils/modalThongBao/modalThongBao';
 export var token: any;
 export var maSinhVien: any;
 
@@ -24,6 +25,25 @@ function Login({navigation}: any) {
   const [isChecked, setChecked] = useState(false);
   const [isShowPass, setShowPass] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+
+  const handleModalPress1 = () => {
+    setShowModal1(true);
+  };
+
+  const handleCloseModal1 = () => {
+    setShowModal1(false);
+  };
+
+  const handleModalPress2 = () => {
+    setShowModal2(true);
+  };
+
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+  };
 
   const [checkboxColor, setCheckboxColor] = useState('#245d7c');
   const [checkboxUncheckedColor, setCheckboxUncheckedColor] = useState('gray');
@@ -72,16 +92,10 @@ function Login({navigation}: any) {
           }
 
           navigation.navigate('HomeMain');
-        } else if (username == '' || password == '') {
-          Alert.alert(
-            'Thông báo',
-            'Vui lòng nhập đầy đủ thông tin tài khoản và mật khẩu!',
-          );
+        } else if (username === '' || password === '') {
+          handleModalPress2();
         } else {
-          Alert.alert(
-            'Thông báo',
-            'Đăng nhập nhất bại! Vui lòng kiểm tra lại thông tin tài khoản và mật khẩu!',
-          );
+          handleModalPress1();
         }
       })
       .catch(err => {
@@ -97,7 +111,7 @@ function Login({navigation}: any) {
 
     setTimeout(() => {
       xuLiDangNhap();
-    }, 5000);
+    }, 3000);
   };
 
   return (
@@ -108,6 +122,18 @@ function Login({navigation}: any) {
           style={styles.image}
         />
       </View>
+
+      <ModalThongBao
+        visible={showModal2}
+        onClose={handleCloseModal2}
+        message="Vui lòng nhập đầy đủ thông tin tài khoản và mật khẩu!"
+      />
+
+      <ModalThongBao
+        visible={showModal1}
+        onClose={handleCloseModal1}
+        message="Đăng nhập nhất bại! Vui lòng kiểm tra lại thông tin tài khoản và mật khẩu!"
+      />
 
       <View style={{marginHorizontal: 40}}>
         <View style={styles.viewTextInput}>

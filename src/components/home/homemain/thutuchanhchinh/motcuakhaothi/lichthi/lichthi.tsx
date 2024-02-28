@@ -19,6 +19,7 @@ import {maSinhVien} from '../../../../../login/login';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import moment from 'moment';
+import ModalThongBao from '../../../../untils/modalThongBao/modalThongBao';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
@@ -54,6 +55,52 @@ function LichThi({navigation}: any) {
   const [tableDataKhongCoLichThi, setTableDataKhongCoLichThi] = useState([]);
 
   const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleModalPress1 = () => {
+    setShowModal1(true);
+  };
+
+  const handleCloseModal1 = () => {
+    setShowModal1(false);
+  };
+
+  const handleModalPress2 = () => {
+    setShowModal2(true);
+  };
+
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+  };
+
+  const handleModalPress3 = () => {
+    setShowModal3(true);
+  };
+
+  const handleCloseModal3 = () => {
+    setShowModal3(false);
+  };
+
+  const handleModalPress4 = () => {
+    setShowModal4(true);
+  };
+
+  const handleCloseModal4 = () => {
+    setShowModal4(false);
+  };
 
   //Load tên đợt
   var getAPI_TenDot = 'https://apiv2.uneti.edu.vn/api/SP_EDU/Load_TenDot';
@@ -135,6 +182,7 @@ function LichThi({navigation}: any) {
   //Xử lí check box table trùng lịch thi
   const [checkedItems, setCheckedItems] = useState([]);
   const [mangmonhoc, setmangmonhoc] = useState([]);
+
   const handleCheckboxToggle = rowIndex => {
     const newCheckedItems = [...checkedItems];
     const index = newCheckedItems.indexOf(rowIndex);
@@ -333,16 +381,9 @@ function LichThi({navigation}: any) {
       });
 
       if (response.data.message === 'Bản ghi bị trùng.') {
-        Alert.alert(
-          'Thông báo',
-          `Yêu cầu cho môn: ${mangmonhoc[2]} đã được gửi!!`,
-        );
+        handleModalPress3();
       } else {
-        if (response.status == 200) {
-          Alert.alert('Thông báo', 'Gửi yêu cầu thành công!');
-        } else {
-          Alert.alert('Thông báo', 'Gửi yêu cầu thất bại!');
-        }
+        handleModalPress4();
       }
     } catch (error) {
       console.error(error);
@@ -380,6 +421,36 @@ function LichThi({navigation}: any) {
         onPress={() => {
           navigation.goBack();
         }}
+      />
+
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Không có dữ liệu!"
+      />
+
+      <ModalThongBao
+        visible={showModal1}
+        onClose={handleCloseModal1}
+        message="Không có dữ liệu môn học để gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal2}
+        onClose={handleCloseModal2}
+        message="Mời chọn môn học trước khi gửi yêu cầu!"
+      />
+
+      <ModalThongBao
+        visible={showModal3}
+        onClose={handleCloseModal3}
+        message="Môn học này đã được gửi yêu cầu! Vui lòng kiểm tra lại!"
+      />
+
+      <ModalThongBao
+        visible={showModal4}
+        onClose={handleCloseModal4}
+        message="Gửi yêu cầu thành công!"
       />
 
       <View style={styles.viewBody}>
@@ -456,7 +527,7 @@ function LichThi({navigation}: any) {
                 <Dropdown
                   style={[
                     styles.dropdown,
-                    isFocusLiDo && {borderColor: 'blue'},
+                    isFocusLiDo && {borderColor: 'black'},
                     {marginLeft: 36},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
@@ -482,7 +553,7 @@ function LichThi({navigation}: any) {
                 <ScrollView>
                   <View style={styles.container1}>
                     <ScrollView horizontal>
-                      <DataTable style={{width: 1350, height: 600}}>
+                      <DataTable style={{width: 1200}}>
                         <DataTable.Header>
                           <DataTable.Title
                             style={{
@@ -496,7 +567,7 @@ function LichThi({navigation}: any) {
                           </DataTable.Title>
                           <DataTable.Title
                             style={{
-                              flex: 1.1,
+                              flex: 1.5,
                               backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
@@ -590,7 +661,7 @@ function LichThi({navigation}: any) {
 
                             <DataTable.Cell
                               style={{
-                                flex: 1.1,
+                                flex: 1.5,
                                 backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
                               }}>
@@ -688,7 +759,7 @@ function LichThi({navigation}: any) {
                 <ScrollView>
                   <View style={styles.container1}>
                     <ScrollView horizontal>
-                      <DataTable style={{width: 1500, height: 600}}>
+                      <DataTable style={{width: 1350}}>
                         <DataTable.Header>
                           <DataTable.Title
                             style={{
@@ -735,7 +806,7 @@ function LichThi({navigation}: any) {
                           </DataTable.Title>
                           <DataTable.Title
                             style={{
-                              flex: 0.9,
+                              flex: 0.7,
                               backgroundColor: '#2e6b8b',
                               justifyContent: 'center',
                               marginLeft: 10,
@@ -852,7 +923,7 @@ function LichThi({navigation}: any) {
                             </DataTable.Cell>
                             <DataTable.Cell
                               style={{
-                                flex: 0.9,
+                                flex: 0.7,
                                 justifyContent: 'center',
                                 backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
@@ -916,7 +987,7 @@ function LichThi({navigation}: any) {
                 <ScrollView>
                   <View style={styles.container1}>
                     <ScrollView horizontal>
-                      <DataTable style={{width: 1500, height: 600}}>
+                      <DataTable style={{width: 1350}}>
                         <DataTable.Header>
                           <DataTable.Title
                             style={{
@@ -930,7 +1001,7 @@ function LichThi({navigation}: any) {
                           </DataTable.Title>
                           <DataTable.Title
                             style={{
-                              flex: 0.9,
+                              flex: 0.7,
                               backgroundColor: '#245d7c',
                               justifyContent: 'center',
                               marginLeft: 10,
@@ -963,7 +1034,7 @@ function LichThi({navigation}: any) {
                           </DataTable.Title>
                           <DataTable.Title
                             style={{
-                              flex: 0.9,
+                              flex: 0.7,
                               backgroundColor: '#245d7c',
                               justifyContent: 'center',
                               marginLeft: 10,
@@ -1037,7 +1108,7 @@ function LichThi({navigation}: any) {
 
                             <DataTable.Cell
                               style={{
-                                flex: 0.9,
+                                flex: 0.7,
                                 justifyContent: 'center',
                                 backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
@@ -1076,7 +1147,7 @@ function LichThi({navigation}: any) {
                             </DataTable.Cell>
                             <DataTable.Cell
                               style={{
-                                flex: 0.9,
+                                flex: 0.7,
                                 justifyContent: 'center',
                                 backgroundColor: '#f7f9ff',
                                 marginLeft: 10,
@@ -1151,25 +1222,9 @@ function LichThi({navigation}: any) {
                     tableDataKhongCoLichThi.length != 0 ||
                     tableTrungLichThi.length != 0
                   ) {
-                    Alert.alert(
-                      'Thông báo!',
-                      'Bạn có chắc chắn muốn hủy không?',
-                      [
-                        {
-                          text: 'Không',
-                          onPress: () => null,
-                          style: 'cancel',
-                        },
-                        {
-                          text: 'Có',
-                          onPress: () => {
-                            ClearData();
-                          },
-                        },
-                      ],
-                    );
+                    ClearData();
                   } else {
-                    Alert.alert('Thông báo', 'Không có dữ liệu!');
+                    handleModalPress();
                   }
                 }}>
                 <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
@@ -1186,25 +1241,9 @@ function LichThi({navigation}: any) {
                     tableDataKhongCoLichThi.length != 0 ||
                     tableTrungLichThi.length != 0
                   ) {
-                    Alert.alert(
-                      'Thông báo!',
-                      'Bạn có chắc chắn muốn hủy không?',
-                      [
-                        {
-                          text: 'Không',
-                          onPress: () => null,
-                          style: 'cancel',
-                        },
-                        {
-                          text: 'Có',
-                          onPress: () => {
-                            ClearData();
-                          },
-                        },
-                      ],
-                    );
+                    ClearData();
                   } else {
-                    Alert.alert('Thông báo', 'Không có dữ liệu!');
+                    handleModalPress();
                   }
                 }}>
                 <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
@@ -1223,16 +1262,10 @@ function LichThi({navigation}: any) {
                     tableDataKhongCoLichThi.length == 0 ||
                     tableTrungLichThi.length == 0
                   ) {
-                    Alert.alert(
-                      'Thông báo',
-                      'Không có dữ liệu môn học để gửi yêu cầu!',
-                    );
+                    handleModalPress1();
                   } else {
                     if (!kiemTraChonMonHoc) {
-                      Alert.alert(
-                        'Thông báo',
-                        'Vui lòng chọn môn học trước khi gửi yêu cầu!',
-                      );
+                      handleModalPress2();
                     } else {
                       PostYeuCau();
                     }
@@ -1248,7 +1281,7 @@ function LichThi({navigation}: any) {
       <View
         style={{
           height: '8%',
-          backgroundColor: '#ffffff',
+          backgroundColor: '#f7f9ff',
           width: '100%',
         }}>
         <View
@@ -1400,7 +1433,12 @@ const styles = StyleSheet.create({
     width: '35%',
     height: 40,
     borderRadius: 40,
-    backgroundColor: '#F8F8FF',
+    backgroundColor: '#ffffff',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
   touchableOpacity: {
     width: '100%',
@@ -1409,13 +1447,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 40,
     shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
   },
   viewTenDot: {
     width: '100%',
@@ -1474,5 +1505,6 @@ const styles = StyleSheet.create({
   },
   container1: {
     marginTop: 20,
+    marginBottom: 20,
   },
 });

@@ -23,154 +23,84 @@ function MotCuaDaoTao({navigation}: any) {
       />
 
       <View style={styles.viewBody}>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <ScrollView style={styles.scrollViewContent}>
           <TouchableOpacity
-            style={[styles.viewThuTuc, {marginBottom: 70}]}
+            style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => {
               navigation.navigate('BangDiem');
             }}>
             <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/tienganh.png')}
+                source={require('../../../../../images/daotao_bangdiem.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
             </View>
             <View style={styles.viewText}>
               <Text style={styles.styleTieuDe}>BẢNG ĐIỂM</Text>
-              <Text style={[styles.styleText, {marginTop: 5, color: 'red'}]}>
-                (Cấp bảng điểm tạm thời hệ 4, hệ 10; Cấp bảng điểm tốt nghiệp hệ
-                4, hệ 10)
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          {/* <TouchableOpacity
-            style={styles.viewThuTuc}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('PhucKhao')}>
-            <View style={styles.viewImage}>
-              <Image
-                source={require('../../../../../images/phuckhao.png')}
-                style={[styles.styleImage, {width: 80, height: 60}]}
-                resizeMode="stretch"
-              />
-            </View>
-            <View style={styles.viewText}>
-              <Text style={styles.styleTieuDe}>PHÚC KHẢO</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
-                (Phúc khảo bài thi lần 1; Phúc khảo bài thi lại)
+                (Cấp bảng điểm tạm thời hệ 4, hệ 10;
+              </Text>
+              <Text style={[styles.styleText, {color: 'red'}]}>
+                Cấp bảng điểm tốt nghiệp hệ 4, hệ 10)
               </Text>
             </View>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.viewThuTuc}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('LichThi')}>
-            <View style={styles.viewImage}>
-              <Image
-                source={require('../../../../../images/LichThi_KT.png')}
-                style={styles.styleImage}
-                resizeMode="stretch"
-              />
-            </View>
-            <View style={styles.viewText}>
-              <Text style={styles.styleTieuDe}>LỊCH THI</Text>
-              <Text style={[styles.styleText, {marginTop: 5}]}>
-                (Xem lịch thi; Trùng lịch thi; Không có lịch thi...)
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.viewThuTuc}
-            activeOpacity={0.8}
-onPress={() => {
-              navigation.navigate('DangKiThiLai');
-            }}>
-            <View style={styles.viewImage}>
-              <Image
-                source={require('../../../../../images/dkthi.png')}
-                style={styles.styleImage}
-                resizeMode="stretch"
-              />
-            </View>
-            <View style={styles.viewText}>
-              <Text style={styles.styleTieuDe}>ĐĂNG KÝ THI LẠI</Text>
-              <Text style={[styles.styleText, {marginTop: 5}]}>
-                (Trùng lỗi lịch; lỗi website sinhvien.uneti.edu.vn; Khác hệ;
-                Loại hình đào tạo; Thi không theo kế hoạch; Lý do khác)
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.viewThuTuc}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('Hoanthi');
-            }}>
-            <View style={styles.viewImage}>
-              <Image
-                source={require('../../../../../images/hoanthi.png')}
-                style={styles.styleImage}
-                resizeMode="stretch"
-              />
-            </View>
-            <View style={styles.viewText}>
-              <Text style={styles.styleTieuDe}>HOÃN THI</Text>
-              <Text style={[styles.styleText, {marginTop: 5}]}>
-                (Đi viện theo yêu cầu bác sĩ; Thực hiện nhiệm vụ nhà trường
-                giao; Lý do khác)
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.viewThuTuc}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('HuyDangKiThiLai');
-            }}>
-            <View style={styles.viewImage}>
-              <Image
-                source={require('../../../../../images/huydkthi.png')}
-                style={styles.styleImage}
-                resizeMode="stretch"
-              />
-            </View>
-            <View style={styles.viewText}>
-              <Text style={styles.styleTieuDe}>HỦY ĐĂNG KÝ THI LẠI</Text>
-              <Text style={[styles.styleText, {marginTop: 5}]}>
-                (Đạt điểm học phần sau khi phúc khảo; Điều chỉnh điểm thường kỳ
-                (quá trình); Hủy đăng kí thi lại để học lại; Lý do khác)
-              </Text>
-            </View>
-          </TouchableOpacity>
-
           <TouchableOpacity
             style={[styles.viewThuTuc, {marginBottom: 70}]}
             activeOpacity={0.8}
             onPress={() => {
-              Alert.alert('Thông báo', 'Kết quả học tập chưa hoàn thành!');
+              navigation.navigate('DangKyTotNghiep');
             }}>
             <View style={styles.viewImage}>
               <Image
-                source={require('../../../../../images/tienganh.png')}
+                source={require('../../../../../images/daotao_xacnhan.png')}
                 style={styles.styleImage}
                 resizeMode="stretch"
               />
             </View>
             <View style={styles.viewText}>
-<Text style={styles.styleTieuDe}>KẾT QUẢ HỌC TẬP</Text>
+              <Text style={styles.styleTieuDe}>ĐĂNG KÝ TỐT NGHIỆP</Text>
               <Text style={[styles.styleText, {marginTop: 5}]}>
-                (Xem kết quả học tập; Điều chỉnh, bổ sung điểm thường kỳ; Điều
-                chỉnh, bổ sung điểm thi)
+                (Xác nhận đang chờ xét tốt nghiệp; Xác nhận nợ môn (chưa tốt
+                nghiệp);
+              </Text>
+              <Text style={[styles.styleText, {color: 'red'}]}>
+                Xác nhận hoàn thành khóa học;
+              </Text>
+              <Text style={styles.styleText}>
+                Xác nhận thời khóa biểu theo học kỳ)
               </Text>
             </View>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.viewThuTuc, {marginBottom: 70}]}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('XacNhan');
+            }}>
+            <View style={styles.viewImage}>
+              <Image
+                source={require('../../../../../images/daotao_xacnhan.png')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>XÁC NHẬN</Text>
+              <Text style={[styles.styleText, {marginTop: 5}]}>
+                (Xác nhận đang chờ xét tốt nghiệp; Xác nhận nợ môn (chưa tốt
+                nghiệp);
+              </Text>
+              <Text style={[styles.styleText, {color: 'red'}]}>
+                Xác nhận hoàn thành khóa học;
+              </Text>
+              <Text style={styles.styleText}>
+                Xác nhận thời khóa biểu theo học kỳ)
+              </Text>
+            </View>
+          </TouchableOpacity>
         </ScrollView>
       </View>
       <View
@@ -268,14 +198,14 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     width: '100%',
-    justifyContent: 'center',
+    marginLeft: 50,
   },
   viewThuTuc: {
     backgroundColor: '#F5F5F5',
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     height: 100,
-    width: '94%',
+    width: '88%',
     marginTop: 25,
     flexDirection: 'row',
     shadowColor: 'black',
@@ -299,7 +229,7 @@ const styles = StyleSheet.create({
     marginLeft: 25,
   },
   styleTieuDe: {
-    fontSize: 19,
+    fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
   },
@@ -309,8 +239,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   styleImage: {
-    width: 60,
-    height: 60,
+    width: 68,
+    height: 68,
     marginLeft: 10,
     borderRadius: 10,
   },

@@ -19,6 +19,9 @@ import TheoDoiDeNghi from './home/untils/footer/screens/theodoidenghi.tsx';
 import KetQuaHocTap from './home/homemain/thutuchanhchinh/motcuakhaothi/ketquahoctap/ketquahoctap.tsx';
 import BangDiem from './home/homemain/thutuchanhchinh/motcuadaotao/capbangdiem/capbangdiem.tsx';
 import MotCuaDaoTao from './home/homemain/thutuchanhchinh/motcuadaotao/motcuadaotao.tsx';
+import XacNhan from './home/homemain/thutuchanhchinh/motcuadaotao/xacnhan/xacnhan.tsx';
+import DangKyTotNghiep from './home/homemain/thutuchanhchinh/motcuadaotao/dangkytotnghiep/dangkytotnghiep.tsx';
+
 const Stack = createNativeStackNavigator();
 
 const Index = () => {
@@ -43,7 +46,8 @@ const Index = () => {
         <Stack.Screen name="KetQuaHocTap" component={KetQuaHocTap} />
         <Stack.Screen name="BangDiem" component={BangDiem} />
         <Stack.Screen name="MotCuaDaoTao" component={MotCuaDaoTao} />
-
+        <Stack.Screen name="XacNhan" component={XacNhan} />
+        <Stack.Screen name="DangKyTotNghiep" component={DangKyTotNghiep} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -27,32 +27,38 @@ import {
   ThongTinSinhVien,
 } from '../../../../../../api/GetThongTinSinhVien';
 
-const BangDiem = ({navigation}: any) => {
-  const [lydo, setlydo] = useState('Xin việc');
-  const [giayto, setgiayto] = useState('Đơn xin bảng điểm tạm thời');
+const DangKyTotNghiep = ({navigation}: any) => {
+  const [lydo, setlydo] = useState(
+    'Hoãn tốt nghiệp (Do: 1. Có nguyện vọng học cải thiện một số học phần để có kết quả học tập tốt hơn)',
+  );
+  const [giayto, setgiayto] = useState(
+    '1. Đơn xin hoãn xét công nhận tốt nghiệp.',
+  );
 
-  const [loaiBangDiem, setLoaiThi] = useState('');
-  const [valueLoaiBangDiem, setValueLoaiBangDiem] = useState('');
-  const [isFocusLoaiBangDiem, setIsFocusBangDiem] = useState(false);
-  const dataLoaibangdiem = [
-    {labelLoaiBangDiem: 'Hệ 4', valueLoaiBangDiem: 'Hệ 4'},
-    {labelLoaiBangDiem: 'Hệ 10', valueLoaiBangDiem: 'Hệ 10'},
-    {labelLoaiBangDiem: 'Hệ 4; Hệ 10', valueLoaiBangDiem: 'Hệ 4; Hệ 10'},
-  ];
+  const [tendot, setTenDot] = useState([]);
+  const [valueDotThi, setValueDotThi] = useState('');
+  const [isFocusDotThi, setIsFocusDotThi] = useState(false);
+  const [dotThi, setDotThi] = useState('');
+  const getapi = 'https://apiv2.uneti.edu.vn/api/SP_EDU/Load_TenDot';
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(getapi, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-  const [noinhan, setnoinhan] = useState('');
-  const [valueNoiNhan, setValueNoiNhan] = useState('');
-  const [isFocusNoiNhan, setIsFocusNoiNhan] = useState(false);
-  const dataNoiNhan = [
-    {labelNoiNhan: '1 - Minh Khai', valueNoiNhan: 'Minh Khai'},
-    {labelNoiNhan: '2 - Lĩnh Nam', valueNoiNhan: 'Lĩnh Nam'},
-    {labelNoiNhan: '3 - Nam Định', valueNoiNhan: 'Nam Định'},
-  ];
+      const arraytendot = response.data.body.map(td => td.TenDot);
+      setTenDot(arraytendot);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const [hinhanh, sethinhanh] = useState([]);
-
   const [base64image, setbase64image] = useState('');
   const [filename, setfilename] = useState('');
-
   const Imagepicker = () => {
     const options: ImageLibraryOptions = {
       mediaType: 'photo',
@@ -75,68 +81,66 @@ const BangDiem = ({navigation}: any) => {
       } catch {}
     });
   };
-
-  
-
+  const removeImage = indexToRemove => {
+    sethinhanh(prevImages =>
+      prevImages.filter((_, index) => index !== indexToRemove),
+    );
+  };
   var apiTiepNhan =
-    'https:apiv2.uneti.edu.vn/api/SP_MC_DT_CapBangDiem_TiepNhan/Add_Para';
+    'https:apiv2.uneti.edu.vn/api/SP_MC_DT_TotNghiepXetThi_TiepNhan/Add_Para';
   const PostYeuCau = async () => {
     var data = {
-      MC_DT_CapBangDiem_TenCoSo: ThongTinSinhVien.CoSo
+      MC_DT_TotNghiepXetThi_TenDot: dotThi ? dotThi : 'null',
+      MC_DT_TotNghiepXetThi_TenCoSo: ThongTinSinhVien.CoSo
         ? ThongTinSinhVien.CoSo
-        : 'string',
-      MC_DT_CapBangDiem_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
+        : 'null',
+      MC_DT_TotNghiepXetThi_TenDotXet: dotThi ? dotThi : 'null',
+      MC_DT_TotNghiepXetThi_IDSinhVien: ThongTinSinhVien.IdSinhVien
         ? ThongTinSinhVien.IdSinhVien.toString()
-        : 'string',
-      MC_DT_CapBangDiem_MaSinhVien: maSinhVien ? maSinhVien : 'string',
-      MC_DT_CapBangDiem_HoDem: ThongTinSinhVien.Hodem
+        : 'null',
+      MC_DT_TotNghiepXetThi_MaSinhVien: maSinhVien ? maSinhVien : 'null',
+      MC_DT_TotNghiepXetThi_HoDem: ThongTinSinhVien.Hodem
         ? ThongTinSinhVien.Hodem
-        : 'string',
-      MC_DT_CapBangDiem_Ten: ThongTinSinhVien.Ten
+        : 'null',
+      MC_DT_TotNghiepXetThi_Ten: ThongTinSinhVien.Ten
         ? ThongTinSinhVien.Ten
-        : 'string',
-      MC_DT_CapBangDiem_GioiTinh: ThongTinSinhVien.GioiTinh,
-      MC_DT_CapBangDiem_NgaySinh2: moment
-        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
-        .toISOString(),
-      MC_DT_CapBangDiem_TenHeDaoTao: ThongTinSinhVien.BacDaoTao
+        : 'null',
+      MC_DT_TotNghiepXetThi_GioiTinh: ThongTinSinhVien.GioiTinh,
+      MC_DT_TotNghiepXetThi_NgaySinh2: ThongTinSinhVien.NgaySinh
+        ? moment.utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY').toISOString()
+        : 'null',
+      MC_DT_TotNghiepXetThi_TenKhoaHoc: ThongTinSinhVien.KhoaHoc
+        ? ThongTinSinhVien.KhoaHoc
+        : 'null',
+      MC_DT_TotNghiepXetThi_TenNganh: ThongTinSinhVien.ChuyenNganh
+        ? ThongTinSinhVien.ChuyenNganh
+        : 'null',
+      MC_DT_TotNghiepXetThi_TenHeDaoTao: ThongTinSinhVien.BacDaoTao
         ? ThongTinSinhVien.BacDaoTao
         : 'null',
-      MC_DT_CapBangDiem_TenLoaiHinhDT: ThongTinSinhVien.LoaiHinhDaoTao
-        ? ThongTinSinhVien.LoaiHinhDaoTao
-        : 'string',
-      MC_DT_CapBangDiem_TenKhoaHoc: ThongTinSinhVien.KhoaHoc
-        ? ThongTinSinhVien.KhoaHoc
-        : 'string',
-      MC_DT_CapBangDiem_TenNganh: ThongTinSinhVien.ChuyenNganh
-        ? ThongTinSinhVien.ChuyenNganh
-        : 'string',
-      MC_DT_CapBangDiem_TenLop: ThongTinSinhVien.LopHoc
-        ? ThongTinSinhVien.LopHoc
-        : 'string',
-      MC_DT_CapBangDiem_KhoaChuQuanLop: ThongTinSinhVien.Khoa
+      MC_DT_TotNghiepXetThi_KhoaChuQuanLop: ThongTinSinhVien.Khoa
         ? ThongTinSinhVien.Khoa
-        : 'string',
-      MC_DT_CapBangDiem_DienThoai: ThongTinSinhVien.SoDienThoai
+        : 'null',
+      MC_DT_TotNghiepXetThi_TenLoaiHinhDT: ThongTinSinhVien.LoaiHinhDaoTao
+        ? ThongTinSinhVien.LoaiHinhDaoTao
+        : 'null',
+      MC_DT_TotNghiepXetThi_TenLop: ThongTinSinhVien.LopHoc
+        ? ThongTinSinhVien.LopHoc
+        : 'null',
+      MC_DT_TotNghiepXetThi_DienThoai: ThongTinSinhVien.SoDienThoai
         ? ThongTinSinhVien.SoDienThoai
-        : 'string',
-      MC_DT_CapBangDiem_Email: ThongTinSinhVien.Email_TruongCap
+        : 'null',
+      MC_DT_TotNghiepXetThi_Email: ThongTinSinhVien.Email_TruongCap
         ? ThongTinSinhVien.Email_TruongCap
-        : 'string',
-      MC_DT_CapBangDiem_YeuCau: 1,
-      MC_DT_CapBangDiem_YeuCau_LyDo: lydo ? lydo : 'string',
-      MC_DT_CapBangDiem_YeuCau_LoaiBangDiem: loaiBangDiem
-        ? loaiBangDiem
-        : 'string',
-      MC_DT_CapBangDiem_YeuCau_KemTheo: giayto ? giayto : 'string',
-      MC_DT_CapBangDiem_DangKyNoiNhanKetQua: valueNoiNhan
-        ? valueNoiNhan
-        : 'string',
+        : 'null',
+      MC_DT_TotNghiepXetThi_YeuCau: '2',
+      MC_DT_TotNghiepXetThi_YeuCau_LyDo: lydo ? lydo : 'null',
+      MC_DT_TotNghiepXetThi_YeuCau_KemTheo: giayto ? giayto : 'null',
       images: hinhanh.map(e => ({
-        urlTemp: e.url ? e.url : 'null',
+        urlTemp: e.url,
         lastModified: '',
-        MC_DT_CapBangDiem_YeuCau_DataFile: e.base64 ? e.base64 : 'null',
-        MC_DT_CapBangDiem_YeuCau_TenFile: e.FileName ? e.FileName : 'null',
+        MC_DT_TotNghiepXetThi_YeuCau_DataFile: e.base64,
+        MC_DT_TotNghiepXetThi_YeuCau_TenFile: e.FileName,
       })),
     };
     console.log('220', data);
@@ -158,29 +162,23 @@ const BangDiem = ({navigation}: any) => {
       console.error(error);
     }
   };
-  const removeImage = indexToRemove => {
-    sethinhanh(prevImages =>
-      prevImages.filter((_, index) => index !== indexToRemove),
-    );
-  };
-  const ClearData = () => {
-    setValueLoaiBangDiem('');
-    setValueNoiNhan('');
-  };
+
   const ClearText = () => {
     setlydo('');
     setgiayto('');
-    //sethinhanh('');
+    sethinhanh('');
     setfilename('');
     setbase64image('');
+    setValueDotThi('');
   };
   useEffect(() => {
     getThongTinhSinhVien();
-  }, [hinhanh]);
+    fetchData();
+  }, [valueDotThi]);
   return (
     <SafeAreaView style={styles.container}>
       <Header1
-        title="Cấp Bảng Điểm"
+        title="ĐĂNG KÝ TỐT NGHIỆP"
         onPress={() => {
           navigation.goBack();
         }}
@@ -195,12 +193,13 @@ const BangDiem = ({navigation}: any) => {
               </Text>
               <Text style={styles.styleText}>
                 - Các đề nghị cấp bảng điểm không cho phép đề nghị trực tuyến:
-                Cấp bảng điểm tốt nghiệp hệ 4, hệ 10.
+                Xét tốt nghiệp; Thi tốt nghiệp.
               </Text>
               <Text style={styles.styleText}>
                 - Người học cần đến bộ phận Một cửa đề nghị trực tiếp, do các
                 chức năng này cần người học cung cấp đầy đủ hồ sơ, giấy tờ để
-                việc cấp bảng điểm được thực hiện theo đúng quy định của trường.
+                việc đăng ký tốt nghiệp được thực hiện theo đúng quy định của
+                trường.
               </Text>
               <Text
                 style={{
@@ -211,76 +210,38 @@ const BangDiem = ({navigation}: any) => {
                 }}>
                 II.Nội dung đề nghị
               </Text>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 20,
-                  marginTop: 20,
-                }}>
-                Xin cấp bảng điểm
-              </Text>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 20,
-                  marginTop: 20,
-                }}>
-                Bảng điểm tạm thời
-              </Text>
+
               <View style={styles.viewTenDot}>
-                <Text style={styles.styleText}>Loại bảng điểm: (*)</Text>
+                <Text style={styles.styleText}>Tên đợt: (*)</Text>
                 <Dropdown
                   style={[
-                    styles.dropdown1,
-                    isFocusLoaiBangDiem && {borderColor: 'black'},
+                    styles.dropdown,
+                    isFocusDotThi && {borderColor: 'blue'},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
                   inputSearchStyle={styles.inputSearchStyle}
-                  data={dataLoaibangdiem}
+                  data={tendot.map((item, index) => ({
+                    labelDotThi: item,
+                    valueDotThi: index.toString(),
+                  }))}
                   maxHeight={300}
-                  labelField="labelLoaiBangDiem"
-                  valueField="valueLoaiBangDiem"
-                  placeholder={
-                    !isFocusLoaiBangDiem ? 'Chọn loại bảng điểm' : '...'
-                  }
-                  value={valueLoaiBangDiem}
-                  onFocus={() => setIsFocusBangDiem(true)}
-                  onBlur={() => setIsFocusBangDiem(false)}
+                  labelField="labelDotThi"
+                  valueField="valueDotThi"
+                  placeholder={!isFocusDotThi ? 'Chọn đợt thi' : '...'}
+                  value={valueDotThi}
+                  onFocus={() => setIsFocusDotThi(true)}
+                  onBlur={() => setIsFocusDotThi(false)}
                   onChange={item => {
-                    setValueLoaiBangDiem(item.valueLoaiBangDiem);
-                    setLoaiThi(item.labelLoaiBangDiem);
-                    setIsFocusBangDiem(false);
+                    setValueDotThi(item.valueDotThi);
+                    setDotThi(item.labelDotThi);
+                    setIsFocusDotThi(false);
                   }}
                 />
               </View>
-              <View style={styles.viewTenDot}>
-                <Text style={styles.styleText}>
-                  Đăng ký nơi nhận kết quả: (*)
-                </Text>
-                <Dropdown
-                  style={[
-                    styles.dropdown1,
-                    isFocusNoiNhan && {borderColor: 'black'},
-                  ]}
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  data={dataNoiNhan}
-                  maxHeight={300}
-                  labelField="labelNoiNhan"
-                  valueField="valueNoiNhan"
-                  placeholder={!isFocusNoiNhan ? 'Chọn nơi nhận' : '...'}
-                  value={valueNoiNhan}
-                  onFocus={() => setIsFocusNoiNhan(true)}
-                  onBlur={() => setIsFocusNoiNhan(false)}
-                  onChange={item => {
-                    setValueNoiNhan(item.valueNoiNhan);
-                    setnoinhan(item.labelNoiNhan);
-                    setIsFocusNoiNhan(false);
-                  }}
-                />
-              </View>
+
+              <Text style={styles.styleText}>Cấp lại: (*)</Text>
+              <Text style={styles.styleText}>Hoãn xét tốt nghiệp</Text>
               <Text style={styles.styleText}>Lý do:(*)</Text>
               <View
                 style={{
@@ -293,7 +254,12 @@ const BangDiem = ({navigation}: any) => {
                 }}>
                 <TextInput
                   underlineColor="transparent"
-                  style={{width: '95%', backgroundColor: '#E8E8E8'}}
+                  multiline={true}
+                  style={{
+                    width: '95%',
+                    backgroundColor: '#E8E8E8',
+                    fontSize: 18,
+                  }}
                   onChangeText={text => setlydo(text)}
                   value={lydo}
                 />
@@ -310,35 +276,42 @@ const BangDiem = ({navigation}: any) => {
                 }}>
                 <TextInput
                   underlineColor="transparent"
-                  style={{width: '95%', backgroundColor: '#E8E8E8'}}
+                  multiline={true}
+                  style={{
+                    width: '95%',
+                    backgroundColor: '#E8E8E8',
+                    fontSize: 18,
+                  }}
                   onChangeText={text => setgiayto(text)}
                   value={giayto}
                 />
               </View>
               <Text style={styles.styleText}>Giấy tờ:</Text>
               <ScrollView horizontal={true}>
-                {hinhanh.length === 5 ? null : (
-                  <TouchableOpacity onPress={Imagepicker}>
-                    <View
-                      style={{
-                        width: 220,
-                        height: 130,
-                        borderWidth: 5,
-                        borderStyle: 'dashed',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 5,
-                        borderColor: 'gray',
-                      }}>
-                      <Image
-                        resizeMode="stretch"
-                        style={{width: 50, height: 50, tintColor: '#a9a9a9'}}
-                        source={require('../../../../../../images/add_image.png')}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                )}
-
+                {
+                    hinhanh.length === 5 ? null : (
+                        <TouchableOpacity onPress={Imagepicker}>
+                        <View
+                          style={{
+                            width: 220,
+                            height: 130,
+                            borderWidth: 1.5,
+                            borderStyle: 'dashed',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginLeft: 5,
+                            borderColor: 'gray',
+                          }}>
+                          <Image
+                            resizeMode="stretch"
+                            style={{width: 50, height: 50, tintColor: '#a9a9a9'}}
+                            source={require('../../../../../../images/add_image.png')}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )
+                }
+                
                 {hinhanh.length === 0
                   ? null
                   : hinhanh.map((e, index) => (
@@ -351,14 +324,13 @@ const BangDiem = ({navigation}: any) => {
                           marginLeft: 20,
                         }}>
                         <ImageBackground
-                          key={index}
                           resizeMode="stretch"
                           style={{width: 220, height: 130}}
                           source={{uri: e.url}}>
                           <TouchableOpacity
-                            key={index}
                             onPress={() => {
-                              removeImage(index);
+                            
+                            removeImage(index);
                             }}>
                             <View
                               style={{
@@ -391,9 +363,7 @@ const BangDiem = ({navigation}: any) => {
             <TouchableOpacity
               style={styles.touchableOpacity}
               onPress={() => {
-                // ClearData();
-                // ClearText();
-                console.log(mappedData);
+                ClearText();
               }}>
               <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
             </TouchableOpacity>
@@ -402,18 +372,14 @@ const BangDiem = ({navigation}: any) => {
           <View style={styles.buttonLuu}>
             <TouchableOpacity
               onPress={() => {
-                if (valueLoaiBangDiem === '') {
-                  Alert.alert('Bạn chưa chọn loại bảng điểm');
-                } else if (valueNoiNhan === '') {
-                  Alert.alert('Bạn chưa chọn nơi nhận ');
+                if (valueDotThi === '') {
+                  Alert.alert('Thông Báo', 'Bạn chưa chọn tên đợt');
                 } else if (lydo === '') {
-                  Alert.alert('Bạn chưa nhập lý do');
+                  Alert.alert('Thông Báo', 'Bạn chưa nhập lý do');
                 } else if (giayto === '') {
-                  Alert.alert('Bạn chưa nhập giấy tờ');
-                  // }//else if(hinhanh==='')
-                  // {
-                  //   Alert.alert("Bạn chưa chọn hình ảnh");
-                  // }else{
+                  Alert.alert('Thông Báo', 'Bạn chưa nhập giấy tờ');
+                } else if (hinhanh === '') {
+                  Alert.alert('Thông Báo', 'Bạn chưa chọn hình ảnh');
                 } else {
                   PostYeuCau();
                 }
@@ -497,7 +463,7 @@ const BangDiem = ({navigation}: any) => {
   );
 };
 
-export default BangDiem;
+export default DangKyTotNghiep;
 
 const styles = StyleSheet.create({
   container: {

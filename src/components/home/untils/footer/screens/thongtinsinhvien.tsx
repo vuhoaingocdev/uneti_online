@@ -48,7 +48,7 @@ function ThongTinSinhVien1({navigation}: any) {
               </View>
               <View style={styles.viewTextImage}>
                 <View style={styles.viewContainerText}>
-                  <Text style={{color: 'black', fontSize: 17}}>
+                  <Text style={{color: 'black', fontSize: 17, marginLeft: 5}}>
                     Họ và tên:{' '}
                   </Text>
                   <Text style={styles.styleTextBold}>
@@ -57,19 +57,23 @@ function ThongTinSinhVien1({navigation}: any) {
                 </View>
 
                 <View style={styles.viewContainerText}>
-                  <Text style={{color: 'black', fontSize: 17}}>Giới tính:</Text>
+                  <Text style={{color: 'black', fontSize: 17, marginLeft: 5}}>
+                    Giới tính:
+                  </Text>
                   <Text style={styles.styleTextBold}> Nam</Text>
                 </View>
 
                 <View style={styles.viewContainerText}>
-                  <Text style={{color: 'black', fontSize: 17}}>
+                  <Text style={{color: 'black', fontSize: 17, marginLeft: 5}}>
                     Mã sinh viên:
                   </Text>
                   <Text style={styles.styleTextBold}> {maSinhVien}</Text>
                 </View>
 
                 <View style={styles.viewContainerText}>
-                  <Text style={{color: 'black', fontSize: 17}}>Lớp: </Text>
+                  <Text style={{color: 'black', fontSize: 17, marginLeft: 5}}>
+                    Lớp:{' '}
+                  </Text>
                   <Text style={styles.styleTextBold}>
                     {ThongTinSinhVien.LopHoc}
                   </Text>
@@ -315,7 +319,7 @@ export default ThongTinSinhVien1;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
     flex: 1,
   },
   ContainerHeader: {
@@ -347,7 +351,7 @@ const styles = StyleSheet.create({
   viewBody: {
     height: '100%',
     width: '100%',
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
   },

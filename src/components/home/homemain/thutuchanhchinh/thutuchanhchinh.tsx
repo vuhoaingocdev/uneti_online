@@ -13,15 +13,26 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Header from '../../untils/header/header';
+import ModalThongBao from '../../untils/modalThongBao/modalThongBao';
 
 const getHeight = Dimensions.get('window').height;
 const getWidth = Dimensions.get('window').width;
 
 function ThuTucHanhChinh({navigation}: any) {
   const [showOverlay, setShowOverlay] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const handleHeaderPress = () => {
     setShowOverlay(!showOverlay);
   };
+
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title="THỦ TỤC HÀNH CHÍNH" onPress={handleHeaderPress} />
@@ -91,15 +102,22 @@ function ThuTucHanhChinh({navigation}: any) {
           </TouchableWithoutFeedback>
         </Modal>
       )}
+
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Chưa hoàn thành!"
+      />
+
       <View style={styles.viewBody}>
         <ScrollView style={styles.scrollViewContent}>
           <TouchableOpacity
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => {
-              Alert.alert('Thông báo', 'Hướng dẫn chưa hoàn thành!');
+              handleModalPress();
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#696969'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#333333'}]}>
               <Image
                 source={require('../../../../images/huongdan.png')}
                 style={styles.styleImage}
@@ -118,7 +136,7 @@ function ThuTucHanhChinh({navigation}: any) {
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('MotCuaKhaoThi')}>
-            <View style={[styles.viewImage, {backgroundColor: '#000080'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#134267'}]}>
               <Image
                 source={require('../../../../images/OBJECTS_1_.png')}
                 style={styles.styleImage}
@@ -140,7 +158,7 @@ function ThuTucHanhChinh({navigation}: any) {
             onPress={() => {
               navigation.navigate('MotCuaDaoTao');
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#0000cd'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#2e6b89'}]}>
               <Image
                 source={require('../../../../images/daotao.png')}
                 style={styles.styleImage}
@@ -161,12 +179,9 @@ function ThuTucHanhChinh({navigation}: any) {
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => {
-              Alert.alert(
-                'Thông báo',
-                'Một cửa công tác sinh viên chưa hoàn thành!',
-              );
+              handleModalPress();
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#48d1cc'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#48917E'}]}>
               <Image
                 source={require('../../../../images/ctsv.png')}
                 style={styles.styleImage}
@@ -186,9 +201,9 @@ function ThuTucHanhChinh({navigation}: any) {
             style={[styles.viewThuTuc, {marginBottom: 70}]}
             activeOpacity={0.8}
             onPress={() => {
-              Alert.alert('Thông báo', 'Một cửa hành chính chưa hoàn thành!');
+              handleModalPress();
             }}>
-            <View style={[styles.viewImage, {backgroundColor: '#f08080'}]}>
+            <View style={[styles.viewImage, {backgroundColor: '#EEA889'}]}>
               <Image
                 source={require('../../../../images/chitietcongviec.png')}
                 style={styles.styleImage}
@@ -204,6 +219,7 @@ function ThuTucHanhChinh({navigation}: any) {
           </TouchableOpacity>
         </ScrollView>
       </View>
+
       <View
         style={{
           height: '8%',
@@ -216,8 +232,8 @@ function ThuTucHanhChinh({navigation}: any) {
             borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 60,
-            borderTopRightRadius: 60,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -290,20 +306,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  ContainerHeader: {
-    height: '16%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   scrollViewContent: {
     width: '100%',
-  },
-  viewHeader: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: '100%',
-    width: '90%',
-    flexDirection: 'row',
   },
 
   iconMenu: {
@@ -334,9 +339,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
-    height: 90,
+    height: 100,
     alignSelf: 'center',
-    width: '94%',
+    width: '85%',
     marginTop: 25,
     flexDirection: 'row',
     shadowColor: 'black',
@@ -359,7 +364,7 @@ const styles = StyleSheet.create({
     marginLeft: 25,
   },
   styleTieuDe: {
-    fontSize: 19,
+    fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
   },
@@ -369,8 +374,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   styleImage: {
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
     marginLeft: 10,
     borderRadius: 10,
   },

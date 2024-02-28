@@ -5,11 +5,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  DrawerLayoutAndroid,
-  Button,
-  Alert,
   Image,
-  ImageBackground,
   Modal,
   Dimensions,
   TouchableWithoutFeedback,
@@ -17,6 +13,7 @@ import {
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Header from '../untils/header/header';
+import ModalThongBao from '../untils/modalThongBao/modalThongBao';
 // import MyTabsHome from '../untils/footer/footer';
 const Tab = createBottomTabNavigator();
 
@@ -25,12 +22,29 @@ const getWidth = Dimensions.get('window').width;
 
 function HomeMain({navigation}: any) {
   const [showOverlay, setShowOverlay] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const handleHeaderPress = () => {
     setShowOverlay(!showOverlay);
+  };
+
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
   return (
     <SafeAreaView style={styles.container}>
       <Header title="UNETI ONLINE" onPress={handleHeaderPress} />
+
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Chưa hoàn thành!"
+      />
+
       {showOverlay && (
         <Modal transparent={true} animationType="slide">
           <TouchableWithoutFeedback onPress={handleHeaderPress}>
@@ -97,6 +111,7 @@ function HomeMain({navigation}: any) {
           </TouchableWithoutFeedback>
         </Modal>
       )}
+
       <View style={styles.viewBody}>
         <TouchableOpacity
           style={styles.viewThuTuc}
@@ -120,7 +135,10 @@ function HomeMain({navigation}: any) {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.viewThuTuc}
+          activeOpacity={0.8}
+          onPress={() => handleModalPress()}>
           <View style={[styles.viewImage, {backgroundColor: '#134267'}]}>
             <Image
               source={require('../../../images/Lichhoc_lichthi_Congno.png')}
@@ -136,7 +154,13 @@ function HomeMain({navigation}: any) {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.viewThuTuc} activeOpacity={0.8}>
+
+        <TouchableOpacity
+          style={styles.viewThuTuc}
+          activeOpacity={0.8}
+          onPress={() => {
+            handleModalPress();
+          }}>
           <View style={[styles.viewImage, {backgroundColor: '#eea889'}]}>
             <Image
               source={require('../../../images/KetQuaHocTap.png')}
@@ -161,23 +185,24 @@ function HomeMain({navigation}: any) {
         }}>
         <View
           style={{
+            position: 'absolute',
+            bottom: 0,
             height: '100%',
-            borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 60,
-            borderTopRightRadius: 60,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
+            shadowColor: 'black',
             shadowOffset: {
               width: 0,
-              height: 2,
+              height: -5,
             },
-            shadowColor: 'black',
-            shadowOpacity: 0.8,
-            shadowRadius: 4,
-            elevation: 8,
+            shadowOpacity: 0.5,
+            shadowRadius: 5,
+            elevation: 5,
           }}>
           <TouchableOpacity
             style={{
@@ -195,6 +220,7 @@ function HomeMain({navigation}: any) {
               style={{width: 33, height: 33}}
             />
           </TouchableOpacity>
+
           <TouchableOpacity
             style={{
               width: '30%',
@@ -211,6 +237,7 @@ function HomeMain({navigation}: any) {
               style={{width: 33, height: 33}}
             />
           </TouchableOpacity>
+
           <TouchableOpacity
             style={{
               width: '30%',
@@ -258,7 +285,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     height: '16%',
-    width: '94%',
+    width: '85%',
     marginTop: 25,
     flexDirection: 'row',
     shadowColor: 'black',
@@ -282,7 +309,7 @@ const styles = StyleSheet.create({
     marginLeft: 25,
   },
   styleTieuDe: {
-    fontSize: 19,
+    fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
   },
@@ -292,8 +319,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   styleImage: {
-    width: 60,
-    height: 60,
+    width: 65,
+    height: 65,
     marginLeft: 10,
     borderRadius: 10,
   },

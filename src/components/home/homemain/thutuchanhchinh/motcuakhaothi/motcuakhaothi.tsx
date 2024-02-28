@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -11,8 +11,17 @@ import {
 } from 'react-native';
 
 import Header1 from '../../../untils/header/header1';
+import ModalThongBao from '../../../untils/modalThongBao/modalThongBao';
 
 function MotCuaKhaoThi({navigation}: any) {
+  const [showModal, setShowModal] = useState(false);
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Header1
@@ -22,16 +31,22 @@ function MotCuaKhaoThi({navigation}: any) {
         }}
       />
 
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Chức năng này bị giới hạn không cho phép đề nghị trực tuyến,
+         người học cần đến bộ phận Một cửa để đề nghị trực tiếp. Chức năng này
+          sẽ được mở lại trực tuyến trong một số trường hợp mà người học không
+           thể trực tiếp đến trường như: Dịch bệnh, thiên tai...!"
+      />
+
       <View style={styles.viewBody}>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <ScrollView style={styles.scrollViewContent}>
           <TouchableOpacity
             style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => {
-              Alert.alert(
-                'Thông báo',
-                'Miễn học, thi tiếng anh chưa hoàn thành!',
-              );
+              handleModalPress();
             }}>
             <View style={styles.viewImage}>
               <Image
@@ -179,78 +194,73 @@ function MotCuaKhaoThi({navigation}: any) {
       <View
         style={{
           height: '8%',
-          backgroundColor: '#ffffff',
+          borderBlockColor: 'gray',
+          backgroundColor: 'white',
           width: '100%',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowColor: 'black',
+          shadowOpacity: 0.8,
+          shadowRadius: 4,
+          elevation: 8,
         }}>
-        <View
+        <TouchableOpacity
           style={{
-            height: '100%',
-            borderBlockColor: 'gray',
-            backgroundColor: 'white',
-            width: '100%',
-            borderTopLeftRadius: 60,
-            borderTopRightRadius: 60,
-            flexDirection: 'row',
+            width: '30%',
+            height: '90%',
             justifyContent: 'center',
             alignItems: 'center',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowColor: 'black',
-            shadowOpacity: 0.8,
-            shadowRadius: 4,
-            elevation: 8,
+          }}
+          onPress={() => {
+            navigation.navigate('TheoDoiDeNghi');
           }}>
-          <TouchableOpacity
-            style={{
-              width: '30%',
-              height: '90%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => {
-              navigation.navigate('TheoDoiDeNghi');
-            }}>
-            <Image
-              resizeMode="stretch"
-              source={require('../../../../../images/notification.png')}
-              style={{width: 33, height: 33}}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: '30%',
-              height: '90%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => {
-              navigation.navigate('HomeMain');
-            }}>
-            <Image
-              resizeMode="stretch"
-              source={require('../../../../../images/home.png')}
-              style={{width: 33, height: 33}}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: '30%',
-              height: '90%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => {
-              navigation.navigate('Thongtinsinhvien');
-            }}>
-            <Image
-              resizeMode="stretch"
-              source={require('../../../../../images/person.png')}
-              style={{width: 33, height: 33}}
-            />
-          </TouchableOpacity>
-        </View>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/notification.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            width: '30%',
+            height: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            navigation.navigate('HomeMain');
+          }}>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/home.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            width: '30%',
+            height: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            navigation.navigate('Thongtinsinhvien');
+          }}>
+          <Image
+            resizeMode="stretch"
+            source={require('../../../../../images/person.png')}
+            style={{width: 33, height: 33}}
+          />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -261,6 +271,7 @@ export default MotCuaKhaoThi;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
 
   viewBody: {
@@ -271,14 +282,14 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     width: '100%',
-    justifyContent: 'center',
+    marginLeft: 50,
   },
   viewThuTuc: {
     backgroundColor: '#F5F5F5',
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     height: 100,
-    width: '94%',
+    width: '88%',
     marginTop: 25,
     flexDirection: 'row',
     shadowColor: 'black',
@@ -288,7 +299,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   viewImage: {
-    width: 110,
+    width: 115,
     height: '100%',
     backgroundColor: '#245d7c',
     borderTopRightRadius: 80,
@@ -302,7 +313,7 @@ const styles = StyleSheet.create({
     marginLeft: 25,
   },
   styleTieuDe: {
-    fontSize: 19,
+    fontSize: 18,
     color: 'black',
     fontWeight: 'bold',
   },
@@ -312,8 +323,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   styleImage: {
-    width: 60,
-    height: 60,
+    width: 65,
+    height: 65,
     marginLeft: 10,
     borderRadius: 10,
   },

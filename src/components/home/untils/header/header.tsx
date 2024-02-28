@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   imageLogo: {
-    height: 70,
-    width: 60,
+    height: 74,
+    width: 65,
     marginRight: 20,
   },
 });
