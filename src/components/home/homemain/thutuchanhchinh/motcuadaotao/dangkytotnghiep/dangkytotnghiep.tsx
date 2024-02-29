@@ -16,6 +16,7 @@ import axios from 'axios';
 import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
 import {DataTable, TextInput} from 'react-native-paper';
+import ModalThongBao from '../../../../untils/modalThongBao/modalThongBao';
 import {
   launchCamera,
   launchImageLibrary,
@@ -54,6 +55,52 @@ const DangKyTotNghiep = ({navigation}: any) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleModalPress1 = () => {
+    setShowModal1(true);
+  };
+
+  const handleCloseModal1 = () => {
+    setShowModal1(false);
+  };
+
+  const handleModalPress2 = () => {
+    setShowModal2(true);
+  };
+
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+  };
+
+  const handleModalPress3 = () => {
+    setShowModal3(true);
+  };
+
+  const handleCloseModal3 = () => {
+    setShowModal3(false);
+  };
+
+  const handleModalPress4 = () => {
+    setShowModal4(true);
+  };
+
+  const handleCloseModal4 = () => {
+    setShowModal4(false);
   };
 
   const [hinhanh, sethinhanh] = useState([]);
@@ -152,10 +199,10 @@ const DangKyTotNghiep = ({navigation}: any) => {
         },
       });
       if (response.data.message === 'Bản ghi bị trùng.') {
-        Alert.alert('Thông báo', `Yêu cầu đã được gửi!!`);
+        handleModalPress();
       } else {
         if (response.status == 200) {
-          Alert.alert('Thông báo', 'Gửi yêu cầu thành công!');
+          handleModalPress1();
         }
       }
     } catch (error) {
@@ -166,7 +213,6 @@ const DangKyTotNghiep = ({navigation}: any) => {
   const ClearText = () => {
     setlydo('');
     setgiayto('');
-    sethinhanh('');
     setfilename('');
     setbase64image('');
     setValueDotThi('');
@@ -178,17 +224,47 @@ const DangKyTotNghiep = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header1
-        title="ĐĂNG KÝ TỐT NGHIỆP"
+        title="Đăng ký tốt nghiệp"
         onPress={() => {
           navigation.goBack();
         }}
+      />
+
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Yêu cầu này đã được gửi!"
+      />
+
+      <ModalThongBao
+        visible={showModal1}
+        onClose={handleCloseModal1}
+        message="Gửi yêu cầu thành công!"
+      />
+
+      <ModalThongBao
+        visible={showModal2}
+        onClose={handleCloseModal2}
+        message="Vui lòng chọn tên đợt!"
+      />
+
+      <ModalThongBao
+        visible={showModal3}
+        onClose={handleCloseModal3}
+        message="Vui lòng nhập lí do!"
+      />
+
+      <ModalThongBao
+        visible={showModal4}
+        onClose={handleCloseModal4}
+        message="Vui lòng nhập tên loại giấy tờ!"
       />
 
       <View style={styles.viewBody}>
         <ScrollView>
           <View style={styles.viewText}>
             <View style={styles.viewTextChild}>
-              <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+              <Text style={{color: 'black', fontSize: 18, fontWeight: 'bold'}}>
                 I.Lưu ý
               </Text>
               <Text style={styles.styleText}>
@@ -204,7 +280,7 @@ const DangKyTotNghiep = ({navigation}: any) => {
               <Text
                 style={{
                   color: 'black',
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: 'bold',
                   marginTop: 20,
                 }}>
@@ -212,7 +288,7 @@ const DangKyTotNghiep = ({navigation}: any) => {
               </Text>
 
               <View style={styles.viewTenDot}>
-                <Text style={styles.styleText}>Tên đợt: (*)</Text>
+                <Text style={[styles.styleText,{marginTop: 10}]}>Tên đợt: (*)</Text>
                 <Dropdown
                   style={[
                     styles.dropdown,
@@ -245,8 +321,8 @@ const DangKyTotNghiep = ({navigation}: any) => {
               <Text style={styles.styleText}>Lý do:(*)</Text>
               <View
                 style={{
-                  borderWidth: 1,
-                  borderColor: 'black',
+                  borderWidth: 0.5,
+                  borderColor: 'gray',
                   height: 80,
                   borderRadius: 20,
                   justifyContent: 'center',
@@ -257,7 +333,7 @@ const DangKyTotNghiep = ({navigation}: any) => {
                   multiline={true}
                   style={{
                     width: '95%',
-                    backgroundColor: '#E8E8E8',
+                    backgroundColor: '#ffffff',
                     fontSize: 18,
                   }}
                   onChangeText={text => setlydo(text)}
@@ -267,8 +343,8 @@ const DangKyTotNghiep = ({navigation}: any) => {
               <Text style={styles.styleText}>Giấy tờ:(*)</Text>
               <View
                 style={{
-                  borderWidth: 1,
-                  borderColor: 'black',
+                  borderWidth: 0.5,
+                  borderColor: 'gray',
                   height: 80,
                   borderRadius: 20,
                   justifyContent: 'center',
@@ -279,7 +355,7 @@ const DangKyTotNghiep = ({navigation}: any) => {
                   multiline={true}
                   style={{
                     width: '95%',
-                    backgroundColor: '#E8E8E8',
+                    backgroundColor: '#ffffff',
                     fontSize: 18,
                   }}
                   onChangeText={text => setgiayto(text)}
@@ -288,30 +364,28 @@ const DangKyTotNghiep = ({navigation}: any) => {
               </View>
               <Text style={styles.styleText}>Giấy tờ:</Text>
               <ScrollView horizontal={true}>
-                {
-                    hinhanh.length === 5 ? null : (
-                        <TouchableOpacity onPress={Imagepicker}>
-                        <View
-                          style={{
-                            width: 220,
-                            height: 130,
-                            borderWidth: 1.5,
-                            borderStyle: 'dashed',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginLeft: 5,
-                            borderColor: 'gray',
-                          }}>
-                          <Image
-                            resizeMode="stretch"
-                            style={{width: 50, height: 50, tintColor: '#a9a9a9'}}
-                            source={require('../../../../../../images/add_image.png')}
-                          />
-                        </View>
-                      </TouchableOpacity>
-                    )
-                }
-                
+                {hinhanh.length === 5 ? null : (
+                  <TouchableOpacity onPress={Imagepicker}>
+                    <View
+                      style={{
+                        width: 220,
+                        height: 130,
+                        borderWidth: 1.5,
+                        borderStyle: 'dashed',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginLeft: 5,
+                        borderColor: 'gray',
+                      }}>
+                      <Image
+                        resizeMode="stretch"
+                        style={{width: 50, height: 50, tintColor: '#a9a9a9'}}
+                        source={require('../../../../../../images/add_image.png')}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                )}
+
                 {hinhanh.length === 0
                   ? null
                   : hinhanh.map((e, index) => (
@@ -329,8 +403,7 @@ const DangKyTotNghiep = ({navigation}: any) => {
                           source={{uri: e.url}}>
                           <TouchableOpacity
                             onPress={() => {
-                            
-                            removeImage(index);
+                              removeImage(index);
                             }}>
                             <View
                               style={{
@@ -358,7 +431,9 @@ const DangKyTotNghiep = ({navigation}: any) => {
           </View>
         </ScrollView>
 
-        <View style={styles.viewFooter}>
+       
+      </View>
+      <View style={styles.viewFooter}>
           <View style={styles.buttonHuy}>
             <TouchableOpacity
               style={styles.touchableOpacity}
@@ -373,13 +448,11 @@ const DangKyTotNghiep = ({navigation}: any) => {
             <TouchableOpacity
               onPress={() => {
                 if (valueDotThi === '') {
-                  Alert.alert('Thông Báo', 'Bạn chưa chọn tên đợt');
+                  handleModalPress2();
                 } else if (lydo === '') {
-                  Alert.alert('Thông Báo', 'Bạn chưa nhập lý do');
+                  handleModalPress3();
                 } else if (giayto === '') {
-                  Alert.alert('Thông Báo', 'Bạn chưa nhập giấy tờ');
-                } else if (hinhanh === '') {
-                  Alert.alert('Thông Báo', 'Bạn chưa chọn hình ảnh');
+                  handleModalPress4();
                 } else {
                   PostYeuCau();
                 }
@@ -393,7 +466,7 @@ const DangKyTotNghiep = ({navigation}: any) => {
         <View
           style={{
             height: '8%',
-            backgroundColor: '#dcdcdc',
+            backgroundColor: '#f8f8ff',
             width: '100%',
           }}>
           <View
@@ -458,7 +531,6 @@ const DangKyTotNghiep = ({navigation}: any) => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
     </SafeAreaView>
   );
 };
@@ -467,7 +539,7 @@ export default DangKyTotNghiep;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
     width: '100%',
     height: '100%',
   },
@@ -498,11 +570,11 @@ const styles = StyleSheet.create({
 
   viewBody: {
     flex: 1,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
   },
   styleText: {
     color: 'black',
-    fontSize: 20,
+    fontSize: 18,
     marginTop: 10,
     lineHeight: 36,
     textAlign: 'justify',
@@ -532,7 +604,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#dcdcdc',
+    backgroundColor: '#f8f8ff',
   },
 
   buttonHuy: {
@@ -540,7 +612,12 @@ const styles = StyleSheet.create({
     height: 40,
     marginLeft: 30,
     borderRadius: 40,
-    backgroundColor: '#F8F8FF',
+    backgroundColor: '#ffffff',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
 
   buttonLuu: {
@@ -549,6 +626,11 @@ const styles = StyleSheet.create({
     marginRight: 30,
     borderRadius: 40,
     backgroundColor: '#245d7c',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
   touchableOpacity: {
     width: '100%',
@@ -556,14 +638,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 40,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
   },
 
   dropdown: {

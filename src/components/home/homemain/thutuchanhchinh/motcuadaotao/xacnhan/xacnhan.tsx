@@ -270,7 +270,7 @@ const XacNhan = ({navigation}: any) => {
                 I.Lưu ý
               </Text>
 
-              <Text style={styles.styleText}>
+              <Text style={[styles.styleText, {marginTop: 8}]}>
                 - Các đề nghị xác nhận không cho phép đề nghị trực tuyến: Xác
                 nhận hoàn thành khóa học.
               </Text>
@@ -291,13 +291,15 @@ const XacNhan = ({navigation}: any) => {
                 II.Nội dung đề nghị
               </Text>
 
-              <Text style={styles.styleText}>Xác nhận: (*)</Text>
+              <Text
+                style={[styles.styleText, {marginTop: 13, marginBottom: 5}]}>
+                Xác nhận: (*)
+              </Text>
 
               {mangYeuCau.map(yc => (
                 <View
                   style={{
                     marginLeft: 10,
-                    marginTop: 3,
                     flexDirection: 'row',
                     width: '100%',
                   }}>
@@ -316,7 +318,7 @@ const XacNhan = ({navigation}: any) => {
               ))}
 
               <View style={styles.viewTenDot}>
-                <Text style={styles.styleText}>
+                <Text style={[styles.styleText, {marginTop: 16.5}]}>
                   Đăng ký nơi nhận kết quả: (*)
                 </Text>
                 <Dropdown
@@ -351,9 +353,10 @@ const XacNhan = ({navigation}: any) => {
                 onChangeText={text => setLiDo(text)}
                 multiline={true}
                 numberOfLines={4}
+                underlineColor="transparent"
               />
 
-              <Text style={styles.styleText}>Giấy tờ kèm theo:</Text>
+              <Text style={[styles.styleText, {marginTop: 8}]}>Giấy tờ:</Text>
               <TextInput
                 placeholderTextColor={'gray'}
                 style={styles.textInput}
@@ -362,6 +365,7 @@ const XacNhan = ({navigation}: any) => {
                 onChangeText={text => setGiayTo(text)}
                 multiline={true}
                 numberOfLines={4}
+                underlineColor="transparent"
               />
 
               <View>
@@ -373,8 +377,8 @@ const XacNhan = ({navigation}: any) => {
                     <TouchableOpacity onPress={Imagepicker}>
                       <View
                         style={{
-                          width: 150,
-                          height: 80,
+                          width: 220,
+                          height: 130,
                           marginTop: 8,
                           borderWidth: 1.5,
                           borderStyle: 'dashed',
@@ -397,15 +401,15 @@ const XacNhan = ({navigation}: any) => {
                         <View
                           style={{
                             marginTop: 7,
-                            width: 100,
-                            height: 80,
+                            width: 220,
+                            height: 130,
                             justifyContent: 'center',
                             alignItems: 'center',
                             marginLeft: 20,
                           }}>
                           <ImageBackground
                             resizeMode="stretch"
-                            style={{width: 100, height: 80}}
+                            style={{width: 220, height: 130}}
                             source={{uri: e.url}}>
                             <TouchableOpacity
                               onPress={() => {
@@ -415,7 +419,7 @@ const XacNhan = ({navigation}: any) => {
                                 style={{
                                   width: 20,
                                   height: 20,
-                                  marginLeft: 78,
+                                  marginLeft: 10,
                                   marginTop: 3,
                                 }}>
                                 <Image
@@ -453,10 +457,10 @@ const XacNhan = ({navigation}: any) => {
         <View
           style={[
             styles.buttonHuy,
-            {marginRight: 30, backgroundColor: '#245d7c'},
+            {marginRight: 30},
           ]}>
           <TouchableOpacity
-            style={styles.touchableOpacity}
+            style={[styles.touchableOpacity,{backgroundColor: '#245d7c'}]}
             onPress={() => {
               if (isChecked === -1) {
                 handleModalPress2();
@@ -466,6 +470,7 @@ const XacNhan = ({navigation}: any) => {
                 handleModalPress4();
               } else {
                 PostYeuCau();
+                XoaDuLieu();
               }
             }}>
             <Text style={{color: '#ffffff', fontSize: 19}}>Lưu</Text>
@@ -485,8 +490,8 @@ const XacNhan = ({navigation}: any) => {
             borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 60,
-            borderTopRightRadius: 60,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -566,7 +571,6 @@ const styles = StyleSheet.create({
   styleText: {
     color: 'black',
     fontSize: 18,
-    marginTop: 10,
     lineHeight: 36,
     textAlign: 'justify',
   },
@@ -630,7 +634,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     color: 'black',
-    backgroundColor: '#f8f8ff',
+    backgroundColor: '#ffffff',
   },
 
   viewFooter: {

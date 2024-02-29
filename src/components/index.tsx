@@ -21,7 +21,8 @@ import BangDiem from './home/homemain/thutuchanhchinh/motcuadaotao/capbangdiem/c
 import MotCuaDaoTao from './home/homemain/thutuchanhchinh/motcuadaotao/motcuadaotao.tsx';
 import XacNhan from './home/homemain/thutuchanhchinh/motcuadaotao/xacnhan/xacnhan.tsx';
 import DangKyTotNghiep from './home/homemain/thutuchanhchinh/motcuadaotao/dangkytotnghiep/dangkytotnghiep.tsx';
-
+import LopChatLuong from './home/homemain/thutuchanhchinh/motcuadaotao/lopchatluong/lopchatluong.tsx';
+import TaiKhoanLMS from './home/homemain/thutuchanhchinh/motcuadaotao/taikhoanemail_lms/taikhoanemail_lms.tsx';
 const Stack = createNativeStackNavigator();
 
 const Index = () => {
@@ -48,6 +49,9 @@ const Index = () => {
         <Stack.Screen name="MotCuaDaoTao" component={MotCuaDaoTao} />
         <Stack.Screen name="XacNhan" component={XacNhan} />
         <Stack.Screen name="DangKyTotNghiep" component={DangKyTotNghiep} />
+        <Stack.Screen name="LopChatLuong" component={LopChatLuong} />
+        <Stack.Screen name="TaiKhoanLMS" component={TaiKhoanLMS} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -8,38 +8,51 @@ import {
   ScrollView,
   Alert,
   Image,
+  ImageBackground,
 } from 'react-native';
+
 import Header1 from '../../../../untils/header/header1';
 import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
+import {TextInput} from 'react-native-paper';
+import ModalThongBao from '../../../../untils/modalThongBao/modalThongBao';
 import {DataTable} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import moment from 'moment';
-import ModalThongBao from '../../../../untils/modalThongBao/modalThongBao';
 import {
   getThongTinhSinhVien,
   ThongTinSinhVien,
 } from '../../../../../../api/GetThongTinSinhVien';
 
-const dataLoaiThi = [
-  {labelLoaiThi: 'Thi lần 1', valueLoaiThi: '2'},
-  {labelLoaiThi: 'Thi lại', valueLoaiThi: '1'},
-];
-
-const PhucKhao = ({navigation}: any) => {
+const LopChatLuong = ({navigation}: any) => {
   const [tendot, setTenDot] = useState([]);
-  const [valueDotThi, setValueDotThi] = useState('');
+  const [valueDotDangKy, setValueDotDangKy] = useState('');
   const [isFocusDotThi, setIsFocusDotThi] = useState(false);
-  const [dotThi, setDotThi] = useState('');
+  const [dotDangKy, setDotDangKy] = useState('');
 
-  const [loaiThi, setLoaiThi] = useState('');
-  const [valueLoaiThi, setValueLoaiThi] = useState('');
-  const [isFocusLoaiThi, setIsFocusLoaiThi] = useState(false);
+  const [valueLyDo, setValueLyDo] = useState('');
+  const [isFocusLyDo, setIsFocusLyDo] = useState(false);
+  const [lyDo, setLyDo] = useState('');
+
+  const [lyDoChiTiet, setLyDoChiTiet] = useState('');
+
   const [tableData, setTableData] = useState([]);
 
-  const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
+  const data = {tenLoaiHinh: 'Học lớp chất lượng', valueLoaiHinh: '0'};
+
+  const dataLiDo = [
+    {
+      tenLyDo:
+        'Căn cứ năng lực, nguyện vọng của bản thân và điều kiện gia đình',
+      valueLyDo: '0',
+    },
+    {
+      tenLyDo: 'Lý do khác ...',
+      valueLyDo: '1',
+    },
+  ];
 
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
@@ -47,6 +60,7 @@ const PhucKhao = ({navigation}: any) => {
   const [showModal3, setShowModal3] = useState(false);
   const [showModal4, setShowModal4] = useState(false);
   const [showModal5, setShowModal5] = useState(false);
+  const [showModal6, setShowModal6] = useState(false);
 
   const handleModalPress = () => {
     setShowModal(true);
@@ -96,8 +110,12 @@ const PhucKhao = ({navigation}: any) => {
     setShowModal5(false);
   };
 
-  const xuLiPost = () => {
-    PostYeuCau();
+  const handleModalPress6 = () => {
+    setShowModal6(true);
+  };
+
+  const handleCloseModal6 = () => {
+    setShowModal6(false);
   };
 
   //get tên đợt
@@ -118,11 +136,34 @@ const PhucKhao = ({navigation}: any) => {
     }
   };
 
-  //
-  const getAPI = `https://apiv2.uneti.edu.vn/api/SP_MC_KT_PhucKhao_TiepNhan/EDU_Load_R_Para_MaSinhVien_KetQuaHT?MaSinhVien=${maSinhVien}&MC_KT_PhucKhao_TenDot=${dotThi}&MC_KT_PhucKhao_LoaiThi=${valueLoaiThi}`;
+  var ngaybd: any, ngaykt: any;
+  //get Ngày kiểm tra giới hạn
+  const apiNgayGioiHan =
+    'https://apiv2.uneti.edu.vn/api/SP_MC_DT_DKHocChatLuong_TiepNhan/KiemTra_GioiHan';
+  const getDataNgayGioiHan = async () => {
+    try {
+      const response = await axios.get(apiNgayGioiHan, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      ngaybd = moment(response.data.body[0].HT_TLGH_NgayBD).format(
+        'MM/DD/YYYY',
+      );
+      ngaykt = moment(response.data.body[0].HT_TLGH_NgayKT).format(
+        'MM/DD/YYYY',
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //get dataTable
+  var apiTable = `https://apiv2.uneti.edu.vn/api/SP_MC_DT_DKHocChatLuong_TiepNhan/EDU_Load_Para_View_TKB_LopHocPhan?MC_DT_DKHocChatLuong_TenDot=${dotDangKy}&MC_DT_DKHocChatLuong_MaSinhVien=${maSinhVien}`;
   const getDataTable = async () => {
     try {
-      const response = await axios.get(getAPI, {
+      const response = await axios.get(apiTable, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -132,12 +173,10 @@ const PhucKhao = ({navigation}: any) => {
       var id = 0;
       const newTableData = response.data.body.map(mh => [
         id++,
-        mh.MaLopHocPhan,
-        mh.TenMonHoc,
-        mh.TenHinhThucThi,
-        new Date(mh.NgayThi).toLocaleDateString('vi-VN'),
-        mh.DiemThi,
-        mh.DiemTongKet1,
+        mh.MC_DT_DKHocChatLuong_MaLopHoc,
+        mh.MC_DT_DKHocChatLuong_TenLop,
+        mh.MC_DT_DKHocChatLuong_KhoaChuQuanLHP,
+        mh.MC_DT_DKHocChatLuong_SiSo,
       ]);
 
       setTableData(newTableData);
@@ -148,38 +187,31 @@ const PhucKhao = ({navigation}: any) => {
 
   //Xử lí check box
   const [checkedItems, setCheckedItems] = useState([]);
+  const [kiemTraChonMonHoc, setKiemTraChonMonHoc] = useState(false);
+  const [mangmonhoc, setmangmonhoc] = useState<MonHoc[]>([]);
   type MonHoc = {
     id: number;
     maLopHocPhan: string;
-    tenMonHoc: string;
-    hinhThucThi: string;
-    ngayThi: string;
-    diemThi: number;
-    diemTongKet: number;
+    tenLopHoc: string;
+    khoaChuQuan: string;
+    siSo: number;
   };
 
-  // Khởi tạo mảng môn học với kiểu dữ liệu đã định nghĩa
-  const [mangmonhoc, setmangmonhoc] = useState<MonHoc[]>([]);
-  // Xử lý khi checkbox được chọn hoặc bỏ chọn
   const handleCheckboxToggle = (rowIndex: number) => {
     const newCheckedItems = [...checkedItems];
     const index = newCheckedItems.indexOf(rowIndex);
 
-    // Nếu checkbox được chọn đã tồn tại trong mảng, loại bỏ nó
     if (index !== -1) {
       newCheckedItems.splice(index, 1);
     } else {
-      // Nếu không, loại bỏ checkbox đầu tiên trong mảng
       if (newCheckedItems.length > 0) {
         newCheckedItems.splice(0, 1);
       }
       newCheckedItems.push(rowIndex);
     }
 
-    // Cập nhật mảng checkedItems với chỉ một checkbox được chọn
     setCheckedItems(newCheckedItems);
 
-    // Cập nhật mảng môn học tương ứng
     const newMangMonHoc: MonHoc[] = [];
     newCheckedItems.forEach(id => {
       const monHoc = tableData.find(item => item[0] === id);
@@ -187,11 +219,9 @@ const PhucKhao = ({navigation}: any) => {
         newMangMonHoc.push({
           id: monHoc[0],
           maLopHocPhan: monHoc[1],
-          tenMonHoc: monHoc[2],
-          hinhThucThi: monHoc[3],
-          ngayThi: monHoc[4],
-          diemThi: monHoc[5],
-          diemTongKet: monHoc[6],
+          tenLopHoc: monHoc[2],
+          khoaChuQuan: monHoc[3],
+          siSo: monHoc[4],
         });
       }
     });
@@ -201,119 +231,95 @@ const PhucKhao = ({navigation}: any) => {
     setKiemTraChonMonHoc(newCheckedItems.length > 0);
   };
 
-  var apiPhucKhao =
-    'https://apiv2.uneti.edu.vn/api/SP_MC_KT_PhucKhao_TiepNhan/Add_Para';
-  const PostYeuCau = async () => {
-    var postdata = {
-      MC_KT_PhucKhao_TenDot: dotThi ? dotThi : 'null',
-      MC_KT_PhucKhao_LoaiThi: loaiThi ? loaiThi : 'null',
-      MC_KT_PhucKhao_TenCoSo: ThongTinSinhVien.CoSo
-        ? ThongTinSinhVien.CoSo
-        : 'null',
-      MC_KT_PhucKhao_MaSinhVien: maSinhVien ? maSinhVien : 'null',
-      MC_KT_PhucKhao_HoDem: ThongTinSinhVien.Hodem
-        ? ThongTinSinhVien.Hodem
-        : 'null',
-      MC_KT_PhucKhao_Ten: ThongTinSinhVien.Ten ? ThongTinSinhVien.Ten : 'null',
-      MC_KT_PhucKhao_GioiTinh: ThongTinSinhVien.GioiTinh,
-      MC_KT_PhucKhao_TenHeDaoTao: ThongTinSinhVien.BacDaoTao
-        ? ThongTinSinhVien.BacDaoTao
-        : 'null',
-      MC_KT_PhucKhao_TenLoaiHinhDT: ThongTinSinhVien.LoaiHinhDaoTao
-        ? ThongTinSinhVien.LoaiHinhDaoTao
-        : 'null',
-      MC_KT_PhucKhao_TenKhoaHoc: ThongTinSinhVien.KhoaHoc
-        ? ThongTinSinhVien.KhoaHoc
-        : 'null',
-      MC_KT_PhucKhao_TenNganh: ThongTinSinhVien.ChuyenNganh
-        ? ThongTinSinhVien.ChuyenNganh
-        : 'null',
-      MC_KT_PhucKhao_TenNghe: ThongTinSinhVien.ChuyenNganh
-        ? ThongTinSinhVien.ChuyenNganh
-        : 'null',
-      MC_KT_PhucKhao_TenLop: ThongTinSinhVien.LopHoc
+  var apiGuiYeuCau =
+    'https://apiv2.uneti.edu.vn/api/SP_MC_DT_DKHocChatLuong_TiepNhan/Add_Para';
+
+  const GuiYeuCau = async () => {
+    var dataYeuCau = {
+      MC_DT_DKHocChatLuong_MaSinhVien: maSinhVien ? maSinhVien : 'null',
+      MC_DT_DKHocChatLuong_GioiTinh: ThongTinSinhVien.GioiTinh,
+      MC_DT_DKHocChatLuong_NgaySinh2: moment
+        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
+        .toISOString(),
+      MC_DT_DKHocChatLuong_TenLop: ThongTinSinhVien.LopHoc
         ? ThongTinSinhVien.LopHoc
         : 'null',
-      MC_KT_PhucKhao_DienThoai: ThongTinSinhVien.SoDienThoai
-        ? ThongTinSinhVien.SoDienThoai
+      MC_DT_DKHocChatLuong_DienThoai: ThongTinSinhVien.SoDienThoai.toString()
+        ? ThongTinSinhVien.SoDienThoai.toString()
         : 'null',
-      MC_KT_PhucKhao_Email: ThongTinSinhVien.Email_TruongCap
+      MC_DT_DKHocChatLuong_Email: ThongTinSinhVien.Email_TruongCap
         ? ThongTinSinhVien.Email_TruongCap
         : 'null',
-      MC_KT_PhucKhao_IDSinhVien: ThongTinSinhVien.IdSinhVien.toString()
-        ? ThongTinSinhVien.IdSinhVien.toString()
+      MC_DT_DKHocChatLuong_TenDot: dotDangKy,
+      MC_DT_DKHocChatLuong_MaLopHoc: mangmonhoc[0].maLopHocPhan.toString()
+        ? mangmonhoc[0].maLopHocPhan.toString()
         : 'null',
-      MC_KT_PhucKhao_NgaySinh2: moment
-        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
-        .toISOString(),
-      // data from table
-      //MC_KT_PhucKhao_MaLopHocPhan: mangmonhoc[0].maLopHocPhan.toString(),
-      MC_KT_PhucKhao_MaLopHocPhan: mangmonhoc[0].maLopHocPhan.toString(),
-      MC_KT_PhucKhao_TenMonHoc: 'Tiếng anh 4',
-      MC_KT_PhucKhao_KhoaChuQuanMon: ThongTinSinhVien.Khoa
-        ? ThongTinSinhVien.Khoa
+      MC_DT_DKHocChatLuong_TenLopHoc: mangmonhoc[0].tenLopHoc
+        ? mangmonhoc[0].tenLopHoc
         : 'null',
-      MC_KT_PhucKhao_TenHinhThucThi: 'Tự luận',
-      MC_KT_PhucKhao_NgayThi: moment
-        .utc(ThongTinSinhVien.NgaySinh, 'DD/MM/YYYY')
-        .toISOString(),
-      MC_KT_PhucKhao_Thu: '2',
-      MC_KT_PhucKhao_Nhom: '1',
-      MC_KT_PhucKhao_TuTiet: '2',
-      MC_KT_PhucKhao_DenTiet: '3',
-      MC_KT_PhucKhao_TenPhong: 'https://meet.google.com/hdb-foua-sro',
-      MC_KT_PhucKhao_SBD: 'null',
-      MC_KT_PhucKhao_DiemThi: '7',
-      MC_KT_PhucKhao_DiemThi1: '7',
-      MC_KT_PhucKhao_DiemThi2: 'null',
-      MC_KT_PhucKhao_DiemTongKet: '8',
-      MC_KT_PhucKhao_DiemTongKet1: '8',
-      MC_KT_PhucKhao_DiemTongKet2: 'null',
-      MC_KT_PhucKhao_TuiBaiThi: 'null',
-      MC_KT_PhucKhao_SoPhach: 'null',
+      MC_DT_DKHocChatLuong_KhoaChuQuanLHP: mangmonhoc[0].khoaChuQuan
+        ? mangmonhoc[0].khoaChuQuan
+        : 'null',
+      MC_DT_DKHocChatLuong_SiSo: mangmonhoc[0].siSo.toString()
+        ? mangmonhoc[0].siSo.toString()
+        : 'null',
+      MC_DT_DKHocChatLuong_GhiChu: 'string',
+      MC_DT_DKHocChatLuong_YeuCau_LoaiHocTap: valueDotDangKy.toString()
+        ? valueDotDangKy.toString()
+        : 'null',
+      MC_DT_DKHocChatLuong_YeuCau_LyDo: valueLyDo.toString()
+        ? valueLyDo.toString()
+        : 'null',
+      MC_DT_DKHocChatLuong_YeuCau_LyDo_LyDoKhac_LyDoChiTiet: lyDoChiTiet
+        ? lyDoChiTiet
+        : 'null',
     };
 
     try {
-      const response = await axios.post(apiPhucKhao, postdata, {
+      const response = await axios.post(apiGuiYeuCau, dataYeuCau, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
-      if (response.data.message === 'Bản ghi bị trùng.') {
-        handleModalPress3();
+      if (
+        moment().isBetween(
+          moment(ngaybd, 'MM/DD/YYYY'),
+          moment(ngaykt, 'MM/DD/YYYY'),
+        )
+      ) {
+        if (response.data.message === 'Bản ghi bị trùng.') {
+          handleModalPress6();
+        } else {
+          handleModalPress4();
+        }
       } else {
-        handleModalPress4();
+        handleModalPress3();
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const ClearDataTable = () => {
+  const ClearData = () => {
+    setValueDotDangKy('-1');
+    setValueLyDo('-1');
+    setLyDoChiTiet('');
     setTableData([]);
-    setValueDotThi('-1');
-    setValueLoaiThi('-1');
   };
 
-  //Call api
   useEffect(() => {
     fetchData();
     getThongTinhSinhVien();
-    if (
-      dotThi !== '' &&
-      loaiThi !== '' &&
-      valueDotThi !== '-1' &&
-      valueLoaiThi !== '-1'
-    ) {
+    if (valueDotDangKy !== '-1' && dotDangKy !== '') {
       getDataTable();
     }
-  }, [valueDotThi, valueLoaiThi]);
+  }, [valueDotDangKy]);
 
   return (
     <SafeAreaView style={styles.container}>
       <Header1
-        title="Phúc khảo"
+        title="Lớp chất lượng"
         onPress={() => {
           navigation.goBack();
         }}
@@ -322,63 +328,63 @@ const PhucKhao = ({navigation}: any) => {
       <ModalThongBao
         visible={showModal}
         onClose={handleCloseModal}
-        message="Không có dữ liệu!"
+        message="Vui lòng chọn tên đợt!"
       />
 
       <ModalThongBao
         visible={showModal1}
         onClose={handleCloseModal1}
-        message="Không có dữ liệu môn học để gửi yêu cầu!"
+        message="Vui lòng chọn lớp học!"
       />
 
       <ModalThongBao
         visible={showModal2}
         onClose={handleCloseModal2}
-        message="Mời chọn môn học trước khi gửi yêu cầu!"
+        message="Vui lòng nhập lý do của bạn!"
       />
 
       <ModalThongBao
         visible={showModal3}
         onClose={handleCloseModal3}
-        message="Môn học này đã được phúc khảo! Vui lòng kiểm tra lại!"
+        message={`Chức năng đăng ký lớp học chất lượng tạm thời bị khóa do hết hạn đăng ký`}
       />
 
       <ModalThongBao
         visible={showModal4}
         onClose={handleCloseModal4}
-        message="Gửi phúc khảo thành công!"
+        message="Đăng ký lớp học chất lượng thành công!"
+      />
+
+      <ModalThongBao
+        visible={showModal5}
+        onClose={handleCloseModal5}
+        message="Vui lòng chọn lý do!"
+      />
+
+      <ModalThongBao
+        visible={showModal6}
+        onClose={handleCloseModal6}
+        message="Yêu cầu này đã được gửi!"
       />
 
       <View style={styles.viewBody}>
         <ScrollView>
           <View style={styles.viewText}>
             <View style={styles.viewTextChild}>
-              <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
-                1.Lưu ý
-              </Text>
-              <Text style={styles.styleText}>
-                - Người họ thực hiện phúc khảo kết quả bài thi theo kế hoạch tổ
-                chức thi (Ngày nộp đơn phúc khảo) trong từng học kỳ.
-              </Text>
-
-              <Text style={styles.styleText}>
-                - Lệ phí phúc khảo kết quả học tập: Có mức thu theo quy định,
-                được chuyển trực tiếp vào công nợ, người học nộp cùng học phí kì
-                kế tiếp.
-              </Text>
-
               <Text
                 style={{
                   color: 'black',
                   fontSize: 20,
                   fontWeight: 'bold',
-                  marginTop: 20,
+                  marginTop: 5,
                 }}>
-                1.Nội dung đề nghị
+                Nội dung đề nghị
               </Text>
 
               <View style={styles.viewTenDot}>
-                <Text style={styles.styleText}>Tên đợt: (*)</Text>
+                <Text style={[styles.styleText, {marginTop: 25}]}>
+                  Tên đợt: (*)
+                </Text>
                 <Dropdown
                   style={[
                     styles.dropdown,
@@ -386,7 +392,6 @@ const PhucKhao = ({navigation}: any) => {
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
                   data={tendot.map((item, index) => ({
                     labelDotThi: item,
                     valueDotThi: index.toString(),
@@ -394,48 +399,99 @@ const PhucKhao = ({navigation}: any) => {
                   maxHeight={300}
                   labelField="labelDotThi"
                   valueField="valueDotThi"
-                  placeholder={!isFocusDotThi ? 'Chọn đợt thi' : '...'}
-                  value={valueDotThi}
+                  placeholder={!isFocusDotThi ? 'Chọn tên đợt' : '...'}
+                  value={valueDotDangKy}
                   onFocus={() => setIsFocusDotThi(true)}
                   onBlur={() => setIsFocusDotThi(false)}
                   onChange={item => {
-                    setValueDotThi(item.valueDotThi);
-                    setDotThi(item.labelDotThi);
+                    setValueDotDangKy(item.valueDotThi);
+                    setDotDangKy(item.labelDotThi);
                     setIsFocusDotThi(false);
                   }}
                 />
               </View>
 
               <View style={styles.viewTenDot}>
-                <Text style={styles.styleText}>Loại thi: (*)</Text>
+                <Text style={[styles.styleText, {marginTop: 20}]}>
+                  Loại đăng ký học tập: (*)
+                </Text>
+
+                <Text
+                  style={[styles.styleText, {marginTop: 20, marginLeft: 20}]}>
+                  {data.tenLoaiHinh}
+                </Text>
+              </View>
+
+              <View style={styles.viewTenDot}>
+                <Text style={[styles.styleText, {marginTop: 20}]}>
+                  Lý do: (*)
+                </Text>
                 <Dropdown
                   style={[
-                    styles.dropdown1,
-                    isFocusLoaiThi && {borderColor: 'black'},
+                    styles.dropdown,
+                    isFocusLyDo && {borderColor: 'black'},
+                    {marginLeft: 31, marginTop: 15},
                   ]}
                   placeholderStyle={styles.placeholderStyle}
                   selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  data={dataLoaiThi}
+                  data={dataLiDo}
                   maxHeight={300}
-                  labelField="labelLoaiThi"
-                  valueField="valueLoaiThi"
-                  placeholder={!isFocusLoaiThi ? 'Chọn loại thi' : '...'}
-                  value={valueLoaiThi}
-                  onFocus={() => setIsFocusLoaiThi(true)}
-                  onBlur={() => setIsFocusLoaiThi(false)}
+                  labelField="tenLyDo"
+                  valueField="valueLyDo"
+                  placeholder={!isFocusDotThi ? 'Chọn lý do' : '...'}
+                  value={valueLyDo}
+                  onFocus={() => setIsFocusLyDo(true)}
+                  onBlur={() => setIsFocusLyDo(false)}
                   onChange={item => {
-                    setValueLoaiThi(item.valueLoaiThi);
-                    setLoaiThi(item.labelLoaiThi);
-                    setIsFocusLoaiThi(false);
+                    setValueLyDo(item.valueLyDo);
+                    setLyDo(item.tenLyDo);
+                    setIsFocusLyDo(false);
                   }}
                 />
               </View>
 
+              {lyDo === 'Lý do khác ...' ? (
+                <View
+                  style={{
+                    backgroundColor: '#f7f9ff',
+                    width: 'auto',
+                    height: 180,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 20,
+                      marginTop: 10,
+                      marginLeft: 20,
+                      lineHeight: 36,
+                    }}>
+                    Chi tiết lý do khác:(*)
+                  </Text>
+                  <View
+                    style={{
+                      marginTop: 25,
+                      backgroundColor: '#ffffff',
+                      marginHorizontal: 20,
+                      borderRadius: 10,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}>
+                    <TextInput
+                      value={lyDoChiTiet}
+                      placeholder="Lý do khác của bạn....."
+                      style={{fontSize: 18, backgroundColor: '#ffffff'}}
+                      onChangeText={text => setLyDoChiTiet(text)}
+                    />
+                  </View>
+                </View>
+              ) : null}
+
               <ScrollView>
                 <View style={styles.container1}>
                   <ScrollView horizontal>
-                    <DataTable style={{width: 1150}}>
+                    <DataTable style={{width: 740}}>
                       <DataTable.Header>
                         <DataTable.Title
                           style={{
@@ -447,6 +503,7 @@ const PhucKhao = ({navigation}: any) => {
                             Chọn
                           </Text>
                         </DataTable.Title>
+
                         <DataTable.Title
                           style={{
                             flex: 0.5,
@@ -458,39 +515,31 @@ const PhucKhao = ({navigation}: any) => {
                             Mã lớp học phần
                           </Text>
                         </DataTable.Title>
+
                         <DataTable.Title
                           style={{
-                            flex: 0.65,
+                            flex: 0.7,
                             backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
                           }}>
                           <Text style={{fontSize: 16, color: 'white'}}>
-                            Tên học phần
+                            Tên lớp học
                           </Text>
                         </DataTable.Title>
+
                         <DataTable.Title
                           style={{
-                            flex: 0.5,
+                            flex: 0.9,
                             backgroundColor: '#2e6b8b',
                             justifyContent: 'center',
                             marginLeft: 10,
                           }}>
                           <Text style={{fontSize: 16, color: 'white'}}>
-                            Hình thức thi
+                            Khoa chủ quản
                           </Text>
                         </DataTable.Title>
-                        <DataTable.Title
-                          style={{
-                            flex: 0.4,
-                            backgroundColor: '#2e6b8b',
-                            justifyContent: 'center',
-                            marginLeft: 10,
-                          }}>
-                          <Text style={{fontSize: 16, color: 'white'}}>
-                            Ngày thi
-                          </Text>
-                        </DataTable.Title>
+
                         <DataTable.Title
                           style={{
                             flex: 0.3,
@@ -499,18 +548,7 @@ const PhucKhao = ({navigation}: any) => {
                             marginLeft: 10,
                           }}>
                           <Text style={{fontSize: 16, color: 'white'}}>
-                            Điểm thi
-                          </Text>
-                        </DataTable.Title>
-                        <DataTable.Title
-                          style={{
-                            flex: 0.4,
-                            backgroundColor: '#2e6b8b',
-                            justifyContent: 'center',
-                            marginLeft: 10,
-                          }}>
-                          <Text style={{fontSize: 16, color: 'white'}}>
-                            Điểm tổng kết
+                            Sĩ số
                           </Text>
                         </DataTable.Title>
                       </DataTable.Header>
@@ -529,6 +567,7 @@ const PhucKhao = ({navigation}: any) => {
                               checkBoxColor="#2e6b8b"
                             />
                           </DataTable.Cell>
+
                           <DataTable.Cell
                             style={{
                               flex: 0.5,
@@ -541,39 +580,37 @@ const PhucKhao = ({navigation}: any) => {
                               {item[1]}
                             </Text>
                           </DataTable.Cell>
+
                           <DataTable.Cell
                             style={{
-                              flex: 0.65,
+                              flex: 0.7,
+                              alignItems: 'center',
+                              justifyContent: 'center',
                               backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
-                            <Text
-                              style={{
-                                fontSize: 16,
-                                color: 'black',
-                                marginLeft: 10,
-                              }}>
+                            <Text style={{fontSize: 16, color: 'black'}}>
                               {item[2]}
                             </Text>
                           </DataTable.Cell>
+
                           <DataTable.Cell
                             style={{
-                              flex: 0.5,
+                              flex: 0.9,
+                              alignItems: 'center',
+                              justifyContent: 'center',
                               backgroundColor: '#f7f9ff',
                               marginLeft: 10,
                             }}>
-                            <Text
-                              style={{
-                                fontSize: 16,
-                                color: 'black',
-                                marginLeft: 10,
-                              }}>
+                            <Text style={{fontSize: 16, color: 'black'}}>
                               {item[3]}
                             </Text>
                           </DataTable.Cell>
+
                           <DataTable.Cell
                             style={{
-                              flex: 0.4,
+                              flex: 0.3,
+                              alignItems: 'center',
                               justifyContent: 'center',
                               backgroundColor: '#f7f9ff',
                               marginLeft: 10,
@@ -582,29 +619,6 @@ const PhucKhao = ({navigation}: any) => {
                               {item[4]}
                             </Text>
                           </DataTable.Cell>
-                          <DataTable.Title
-                            style={{
-                              flex: 0.3,
-                              justifyContent: 'center',
-                              backgroundColor: '#f7f9ff',
-                              marginLeft: 10,
-                            }}>
-                            <Text style={{fontSize: 16, color: 'black'}}>
-                              {item[5]}
-                            </Text>
-                          </DataTable.Title>
-
-                          <DataTable.Title
-                            style={{
-                              flex: 0.4,
-                              justifyContent: 'center',
-                              backgroundColor: '#f7f9ff',
-                              marginLeft: 10,
-                            }}>
-                            <Text style={{fontSize: 16, color: 'black'}}>
-                              {item[6]}
-                            </Text>
-                          </DataTable.Title>
                         </DataTable.Row>
                       ))}
                     </DataTable>
@@ -614,17 +628,13 @@ const PhucKhao = ({navigation}: any) => {
             </View>
           </View>
         </ScrollView>
-
+                            </View>
         <View style={styles.viewFooter}>
           <View style={styles.buttonHuy}>
             <TouchableOpacity
               style={styles.touchableOpacity}
               onPress={() => {
-                if (tableData.length != 0) {
-                  ClearDataTable();
-                } else {
-                  handleModalPress();
-                }
+                ClearData();
               }}>
               <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
             </TouchableOpacity>
@@ -633,28 +643,17 @@ const PhucKhao = ({navigation}: any) => {
           <View style={styles.buttonLuu}>
             <TouchableOpacity
               onPress={() => {
-                if (tableData.length == 0) {
+                if (dotDangKy === '') {
+                  handleModalPress();
+                } else if (lyDo === '') {
+                  handleModalPress5();
+                } else if (mangmonhoc.length === 0) {
                   handleModalPress1();
+                } else if (lyDo === 'Lý do khác ...' && lyDoChiTiet === '') {
+                  handleModalPress2();
                 } else {
-                  if (!kiemTraChonMonHoc) {
-                    handleModalPress2();
-                  } else {
-                    Alert.alert(
-                      'Xác nhận',
-                      `Bạn có chắc chắn muốn phúc khảo môn ${mangmonhoc[0].tenMonHoc} không?`,
-                      [
-                        {
-                          text: 'Không',
-                          style: 'cancel',
-                        },
-                        {
-                          text: 'Có',
-                          onPress: PostYeuCau,
-                        },
-                      ],
-                      {cancelable: false},
-                    );
-                  }
+                  GuiYeuCau();
+                  ClearData();
                 }
               }}
               style={styles.touchableOpacity}>
@@ -739,53 +738,23 @@ const PhucKhao = ({navigation}: any) => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+     
     </SafeAreaView>
   );
 };
-
-export default PhucKhao;
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
   },
-  ContainerHeader: {
-    height: '13%',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  viewHeader: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: '100%',
-    width: '90%',
-    flexDirection: 'row',
-  },
-
-  iconMenu: {
-    height: 40,
-    width: 35,
-    tintColor: '#fff',
-  },
-  textTieuDe: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginRight: 60,
-  },
-
   viewBody: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
   },
   styleText: {
     color: 'black',
-    fontSize: 20,
-    marginTop: 10,
-    lineHeight: 36,
+    fontSize: 18,
     textAlign: 'justify',
   },
 
@@ -799,12 +768,33 @@ const styles = StyleSheet.create({
     width: '95%',
     height: '100%',
     marginTop: 15,
+    marginBottom: 5,
   },
 
   viewTenDot: {
     width: '100%',
     flexDirection: 'row',
     height: 50,
+  },
+
+  dropdown: {
+    flex: 1,
+    marginLeft: 16,
+    marginTop: 20,
+    height: 30,
+    borderColor: 'gray',
+    borderWidth: 0.8,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+
+  placeholderStyle: {
+    fontSize: 16,
+    color: 'gray',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: 'black',
   },
 
   viewFooter: {
@@ -849,44 +839,9 @@ const styles = StyleSheet.create({
     borderRadius: 40,
   },
 
-  dropdown: {
-    flex: 1,
-    marginLeft: 16,
-    marginTop: 10,
-    height: 30,
-    borderColor: 'gray',
-    borderWidth: 0.8,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  dropdown1: {
-    flex: 1,
-    marginLeft: 18,
-    marginTop: 10,
-    height: 30,
-    borderColor: 'gray',
-    borderWidth: 0.8,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-
-  placeholderStyle: {
-    fontSize: 16,
-    color: 'gray',
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-    color: 'black',
-  },
-
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-    color: 'black',
-  },
-
   container1: {
     marginTop: 20,
     marginBottom: 20,
   },
 });
+export default LopChatLuong;

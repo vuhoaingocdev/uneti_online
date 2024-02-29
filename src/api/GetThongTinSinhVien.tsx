@@ -33,6 +33,7 @@ const ThongTinSinhVien = {
   ChuyenNganh: '',
   LopHoc: '',
   Role: '',
+  Hinhanh:''
 };
 
 const getThongTinhSinhVien = async () => {
@@ -80,6 +81,7 @@ const getThongTinhSinhVien = async () => {
       ThongTinSinhVien.ChuyenNganh = td.ChuyenNganh;
       ThongTinSinhVien.LopHoc = td.LopHoc;
       ThongTinSinhVien.Role = td.Role;
+      ThongTinSinhVien.Hinhanh=td.HinhAnh;
     });
   } catch (error) {
     console.error(error);

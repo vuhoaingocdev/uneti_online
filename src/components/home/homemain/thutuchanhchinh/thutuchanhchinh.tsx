@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Header from '../../untils/header/header';
 import ModalThongBao from '../../untils/modalThongBao/modalThongBao';
+import {DataTable} from 'react-native-paper';
 
 const getHeight = Dimensions.get('window').height;
 const getWidth = Dimensions.get('window').width;
@@ -56,7 +57,7 @@ function ThuTucHanhChinh({navigation}: any) {
                       }}>
                       <View style={styles.viewTouchableOpacity}>
                         <Image
-                          source={require('../../../../images/bell.png')}
+                          source={require('../../../../images/person.png')}
                           style={styles.iconDrawer}
                           tintColor={'#ffffff'}
                         />
@@ -232,8 +233,8 @@ function ThuTucHanhChinh({navigation}: any) {
             borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -409,5 +410,10 @@ const styles = StyleSheet.create({
     fontSize: 23,
     marginLeft: 15,
     fontWeight: 'bold',
+  },
+
+  container1: {
+    marginTop: 20,
+    marginBottom: 20,
   },
 });

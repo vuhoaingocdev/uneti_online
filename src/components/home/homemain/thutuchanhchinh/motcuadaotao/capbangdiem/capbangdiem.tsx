@@ -16,6 +16,7 @@ import axios from 'axios';
 import {token} from '../../../../../login/login';
 import {maSinhVien} from '../../../../../login/login';
 import {DataTable, TextInput} from 'react-native-paper';
+import ModalThongBao from '../../../../untils/modalThongBao/modalThongBao';
 import {
   launchCamera,
   launchImageLibrary,
@@ -48,6 +49,53 @@ const BangDiem = ({navigation}: any) => {
     {labelNoiNhan: '2 - Lĩnh Nam', valueNoiNhan: 'Lĩnh Nam'},
     {labelNoiNhan: '3 - Nam Định', valueNoiNhan: 'Nam Định'},
   ];
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+
+  const handleModalPress = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleModalPress1 = () => {
+    setShowModal1(true);
+  };
+
+  const handleCloseModal1 = () => {
+    setShowModal1(false);
+  };
+
+  const handleModalPress2 = () => {
+    setShowModal2(true);
+  };
+
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+  };
+
+  const handleModalPress3 = () => {
+    setShowModal3(true);
+  };
+
+  const handleCloseModal3 = () => {
+    setShowModal3(false);
+  };
+
+  const handleModalPress4 = () => {
+    setShowModal4(true);
+  };
+
+  const handleCloseModal4 = () => {
+    setShowModal4(false);
+  };
+
   const [hinhanh, sethinhanh] = useState([]);
 
   const [base64image, setbase64image] = useState('');
@@ -75,8 +123,6 @@ const BangDiem = ({navigation}: any) => {
       } catch {}
     });
   };
-
-  
 
   var apiTiepNhan =
     'https:apiv2.uneti.edu.vn/api/SP_MC_DT_CapBangDiem_TiepNhan/Add_Para';
@@ -148,10 +194,10 @@ const BangDiem = ({navigation}: any) => {
         },
       });
       if (response.data.message === 'Bản ghi bị trùng.') {
-        Alert.alert('Thông báo', `Yêu cầu đã được gửi!!`);
+        handleModalPress();
       } else {
         if (response.status == 200) {
-          Alert.alert('Thông báo', 'Gửi yêu cầu thành công!');
+          handleModalPress1();
         }
       }
     } catch (error) {
@@ -167,6 +213,7 @@ const BangDiem = ({navigation}: any) => {
     setValueLoaiBangDiem('');
     setValueNoiNhan('');
   };
+
   const ClearText = () => {
     setlydo('');
     setgiayto('');
@@ -174,6 +221,7 @@ const BangDiem = ({navigation}: any) => {
     setfilename('');
     setbase64image('');
   };
+
   useEffect(() => {
     getThongTinhSinhVien();
   }, [hinhanh]);
@@ -184,6 +232,36 @@ const BangDiem = ({navigation}: any) => {
         onPress={() => {
           navigation.goBack();
         }}
+      />
+
+      <ModalThongBao
+        visible={showModal}
+        onClose={handleCloseModal}
+        message="Yêu cầu này đã được gửi!"
+      />
+
+      <ModalThongBao
+        visible={showModal1}
+        onClose={handleCloseModal1}
+        message="Gửi yêu cầu thành công!"
+      />
+
+      <ModalThongBao
+        visible={showModal2}
+        onClose={handleCloseModal2}
+        message="Vui lòng chọn loại bảng điểm!"
+      />
+
+      <ModalThongBao
+        visible={showModal3}
+        onClose={handleCloseModal3}
+        message="Vui lòng đăng ký nơi nhận kết quả!"
+      />
+
+      <ModalThongBao
+        visible={showModal4}
+        onClose={handleCloseModal4}
+        message="Vui lòng nhập lí do!"
       />
 
       <View style={styles.viewBody}>
@@ -205,7 +283,7 @@ const BangDiem = ({navigation}: any) => {
               <Text
                 style={{
                   color: 'black',
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: 'bold',
                   marginTop: 20,
                 }}>
@@ -214,15 +292,15 @@ const BangDiem = ({navigation}: any) => {
               <Text
                 style={{
                   color: 'black',
-                  fontSize: 20,
+                  fontSize: 18,
                   marginTop: 20,
                 }}>
-                Xin cấp bảng điểm
+                Xin cấp bảng điểm: (*)
               </Text>
               <Text
                 style={{
                   color: 'black',
-                  fontSize: 20,
+                  fontSize: 18,
                   marginTop: 20,
                 }}>
                 Bảng điểm tạm thời
@@ -284,8 +362,8 @@ const BangDiem = ({navigation}: any) => {
               <Text style={styles.styleText}>Lý do:(*)</Text>
               <View
                 style={{
-                  borderWidth: 1,
-                  borderColor: 'black',
+                  borderWidth: 0.5,
+                  borderColor: 'gray',
                   height: 80,
                   borderRadius: 20,
                   justifyContent: 'center',
@@ -293,16 +371,16 @@ const BangDiem = ({navigation}: any) => {
                 }}>
                 <TextInput
                   underlineColor="transparent"
-                  style={{width: '95%', backgroundColor: '#E8E8E8'}}
+                  style={{width: '95%', backgroundColor: '#ffffff'}}
                   onChangeText={text => setlydo(text)}
                   value={lydo}
                 />
               </View>
-              <Text style={styles.styleText}>Giấy tờ:(*)</Text>
+              <Text style={styles.styleText}>Giấy tờ:</Text>
               <View
                 style={{
-                  borderWidth: 1,
-                  borderColor: 'black',
+                  borderWidth: 0.5,
+                  borderColor: 'gray',
                   height: 80,
                   borderRadius: 20,
                   justifyContent: 'center',
@@ -310,7 +388,7 @@ const BangDiem = ({navigation}: any) => {
                 }}>
                 <TextInput
                   underlineColor="transparent"
-                  style={{width: '95%', backgroundColor: '#E8E8E8'}}
+                  style={{width: '95%', backgroundColor: '#ffffff'}}
                   onChangeText={text => setgiayto(text)}
                   value={giayto}
                 />
@@ -323,7 +401,7 @@ const BangDiem = ({navigation}: any) => {
                       style={{
                         width: 220,
                         height: 130,
-                        borderWidth: 5,
+                        borderWidth: 2,
                         borderStyle: 'dashed',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -385,15 +463,14 @@ const BangDiem = ({navigation}: any) => {
             </View>
           </View>
         </ScrollView>
-
-        <View style={styles.viewFooter}>
+      </View>
+      <View style={styles.viewFooter}>
           <View style={styles.buttonHuy}>
             <TouchableOpacity
               style={styles.touchableOpacity}
               onPress={() => {
-                // ClearData();
-                // ClearText();
-                console.log(mappedData);
+                ClearData();
+                ClearText();
               }}>
               <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
             </TouchableOpacity>
@@ -403,17 +480,11 @@ const BangDiem = ({navigation}: any) => {
             <TouchableOpacity
               onPress={() => {
                 if (valueLoaiBangDiem === '') {
-                  Alert.alert('Bạn chưa chọn loại bảng điểm');
+                  handleModalPress2();
                 } else if (valueNoiNhan === '') {
-                  Alert.alert('Bạn chưa chọn nơi nhận ');
+                  handleModalPress3();
                 } else if (lydo === '') {
-                  Alert.alert('Bạn chưa nhập lý do');
-                } else if (giayto === '') {
-                  Alert.alert('Bạn chưa nhập giấy tờ');
-                  // }//else if(hinhanh==='')
-                  // {
-                  //   Alert.alert("Bạn chưa chọn hình ảnh");
-                  // }else{
+                  handleModalPress4();
                 } else {
                   PostYeuCau();
                 }
@@ -424,73 +495,80 @@ const BangDiem = ({navigation}: any) => {
           </View>
         </View>
 
+      <View
+        style={{
+          height: '8%',
+          backgroundColor: '#f7f9ff',
+          width: '100%',
+        }}>
         <View
           style={{
-            height: '8%',
-            backgroundColor: '#dcdcdc',
+            height: '100%',
+            borderBlockColor: 'gray',
+            backgroundColor: 'white',
             width: '100%',
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowColor: 'black',
+            shadowOpacity: 0.8,
+            shadowRadius: 4,
+            elevation: 8,
           }}>
-          <View
+          <TouchableOpacity
             style={{
-              height: '100%',
-              borderBlockColor: 'gray',
-              backgroundColor: 'white',
-              width: '100%',
-              borderTopLeftRadius: 30,
-              borderTopRightRadius: 30,
-              flexDirection: 'row',
+              width: '30%',
+              height: '90%',
               justifyContent: 'center',
               alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('TheoDoiDeNghi');
             }}>
-            <TouchableOpacity
-              style={{
-                width: '30%',
-                height: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => {
-                navigation.navigate('TheoDoiDeNghi');
-              }}>
-              <Image
-                resizeMode="stretch"
-                source={require('../../../../../../images/notification.png')}
-                style={{width: 33, height: 33}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width: '30%',
-                height: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => {
-                navigation.navigate('HomeMain');
-              }}>
-              <Image
-                resizeMode="stretch"
-                source={require('../../../../../../images/home.png')}
-                style={{width: 33, height: 33}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width: '30%',
-                height: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => {
-                navigation.navigate('Thongtinsinhvien');
-              }}>
-              <Image
-                resizeMode="stretch"
-                source={require('../../../../../../images/person.png')}
-                style={{width: 33, height: 33}}
-              />
-            </TouchableOpacity>
-          </View>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/notification.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('HomeMain');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/home.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('Thongtinsinhvien');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/person.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -501,7 +579,7 @@ export default BangDiem;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
     width: '100%',
     height: '100%',
   },
@@ -532,11 +610,11 @@ const styles = StyleSheet.create({
 
   viewBody: {
     flex: 1,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#ffffff',
   },
   styleText: {
     color: 'black',
-    fontSize: 20,
+    fontSize: 18,
     marginTop: 10,
     lineHeight: 36,
     textAlign: 'justify',
@@ -566,7 +644,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#dcdcdc',
+    backgroundColor: '#f7f9ff',
   },
 
   buttonHuy: {
@@ -574,7 +652,12 @@ const styles = StyleSheet.create({
     height: 40,
     marginLeft: 30,
     borderRadius: 40,
-    backgroundColor: '#F8F8FF',
+    backgroundColor: '#ffffff',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
 
   buttonLuu: {
@@ -583,6 +666,11 @@ const styles = StyleSheet.create({
     marginRight: 30,
     borderRadius: 40,
     backgroundColor: '#245d7c',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
   touchableOpacity: {
     width: '100%',
@@ -590,14 +678,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 40,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
   },
 
   dropdown: {

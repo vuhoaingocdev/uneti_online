@@ -47,35 +47,9 @@ function MotCuaDaoTao({navigation}: any) {
               </Text>
             </View>
           </TouchableOpacity>
+
           <TouchableOpacity
-            style={[styles.viewThuTuc, {marginBottom: 70}]}
-            activeOpacity={0.8}
-            onPress={() => {
-              navigation.navigate('DangKyTotNghiep');
-            }}>
-            <View style={styles.viewImage}>
-              <Image
-                source={require('../../../../../images/daotao_xacnhan.png')}
-                style={styles.styleImage}
-                resizeMode="stretch"
-              />
-            </View>
-            <View style={styles.viewText}>
-              <Text style={styles.styleTieuDe}>ĐĂNG KÝ TỐT NGHIỆP</Text>
-              <Text style={[styles.styleText, {marginTop: 5}]}>
-                (Xác nhận đang chờ xét tốt nghiệp; Xác nhận nợ môn (chưa tốt
-                nghiệp);
-              </Text>
-              <Text style={[styles.styleText, {color: 'red'}]}>
-                Xác nhận hoàn thành khóa học;
-              </Text>
-              <Text style={styles.styleText}>
-                Xác nhận thời khóa biểu theo học kỳ)
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.viewThuTuc, {marginBottom: 70}]}
+            style={styles.viewThuTuc}
             activeOpacity={0.8}
             onPress={() => {
               navigation.navigate('XacNhan');
@@ -101,6 +75,70 @@ function MotCuaDaoTao({navigation}: any) {
               </Text>
             </View>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('DangKyTotNghiep');
+            }}>
+            <View style={styles.viewImage}>
+              <Image
+                source={require('../../../../../images/daotao_dktotnghiep.png')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
+
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>ĐĂNG KÝ TỐT NGHIỆP</Text>
+              <Text style={[styles.styleText, {color: 'red'}]}>
+                (Xét tốt nghiệp; Thi tốt nghiệp;
+              </Text>
+              <Text style={styles.styleText}>Hoãn xét tốt nghiệp)</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.viewThuTuc}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('TaiKhoanLMS');
+            }}>
+            <View style={styles.viewImage}>
+              <Image
+                source={require('../../../../../images/daotao_taikhoanemaillms.png')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
+
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>TÀI KHOẢN EMAIL / LMS</Text>
+              <Text style={styles.styleText}>
+                (Tài khoản Email UNETI; Tài khoản LMS)
+              </Text>
+              
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.viewThuTuc, {marginBottom: 70}]}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('LopChatLuong');
+            }}>
+            <View style={styles.viewImage}>
+              <Image
+                source={require('../../../../../images/daotao_lopchatluong.png')}
+                style={styles.styleImage}
+                resizeMode="stretch"
+              />
+            </View>
+
+            <View style={styles.viewText}>
+              <Text style={styles.styleTieuDe}>LỚP CHẤT LƯỢNG</Text>
+              <Text style={styles.styleText}>(Học lớp chất lượng)</Text>
+            </View>
+          </TouchableOpacity>
         </ScrollView>
       </View>
       <View
@@ -115,8 +153,8 @@ function MotCuaDaoTao({navigation}: any) {
             borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 60,
-            borderTopRightRadius: 60,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',

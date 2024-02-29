@@ -37,7 +37,7 @@ function ThongTinSinhVien1({navigation}: any) {
             <View style={styles.viewThongTinCoBan}>
               <View style={styles.viewImage}>
                 <Image
-                  source={require('../../../../../images/avatar.jpg')}
+                  source={{uri:`${ThongTinSinhVien.Hinhanh}`}}
                   style={{
                     height: '100%',
                     width: '100%',

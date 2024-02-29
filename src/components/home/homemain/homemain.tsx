@@ -65,7 +65,7 @@ function HomeMain({navigation}: any) {
                       }}>
                       <View style={styles.viewTouchableOpacity}>
                         <Image
-                          source={require('../../../images/bell.png')}
+                          source={require('../../../images/person.png')}
                           style={styles.iconDrawer}
                           tintColor={'#ffffff'}
                         />
@@ -190,8 +190,8 @@ function HomeMain({navigation}: any) {
             height: '100%',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
