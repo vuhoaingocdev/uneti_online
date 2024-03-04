@@ -495,23 +495,21 @@ const TaiKhoanLMS = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
       </View>
-       
-        <View
+
+      <View
         style={{
-          
           height: '8%',
           backgroundColor: '#f7f9ff',
           width: '100%',
         }}>
-           
         <View
           style={{
             height: '100%',
             borderBlockColor: 'gray',
             backgroundColor: 'white',
             width: '100%',
-            borderTopLeftRadius: 60,
-            borderTopRightRadius: 60,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -573,10 +571,7 @@ const TaiKhoanLMS = ({navigation}: any) => {
             />
           </TouchableOpacity>
         </View>
-      
       </View>
-        
-    
     </SafeAreaView>
   );
 };

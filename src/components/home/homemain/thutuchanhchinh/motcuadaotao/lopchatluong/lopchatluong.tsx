@@ -136,7 +136,9 @@ const LopChatLuong = ({navigation}: any) => {
     }
   };
 
-  var ngaybd: any, ngaykt: any;
+  //var ngaybd: any, ngaykt: any;
+  const [ngaybd, setNgayBD] = useState('');
+  const [ngaykt, setNgayKT] = useState('');
   //get Ngày kiểm tra giới hạn
   const apiNgayGioiHan =
     'https://apiv2.uneti.edu.vn/api/SP_MC_DT_DKHocChatLuong_TiepNhan/KiemTra_GioiHan';
@@ -149,12 +151,15 @@ const LopChatLuong = ({navigation}: any) => {
         },
       });
 
-      ngaybd = moment(response.data.body[0].HT_TLGH_NgayBD).format(
+      var ngaybd1 = await moment(response.data.body[0].HT_TLGH_NgayBD).format(
         'MM/DD/YYYY',
       );
-      ngaykt = moment(response.data.body[0].HT_TLGH_NgayKT).format(
+      var ngaykt1 = await moment(response.data.body[0].HT_TLGH_NgayKT).format(
         'MM/DD/YYYY',
       );
+
+      setNgayBD(ngaybd1);
+      setNgayKT(ngaykt1);
     } catch (error) {
       console.error(error);
     }
@@ -314,6 +319,7 @@ const LopChatLuong = ({navigation}: any) => {
     if (valueDotDangKy !== '-1' && dotDangKy !== '') {
       getDataTable();
     }
+    getDataNgayGioiHan();
   }, [valueDotDangKy]);
 
   return (
@@ -346,7 +352,7 @@ const LopChatLuong = ({navigation}: any) => {
       <ModalThongBao
         visible={showModal3}
         onClose={handleCloseModal3}
-        message={`Chức năng đăng ký lớp học chất lượng tạm thời bị khóa do hết hạn đăng ký`}
+        message={`Chức năng đăng ký lớp học chất lượng tạm thời bị khóa do hết hạn đăng ký từ ${ngaybd} đến ${ngaykt}`}
       />
 
       <ModalThongBao
@@ -628,117 +634,116 @@ const LopChatLuong = ({navigation}: any) => {
             </View>
           </View>
         </ScrollView>
-                            </View>
-        <View style={styles.viewFooter}>
-          <View style={styles.buttonHuy}>
-            <TouchableOpacity
-              style={styles.touchableOpacity}
-              onPress={() => {
-                ClearData();
-              }}>
-              <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.buttonLuu}>
-            <TouchableOpacity
-              onPress={() => {
-                if (dotDangKy === '') {
-                  handleModalPress();
-                } else if (lyDo === '') {
-                  handleModalPress5();
-                } else if (mangmonhoc.length === 0) {
-                  handleModalPress1();
-                } else if (lyDo === 'Lý do khác ...' && lyDoChiTiet === '') {
-                  handleModalPress2();
-                } else {
-                  GuiYeuCau();
-                  ClearData();
-                }
-              }}
-              style={styles.touchableOpacity}>
-              <Text style={{color: '#ffffff', fontSize: 19}}>Lưu</Text>
-            </TouchableOpacity>
-          </View>
+      </View>
+      <View style={styles.viewFooter}>
+        <View style={styles.buttonHuy}>
+          <TouchableOpacity
+            style={styles.touchableOpacity}
+            onPress={() => {
+              ClearData();
+            }}>
+            <Text style={{color: 'black', fontSize: 19}}>Hủy</Text>
+          </TouchableOpacity>
         </View>
 
+        <View style={styles.buttonLuu}>
+          <TouchableOpacity
+            onPress={() => {
+              if (dotDangKy === '') {
+                handleModalPress();
+              } else if (lyDo === '') {
+                handleModalPress5();
+              } else if (mangmonhoc.length === 0) {
+                handleModalPress1();
+              } else if (lyDo === 'Lý do khác ...' && lyDoChiTiet === '') {
+                handleModalPress2();
+              } else {
+                GuiYeuCau();
+                ClearData();
+              }
+            }}
+            style={styles.touchableOpacity}>
+            <Text style={{color: '#ffffff', fontSize: 19}}>Lưu</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View
+        style={{
+          height: '8%',
+          backgroundColor: '#f7f9ff',
+          width: '100%',
+        }}>
         <View
           style={{
-            height: '8%',
-            backgroundColor: '#f7f9ff',
+            height: '100%',
+            borderBlockColor: 'gray',
+            backgroundColor: 'white',
             width: '100%',
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowColor: 'black',
+            shadowOpacity: 0.8,
+            shadowRadius: 4,
+            elevation: 8,
           }}>
-          <View
+          <TouchableOpacity
             style={{
-              height: '100%',
-              borderBlockColor: 'gray',
-              backgroundColor: 'white',
-              width: '100%',
-              borderTopLeftRadius: 30,
-              borderTopRightRadius: 30,
-              flexDirection: 'row',
+              width: '30%',
+              height: '90%',
               justifyContent: 'center',
               alignItems: 'center',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowColor: 'black',
-              shadowOpacity: 0.8,
-              shadowRadius: 4,
-              elevation: 8,
+            }}
+            onPress={() => {
+              navigation.navigate('TheoDoiDeNghi');
             }}>
-            <TouchableOpacity
-              style={{
-                width: '30%',
-                height: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => {
-                navigation.navigate('TheoDoiDeNghi');
-              }}>
-              <Image
-                resizeMode="stretch"
-                source={require('../../../../../../images/notification.png')}
-                style={{width: 33, height: 33}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width: '30%',
-                height: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => {
-                navigation.navigate('HomeMain');
-              }}>
-              <Image
-                resizeMode="stretch"
-                source={require('../../../../../../images/home.png')}
-                style={{width: 33, height: 33}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width: '30%',
-                height: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => {
-                navigation.navigate('Thongtinsinhvien');
-              }}>
-              <Image
-                resizeMode="stretch"
-                source={require('../../../../../../images/person.png')}
-                style={{width: 33, height: 33}}
-              />
-            </TouchableOpacity>
-          </View>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/notification.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('HomeMain');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/home.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '30%',
+              height: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              navigation.navigate('Thongtinsinhvien');
+            }}>
+            <Image
+              resizeMode="stretch"
+              source={require('../../../../../../images/person.png')}
+              style={{width: 33, height: 33}}
+            />
+          </TouchableOpacity>
         </View>
-     
+      </View>
     </SafeAreaView>
   );
 };

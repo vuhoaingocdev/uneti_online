@@ -228,7 +228,7 @@ const BangDiem = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header1
-        title="Cấp Bảng Điểm"
+        title="Cấp bảng điểm"
         onPress={() => {
           navigation.goBack();
         }}
